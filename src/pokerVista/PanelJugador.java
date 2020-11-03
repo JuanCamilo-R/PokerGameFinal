@@ -1,5 +1,7 @@
 package pokerVista;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class PanelJugador extends JPanel {
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien;
 	private ImageIcon imagen;
+	private GridBagConstraints constraints;
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial) {
 		
 		this.isHuman = isHuman;
@@ -38,8 +41,14 @@ public class PanelJugador extends JPanel {
 		}
 		
 		panelMano = new JPanel();
+		this.setLayout(new GridBagLayout());
+		constraints = new GridBagConstraints();
 		
-		
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridheight = 1;
+		constraints.gridwidth = 1;
+		add(nombre, constraints);
 		
 		if(isHuman) {
 			confirmarApuesta = new JButton();
@@ -47,16 +56,26 @@ public class PanelJugador extends JPanel {
 			fichaDiez = new JButton();
 			fichaCinco = new JButton();
 			fichaCien = new JButton();
-			/*
-			imagen = new ImageIcon(getClass().getResource("/recursos/"+indexImagen+".png"));
+			
+			for(Carta carta: cartas ) {
+				mano.add(carta);
+			}
+			refrescarMano();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.gridheight = 3;
+			constraints.gridwidth = 1;
+			add(panelMano, constraints);
+			
+			
 			//le doy la imagen al Label
 			
 			//configuraciones del label
 			Border raised = BorderFactory.createRaisedBevelBorder();// crea el borde con esas caracteristicas
 			Border lowered = BorderFactory.createRaisedSoftBevelBorder();
 			//le defino a la clase este tipo de borde
-			confirmar.setBorder(BorderFactory.createCompoundBorder(raised,lowered));
-			*/
+			//confirmar.setBorder(BorderFactory.createCompoundBorder(raised,lowered));
+			
 		}
 		
 	}
