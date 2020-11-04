@@ -37,6 +37,17 @@ public class JugadorCPU implements Runnable {
 	public int getCantidadADescartar() {
 		return cantidadADescartar;
 	}
+	
+	public String getNombre() {
+		return nombreJugador;
+	}
+	public int getDineroInicial() {
+		return dineroInicial;
+	}
+	
+	public List<Carta>  getCartas (){
+		return cartas;
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

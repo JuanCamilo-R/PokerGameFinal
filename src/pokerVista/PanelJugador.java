@@ -28,14 +28,13 @@ public class PanelJugador extends JPanel {
 	private ImageIcon imagen;
 	private GridBagConstraints constraints;
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial) {
-		
+		nombre = new JLabel(nombreJugador);
 		this.isHuman = isHuman;
-		nombre.setText(nombreJugador);
-		this.dineroInicial.setText(String.valueOf(dineroInicial));
-		this.dineroApostado.setText("_____");
-		mano = cartas;
+		this.dineroInicial = new JLabel(String.valueOf(dineroInicial));
+		dineroApostado = new JLabel("_____");
 		
 		//Se agrega cada carta a la mano del jugador.
+		
 		for(Carta carta: cartas) {
 			mano.add(carta);
 		}
@@ -44,10 +43,11 @@ public class PanelJugador extends JPanel {
 		this.setLayout(new GridBagLayout());
 		constraints = new GridBagConstraints();
 		
-		constraints.gridx = 2;
+		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridheight = 1;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 3;
+		constraints.anchor = GridBagConstraints.CENTER;
 		add(nombre, constraints);
 		
 		if(isHuman) {
@@ -57,9 +57,6 @@ public class PanelJugador extends JPanel {
 			fichaCinco = new JButton();
 			fichaCien = new JButton();
 			
-			for(Carta carta: cartas ) {
-				mano.add(carta);
-			}
 			refrescarMano();
 			constraints.gridx = 1;
 			constraints.gridy = 1;

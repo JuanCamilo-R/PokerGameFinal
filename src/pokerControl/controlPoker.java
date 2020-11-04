@@ -20,7 +20,11 @@ public class ControlPoker {
 	public ControlPoker() {
 		turnos = new ArrayList<Integer>();
 		baraja = new Baraja();
-		VistaPoker vista = new VistaPoker();
+		List<Carta> manoPrueba = new ArrayList<Carta>();
+		for(int i = 0; i < 4; i++) {
+			manoPrueba.add(baraja.getCarta());
+		}
+		VistaPoker vista = new VistaPoker(true, "Santiago", manoPrueba,5000);
 	}
 	
 	public void asignarCartas() {
