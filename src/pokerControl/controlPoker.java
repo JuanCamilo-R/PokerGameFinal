@@ -20,12 +20,35 @@ public class ControlPoker {
 	public ControlPoker() {
 		turnos = new ArrayList<Integer>();
 		baraja = new Baraja();
-		List<Carta> manoPrueba = new ArrayList<Carta>();
-		for(int i = 0; i < 4; i++) {
+		/*List<Carta> manoPrueba = new ArrayList<Carta>();
+		for(int i = 0; i <= 4; i++) {
 			manoPrueba.add(baraja.getCarta());
-		}
-		VistaPoker vista = new VistaPoker(true, "Santiago", manoPrueba,5000);
+		}*/
+		manoJugadores = new ArrayList<List<Carta>>();
+		iniciarJuego();
+		
+		VistaPoker vista = new VistaPoker(true, "Santiago", manoJugadores,5000);
 	}
+	
+	private void iniciarJuego() {
+		baraja = new Baraja();
+		for(int i=0; i<3;i++) {
+			manoJugadores.add(seleccionarCartas());
+		}
+
+	}
+	private ArrayList<Carta> seleccionarCartas() {
+		// TODO Auto-generated method stub
+		ArrayList<Carta> manoJugador = new ArrayList<Carta>();
+		//se dan 2 cartas al jugador
+		manoJugador.add(baraja.getCarta());
+		manoJugador.add(baraja.getCarta());
+		manoJugador.add(baraja.getCarta());
+		manoJugador.add(baraja.getCarta());
+		manoJugador.add(baraja.getCarta());
+		return manoJugador;
+	}
+	
 	
 	public void asignarCartas() {
 		

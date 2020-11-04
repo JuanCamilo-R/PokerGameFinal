@@ -49,6 +49,7 @@ public class PanelJugador extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
 		add(nombre, constraints);
+	
 		
 		if(isHuman) {
 			confirmarApuesta = new JButton();
@@ -56,13 +57,6 @@ public class PanelJugador extends JPanel {
 			fichaDiez = new JButton();
 			fichaCinco = new JButton();
 			fichaCien = new JButton();
-			
-			refrescarMano();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.gridheight = 3;
-			constraints.gridwidth = 1;
-			add(panelMano, constraints);
 			
 			
 			//le doy la imagen al Label
@@ -74,6 +68,13 @@ public class PanelJugador extends JPanel {
 			//confirmar.setBorder(BorderFactory.createCompoundBorder(raised,lowered));
 			
 		}
+		
+		refrescarMano();
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.gridheight = 1;
+		constraints.gridwidth = 1;
+		add(panelMano, constraints);
 		
 	}
 	

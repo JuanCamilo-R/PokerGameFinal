@@ -8,8 +8,8 @@ import pokerModelo.Carta;
 
 public class VistaPoker extends JFrame {
 	
-	private PanelJugador panelJugador;
-	public VistaPoker(boolean isHuman, String nombre, List<Carta> manoJugador, int dineroInicial) {
+	private MesaJuego mesaJuego;
+	public VistaPoker(boolean isHuman, String nombre, List<List<Carta>> manoJugador, int dineroInicial) {
 		initGUI(isHuman, nombre, manoJugador, dineroInicial);
 		setVisible(true);
 		setResizable(false);
@@ -19,9 +19,9 @@ public class VistaPoker extends JFrame {
 		
 	}
 	
-	public void initGUI(boolean isHuman, String nombre, List<Carta> manoJugador, int dineroInicial) {
-		panelJugador = new PanelJugador(isHuman, nombre, manoJugador, dineroInicial);
-		add(panelJugador);
+	public void initGUI(boolean isHuman, String nombre, List<List<Carta>> manoJugador, int dineroInicial) {
+		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial);
+		add(mesaJuego);
 	}
 	
 }
