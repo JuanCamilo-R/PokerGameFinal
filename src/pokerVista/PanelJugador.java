@@ -28,7 +28,7 @@ public class PanelJugador extends JPanel {
 	
 	private List<Carta> mano = new ArrayList<Carta>();
 	private JLabel nombre, mensaje, dineroInicial, dineroApostado,apuesta;
-	private JPanel panelMano,panelFichas,panelBotones;
+	private JPanel panelMano,panelFichas,panelBotones, panelTexto;
 	private boolean isHuman;
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien;
@@ -42,8 +42,8 @@ public class PanelJugador extends JPanel {
 		nombre.setText( nombreJugador);
 		
 		this.isHuman = isHuman;
-		this.dineroInicial = new JLabel(String.valueOf(dineroInicial));
-		dineroApostado = new JLabel("_____");
+		this.dineroInicial = new JLabel("Dinero inicial: "+String.valueOf(dineroInicial));
+		dineroApostado = new JLabel("Dinero apostado");
 		
 		//Se agrega cada carta a la mano del jugador.
 		
@@ -80,8 +80,15 @@ public class PanelJugador extends JPanel {
 			panelBotones = new JPanel();
 			panelBotones.setLayout(new GridLayout(2,1));
 			
+			panelTexto = new JPanel();
+			panelTexto.setLayout(new GridLayout(2,1));
+			
 			confirmarApuesta = new JButton("Confirmar apuesta");
+			confirmarApuesta.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			confirmarApuesta.setPreferredSize(new Dimension(190,30));
 			cederTurno = new JButton("Retirarse");
+			cederTurno.setPreferredSize(new Dimension(190,30));
+			cederTurno.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			fichaDiez = new JButton();
 			fichaCien = new JButton();
 			imagen = new ImageIcon(getClass().getResource("/resources/ficha1.png"));
@@ -103,7 +110,7 @@ public class PanelJugador extends JPanel {
 			
 			fichaCien.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(130, 130, Image.SCALE_DEFAULT)));
 			
-			
+			apuesta = new JLabel("Apuesta");
 			
 			panelFichas.add(fichaCinco);
 			panelFichas.add(fichaDiez);
@@ -116,8 +123,6 @@ public class PanelJugador extends JPanel {
 			constraints.anchor = GridBagConstraints.CENTER;
 			add(panelFichas, constraints);
 			
-			confirmarApuesta.setPreferredSize(new Dimension(150,50));
-			cederTurno.setPreferredSize(new Dimension(150,50));
 			panelBotones.add(confirmarApuesta);
 			panelBotones.add(cederTurno);
 			
@@ -128,14 +133,25 @@ public class PanelJugador extends JPanel {
 			constraints.anchor = GridBagConstraints.NORTH;
 			add(panelBotones, constraints);
 			
-			apuesta = new JLabel("Apuesta");
-			apuesta.setFont(new Font("Comic Sans  MS",Font.BOLD,15));
 			constraints.gridx = 1;
 			constraints.gridy = 3;
 			constraints.gridheight = 1;
 			constraints.gridwidth = 1;
 			constraints.anchor = GridBagConstraints.CENTER;
 			add(apuesta, constraints);
+			
+			
+			this.dineroInicial.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			dineroApostado.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			panelTexto.add(this.dineroInicial);
+			panelTexto.add(dineroApostado);
+			
+			constraints.gridx = 2;
+			constraints.gridy = 2;
+			constraints.gridheight = 1;
+			constraints.gridwidth = 1;
+			constraints.anchor = GridBagConstraints.CENTER;
+			add(panelTexto, constraints);
 			
 			
 		}
