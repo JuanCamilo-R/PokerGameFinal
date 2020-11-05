@@ -1,5 +1,9 @@
 package pokerModelo;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -48,9 +52,17 @@ public class Carta extends JLabel {
 		 return valor+palo;
 	 }
 
+	 private Image scaledImage(Image img, int w, int h) {
+		 BufferedImage resizedImage = new BufferedImage( w , h , BufferedImage.TYPE_INT_RGB);
+		 Graphics2D g2 = resizedImage.createGraphics();
+		 g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		 g2.drawImage(img, 0, 0, w, h, null);
+		 g2.dispose();
+		 return resizedImage;
+	 }
 	 public void setImagen(BufferedImage imagen) {
-		 this.imagen=imagen;
-		 setIcon(new ImageIcon(imagen));
+		 this.imagen= (BufferedImage) scaledImage(imagen,100,50);
+		 setIcon(new ImageIcon(scaledImage(imagen,100,140)));
 	 }
 	 
 	 public BufferedImage getImagen() {

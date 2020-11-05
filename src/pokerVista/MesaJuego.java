@@ -21,12 +21,12 @@ public class MesaJuego extends JPanel {
 		public void initGUI(boolean isHuman, String nombre, List<List<Carta>> manoJugador, int dineroInicial) {
 			this.setLayout(new GridBagLayout());
 			constraints = new GridBagConstraints();
-			panelJugador1 = new PanelJugador(true,nombre,manoJugador.get(0),dineroInicial);
+			panelJugador1 = new PanelJugador(false,nombre,manoJugador.get(0),dineroInicial);
 			panelJugador2 = new PanelJugador(false,"J",manoJugador.get(1),dineroInicial);
-			/*panelJugador3 = new PanelJugador(isHuman,nombre,manoJugador,dineroInicial);
-			panelJugador4 = new PanelJugador(isHuman,nombre,manoJugador,dineroInicial);
-			panelJugador5 = new PanelJugador(isHuman,nombre,manoJugador,dineroInicial);
-			*/
+			panelJugador3 = new PanelJugador(true,"L",manoJugador.get(2),dineroInicial); //Nosotros
+			panelJugador4 = new PanelJugador(false,"M",manoJugador.get(3),dineroInicial);
+			panelJugador5 = new PanelJugador(false,"O",manoJugador.get(4),dineroInicial);
+			
 			
 			constraints.gridx =0;
 			constraints.gridy =0;
@@ -39,13 +39,13 @@ public class MesaJuego extends JPanel {
 			constraints.gridwidth =1;
 			constraints.gridheight =1;
 			add(panelJugador2,constraints);
-			/*
+			
 			constraints.gridx =0;
-			constraints.gridy =5;
+			constraints.gridy =4;
 			constraints.gridwidth =2;
 			constraints.gridheight =1;
 			constraints.fill = constraints.HORIZONTAL;
-			add(panelJugador3);*/
+			add(panelJugador3, constraints);
 			
 		}
 }

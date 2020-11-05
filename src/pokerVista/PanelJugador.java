@@ -1,7 +1,9 @@
 package pokerVista;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,18 +51,35 @@ public class PanelJugador extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
 		add(nombre, constraints);
-	
+		
+		refrescarMano();
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.gridheight = 1;
+		constraints.gridwidth = 1;
+		add(panelMano, constraints);
 		
 		if(isHuman) {
 			confirmarApuesta = new JButton();
 			cederTurno = new JButton();
-			fichaDiez = new JButton();
+			imagen = new ImageIcon(getClass().getResource("/resources/ficha1.png"));
 			fichaCinco = new JButton();
+			fichaCinco.setBorder(null);
+			fichaCinco.setContentAreaFilled(false);
+			fichaCinco.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
+			//imagenPrincipal.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+			fichaDiez = new JButton();
 			fichaCien = new JButton();
+			
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			constraints.gridheight = 1;
+			constraints.gridwidth = 1;
+			constraints.anchor = GridBagConstraints.CENTER;
+			add(fichaCinco, constraints);
 			
 			
 			//le doy la imagen al Label
-			
 			//configuraciones del label
 			Border raised = BorderFactory.createRaisedBevelBorder();// crea el borde con esas caracteristicas
 			Border lowered = BorderFactory.createRaisedSoftBevelBorder();
@@ -69,12 +88,6 @@ public class PanelJugador extends JPanel {
 			
 		}
 		
-		refrescarMano();
-		constraints.gridx = 1;
-		constraints.gridy = 1;
-		constraints.gridheight = 1;
-		constraints.gridwidth = 1;
-		add(panelMano, constraints);
 		
 	}
 	

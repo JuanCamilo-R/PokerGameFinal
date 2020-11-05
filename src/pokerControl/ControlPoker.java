@@ -32,7 +32,7 @@ public class ControlPoker {
 	
 	private void iniciarJuego() {
 		baraja = new Baraja();
-		for(int i=0; i<3;i++) {
+		for(int i = 0; i < 5 ;i++) {
 			manoJugadores.add(seleccionarCartas());
 		}
 
