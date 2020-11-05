@@ -13,9 +13,10 @@ public class VistaPoker extends JFrame {
 		initGUI(isHuman, nombre, manoJugador, dineroInicial);
 		setVisible(true);
 		setResizable(false);
+		this.pack();
+		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.pack();
 		
 	}
 	
