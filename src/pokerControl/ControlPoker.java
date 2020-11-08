@@ -10,39 +10,42 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.JPanel;
+
 import pokerModelo.Baraja;
 import pokerModelo.Carta;
 import pokerModelo.JugadorCPU;
+import pokerVista.PanelJugador;
 import pokerVista.VistaPoker;
 
 public class ControlPoker {
 	private Random random;
 	private ArrayList<Integer> turnos;
 	private int turnoActual = 1;
+	private int apuestaUsuario;
 	private Baraja baraja;
 	private List<List<Carta>> manoJugadores;
 	private ArrayList<String> nombres;
+	VistaPoker vista;
 	private JugadorCPU jugador1,jugador2,jugador4,jugador5;
 	private List<Boolean> tipoJugador;
 	private List<Integer> dinero;
+	private int[] descarte;
 	private Lock bloqueo = new ReentrantLock(); //manejo de sincronizacion
-	private Condition esperarTurno = bloqueo.newCondition();
-	private boolean tipoRonda = true;//true apostar,descartar
+	private Condition esperarTurno = bloqueo.newCondition(); //manejo de sincronizacion
+	private boolean tipoRonda = true; //True si es el momento de apostar y false si es el momento de descartar
 	private ArrayList<JugadorCPU> jugadoresCPU;
-	private VistaPoker vista;
-	private int[] descarte = new int[5];
 	public ControlPoker() {
-		random = new Random();
 		turnos = new ArrayList<Integer>();
 		nombres = new ArrayList<String>();
+		random = new Random();
+		jugadoresCPU = new ArrayList<JugadorCPU>();
 		tipoJugador = new ArrayList<Boolean>();
 		dinero = new ArrayList<Integer>();
 		baraja = new Baraja();
-		manoJugadores = new ArrayList<List<Carta>>();
-		jugadoresCPU = new ArrayList<JugadorCPU>();
 		descarte = new int[5];
+		manoJugadores = new ArrayList<List<Carta>>();
 		iniciarJuego();
-		
 		
 		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero);
 	}
@@ -90,8 +93,8 @@ public class ControlPoker {
 			dinero.add(jugador1.getDineroInicial());
 			dinero.add(jugador2.getDineroInicial());
 			dinero.add(500);
-			dinero.add(jugador4.getDineroInicial());
 			dinero.add(jugador5.getDineroInicial());
+			dinero.add(jugador4.getDineroInicial());
 	
 		
 	}
@@ -116,91 +119,84 @@ public class ControlPoker {
 	}
 	
 	public void iniciarJugadoresCPU() {
-		int aux = random.nextInt(5)+1;
-		jugador1 = new JugadorCPU( 500, "Samuel",1);
-		jugador2 = new JugadorCPU( 600, "David",2);
-		jugador4 = new JugadorCPU(400, "Valentina",3);
-		jugador5 = new JugadorCPU(400, "Luisa",4);
 		
+		int aux = random.nextInt(5)+1;
+		/*JugadorCPU */jugador1 = new JugadorCPU(500, "Samuel", 1);
+		/*JugadorCPU */jugador2 = new JugadorCPU(600, "David", 2);
+		/*JugadorCPU */jugador4 = new JugadorCPU(400, "Valentina", 3);
+		/*JugadorCPU */jugador5 = new JugadorCPU(400, "Santiago", 4);
 		switch(aux) {
-		case 1:
-			jugador1.setTurno(1);
-			jugador2.setTurno(2);
-			jugador4.setTurno(4);
-			jugador5.setTurno(5);
-			
-		break;
-		case 2:
-			jugador1.setTurno(5);
-			jugador2.setTurno(1);
-			jugador4.setTurno(3);
-			jugador5.setTurno(4);
-			break;
-		case 3:
-			jugador1.setTurno(4);
-			jugador2.setTurno(5);
-			jugador4.setTurno(2);
-			jugador5.setTurno(3);
-			break;
-		case 4:
-			jugador1.setTurno(3);
-			jugador2.setTurno(4);
-			jugador4.setTurno(1);
-			jugador5.setTurno(2);
-		 break;
-		case 5:
-			jugador1.setTurno(2);
-			jugador2.setTurno(3);
-			jugador4.setTurno(5);
-			jugador5.setTurno(1);
-			break;
+			case 1:
+				jugador1.setTurno(1);
+				jugador2.setTurno(2);
+				jugador4.setTurno(4);
+				jugador5.setTurno(5);
+				break;
+			case 2:
+				jugador2.setTurno(1);
+				jugador4.setTurno(3);
+				jugador5.setTurno(4);
+				jugador1.setTurno(5);
+				break;
+			case 3:
+				jugador4.setTurno(2);
+				jugador5.setTurno(3);
+				jugador1.setTurno(4);
+				jugador2.setTurno(5);
+				break;
+			case 4:
+				jugador4.setTurno(1);
+				jugador5.setTurno(2);
+				jugador1.setTurno(3);
+				jugador2.setTurno(4);
+				break;
+			case 5:
+				jugador5.setTurno(1);
+				jugador1.setTurno(2);
+				jugador2.setTurno(3);
+				jugador4.setTurno(5);
 		}
-
-		 jugadoresCPU.add(jugador1);
-		 jugadoresCPU.add(jugador2);
-		 jugadoresCPU.add(jugador4);
-		 jugadoresCPU.add(jugador5);
-		 
-		  ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
+			jugadoresCPU.add(jugador1);
+			jugadoresCPU.add(jugador2);
+			jugadoresCPU.add(jugador4);
+			jugadoresCPU.add(jugador5);
+			
+	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
 		  ejecutorSubprocesos.execute(jugador2);
 		  
 		  ejecutorSubprocesos.shutdown();
-		  
-	
-		 
+		
 	}
-
+	
 	public void turnos(int turnoJugador, int cartasPedidas) {
 		
 		bloqueo.lock();
 		
 		try
 		{
-			while(turnoJugador!= turnoActual) {
+			while(turnoJugador != turnoActual) {
 				esperarTurno.await();
 			}
 			
-			if(tipoRonda) {//roda para apostar
-				for(int i=0;i<5;i++) {
-					if(jugadoresCPU.get(i).getTurno() ==turnoActual) {
+			if(tipoRonda) { //Ronda de apuesta
+				for(int i = 0; i < 5; i++) {
+					if(jugadoresCPU.get(i).getTurno() == turnoActual) {
 						if(jugadoresCPU.get(i).apostar(100)) {
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
 						}
 					}
 				}
-			}else { //descarte
-				int posicionDescarte = turnoActual-1;
-				
-				if(posicionDescarte !=2) {
-					for(int i=0;i<5;i++) {
-						if(jugadoresCPU.get(i).getTurno() ==turnoActual) {
+			} else { //Ronda de descarte
+				int posicionDescarte = turnoActual - 1;
+				if(posicionDescarte != 2) {
+					for(int i = 0; i < 5; i++) {
+						if(jugadoresCPU.get(i).getTurno() == turnoActual)
+						{
 							jugadoresCPU.get(i).descartarCartas();
-							darCartas(jugadoresCPU.get(i),jugadoresCPU.get(i).getCantidadADescartar());
-						}	
-					descarte[turnoActual-1] = cartasPedidas;
-				}
-				
+						}
+					}
+					descarte[posicionDescarte] = cartasPedidas;
 				}
 			}
 			turnoActual++;
@@ -209,23 +205,23 @@ public class ControlPoker {
 			
 		}finally {
 			bloqueo.unlock();
-			if(turnoActual==6) {
-				if(tipoRonda==false) 
-				{
-				//	while()
-					tipoRonda=true;
-					
+			if(turnoActual == 6) {
+				if(tipoRonda == false) { //Ronda de descarte
+					tipoRonda = true;
 				}
-				
-				if(tipoRonda ) {
-					tipoRonda=false;
+				if(tipoRonda) { //Ronda de apuesta
+					tipoRonda = false;
 				}
-				
 			}
 		}
 		
 	}
-
+	
+	public void darCartas(JugadorCPU jugador, int cartasADar) {
+		for(int i = 0; i < cartasADar; i++ ) {
+			jugador.recibirCartas(baraja.getCarta());
+		}
+	}
 	
 	//Dar cartas iniciales (Se llama en la ronda 1) No se usa para descartar cartas
 	public void darCartasIniciales(JugadorCPU jugador) {
@@ -235,27 +231,6 @@ public class ControlPoker {
 		}
 		jugador.recibirCartasIniciales(cartasADar);
 	}
-	
-	private void darCartas(JugadorCPU jugador,int cartasADescartar) {	
-       
-		for(int i=0;i<cartasADescartar;i++) { 
-			jugador.recibirCartas(baraja.getCarta());
-		}
-		
-	}
-	
-	//calcula cuantas cartas dar a cada jugador, luego del descarte
-	private void asignarCartas(List<Carta> manoJugador) {
-		if(manoJugador.size()==0) {//asignar 2 cartas
-			manoJugador.add(baraja.getCarta());
-			manoJugador.add(baraja.getCarta());
-		}else {
-			if(manoJugador.size()==1) {//dar 1 carta
-				manoJugador.add(baraja.getCarta());
-			}
-		}			
-	}
-	
 	//Descarta y se le da cartas al instante
 	public void descartarCartas(JugadorCPU jugador) {
 		jugador.descartarCartas();
@@ -263,6 +238,10 @@ public class ControlPoker {
 		for(int i = 0; i < jugador.getCantidadADescartar(); i++) {
 			jugador.recibirCartas(baraja.getCarta());
 		}
+	}
+	
+	public void obtenerApuestaUsuario(PanelJugador jugadorUsuario) {
+		apuestaUsuario = vista.darApuestaUsuario();
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

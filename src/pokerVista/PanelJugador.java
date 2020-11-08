@@ -237,6 +237,13 @@ public class PanelJugador extends JPanel {
 		}
 	}
 	
+	public int getApuestaUsuario() {
+		if(isHuman) {
+			int aux = Integer.parseInt(numeroDineroApostado.getText());
+			return aux;
+		}
+		return 0;
+	}
 	
 	private class Escuchas extends MouseAdapter {
 		

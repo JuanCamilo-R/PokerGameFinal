@@ -191,4 +191,8 @@ public class MesaJuego extends JPanel {
 		public void actualizarMesaApuesta(int apuestaJugador,String nombreJugador) {
 			
 		}
+		
+		public int getApuestaUsuario() {
+			return panelJugador3.getApuestaUsuario();
+		}
 }
