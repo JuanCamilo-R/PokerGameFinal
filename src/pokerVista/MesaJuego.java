@@ -113,13 +113,13 @@ public class MesaJuego extends JPanel {
 			constraints.gridy =0;
 			constraints.gridwidth =1;
 			constraints.gridheight =1;
-			add(panelJugador4,constraints);
+			add(panelJugador5,constraints);
 			
 			constraints.gridx =4;
 			constraints.gridy =2;
 			constraints.gridwidth =1;
 			constraints.gridheight =1;
-			add(panelJugador5,constraints);
+			add(panelJugador4,constraints);
 			
 			/*
 			panelEstado= new JPanel();
@@ -185,6 +185,10 @@ public class MesaJuego extends JPanel {
 			constraints.gridwidth = 3;
 			constraints.anchor = constraints.CENTER;
 			add(scroll2,constraints);
-
+			
+			
+		}
+		public void actualizarMesaApuesta(int apuestaJugador,String nombreJugador) {
+			
 		}
 }

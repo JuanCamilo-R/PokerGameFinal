@@ -6,17 +6,18 @@ import java.util.Random;
 
 public class JugadorCPU implements Runnable {
 	private String nombreJugador;
-	private int turno, dineroApuesta, dineroInicial;
+	private int turno, dineroApuesta, dineroInicial, apuestaActual;
 	private Random random;
 	private boolean ronda = false; //True = Ronda de descarte // False = Ronda de apuesta
 	private int cantidadADescartar;
 	private List<Carta> cartas = new ArrayList<Carta>();
 	
 	
-	public JugadorCPU(int turno, int dineroInicial, String nombreJugador) {
-		this.turno = turno;
+	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar) {
+
 		this.dineroInicial = dineroInicial;
 		this.nombreJugador = nombreJugador;
+		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
 	}
 	
@@ -48,12 +49,28 @@ public class JugadorCPU implements Runnable {
 	public List<Carta>  getCartas (){
 		return cartas;
 	}
+	
+	public void setTurno(int turno) {
+		this.turno = turno;
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	
+	public boolean apostar(int cantidad) {
+		if(dineroInicial>cantidad) {
+			apuestaActual = cantidad;
+			dineroApuesta=cantidad+100;
+			dineroInicial -=cantidad;
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(ronda) {
-			cantidadADescartar = random.nextInt(6);
-		}
 		
 		
 	}

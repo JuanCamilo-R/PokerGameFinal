@@ -20,9 +20,13 @@ public class VistaPoker extends JFrame {
 		
 	}
 	
-	public void initGUI(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
+	private void initGUI(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
 		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial);
 		add(mesaJuego);
+	}
+	
+	public void actualizarVistaApuesta(int apuestaJugador, String nombre) {
+		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre);
 	}
 	
 }
