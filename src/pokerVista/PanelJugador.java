@@ -1,5 +1,6 @@
 package pokerVista;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -28,7 +29,7 @@ public class PanelJugador extends JPanel {
 	
 	private List<Carta> mano = new ArrayList<Carta>();
 	private JLabel nombre, mensaje, dineroInicial, dineroApostado,apuesta;
-	private JPanel panelMano,panelFichas,panelBotones, panelTexto;
+	private JPanel panelMano,panelFichas,panelBotones, panelTexto,panelTexto2;
 	private boolean isHuman;
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien;
@@ -42,6 +43,7 @@ public class PanelJugador extends JPanel {
 		nombre.setText( nombreJugador);
 		
 		this.isHuman = isHuman;
+		
 		this.dineroInicial = new JLabel("Dinero inicial: "+String.valueOf(dineroInicial));
 		dineroApostado = new JLabel("Dinero apostado");
 		
@@ -52,6 +54,7 @@ public class PanelJugador extends JPanel {
 		}
 		
 		panelMano = new JPanel();
+		panelMano.setBackground(Color.GREEN);
 		this.setLayout(new GridBagLayout());
 		constraints = new GridBagConstraints();
 		
@@ -72,16 +75,20 @@ public class PanelJugador extends JPanel {
 		loweredbevel = BorderFactory.createBevelBorder(EtchedBorder.LOWERED);
 		this.setBorder(loweredbevel);
 		
+		
 		if(isHuman) {
 			
 			panelFichas= new JPanel();
 			panelFichas.setLayout(new FlowLayout());
+			panelFichas.setBackground(Color.green);
 			
 			panelBotones = new JPanel();
 			panelBotones.setLayout(new GridLayout(2,1));
+			panelBotones.setBackground(Color.GREEN);
 			
 			panelTexto = new JPanel();
 			panelTexto.setLayout(new GridLayout(2,1));
+			panelTexto.setBackground(Color.GREEN);
 			
 			confirmarApuesta = new JButton("Confirmar apuesta");
 			confirmarApuesta.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -154,6 +161,32 @@ public class PanelJugador extends JPanel {
 			add(panelTexto, constraints);
 			
 			
+		}
+		if(!isHuman) {
+			panelTexto2 = new JPanel();
+			panelTexto2.setBackground(Color.GREEN);
+			this.dineroInicial = new JLabel("Dinero inicial: "+String.valueOf(dineroInicial));
+			dineroApostado = new JLabel("|   Dinero apostado");
+			
+			this.dineroInicial.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			dineroApostado.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			
+			
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			constraints.gridheight = 1;
+			constraints.gridwidth = 1;
+			constraints.anchor = GridBagConstraints.CENTER;
+			panelTexto2.add(this.dineroInicial);
+			
+			
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			constraints.gridheight = 1;
+			constraints.gridwidth = 1;
+			constraints.anchor = GridBagConstraints.CENTER;
+			panelTexto2.add(dineroApostado);
+			add(panelTexto2, constraints);
 		}
 		
 		

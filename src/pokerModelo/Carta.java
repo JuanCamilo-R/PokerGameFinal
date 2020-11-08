@@ -62,7 +62,7 @@ public class Carta extends JLabel {
 	 }
 	 public void setImagen(BufferedImage imagen) {
 		 this.imagen= (BufferedImage) scaledImage(imagen,100,50);
-		 setIcon(new ImageIcon(scaledImage(imagen,100,140)));
+		 setIcon(new ImageIcon(scaledImage(imagen,80,110)));
 	 }
 	 
 	 public BufferedImage getImagen() {
