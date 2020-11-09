@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
@@ -39,6 +40,7 @@ public class PanelJugador extends JPanel {
 	public int lol;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
+	private JPanel nosotros;
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial) {
 		//nombre = new JLabel(nombreJugador);
 		nombre = new JLabel();
@@ -48,13 +50,15 @@ public class PanelJugador extends JPanel {
 		this.isHuman = isHuman;
 		
 		
-		
+		nosotros = this;
 		//Se agrega cada carta a la mano del jugador.
 		
 		for(Carta carta: cartas) {
 			mano.add(carta);
 		}
 		
+		initGUI();
+
 		for(int i = 0; i < mano.size(); i++) {
 			mano.get(i).addMouseListener(escucha);
 		}
@@ -241,6 +245,10 @@ public class PanelJugador extends JPanel {
 		
 	}
 	
+	private void initGUI() {
+		
+	}
+	
 	private void refrescarMano () {
 		panelMano.removeAll();
 		if(mano!=null) {
@@ -248,6 +256,28 @@ public class PanelJugador extends JPanel {
 				panelMano.add(carta);
 			}
 		}
+	}
+	
+	public void refrescarLabels(int apuesta, String nombreJugador) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("Nombre label: "+nombre.getText());
+				System.out.println("Nombre Jugador: "+nombreJugador);
+				if( nombre.getText() == nombreJugador) {
+					System.out.println("Entro a refrescarLabels");
+					numeroDineroApostado.setText(String.valueOf(apuesta));
+					numeroDineroInicial.setText(String.valueOf(Integer.parseInt(numeroDineroInicial.getText())-apuesta));
+					nosotros.revalidate();	
+				    nosotros.repaint();
+				    
+				}
+			}
+			
+		});
+		
 	}
 	
 	public int getApuestaUsuario() {
@@ -275,7 +305,6 @@ public class PanelJugador extends JPanel {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado ) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
-					lol = 5;
 				}
 			}
 		}

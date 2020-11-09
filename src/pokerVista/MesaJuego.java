@@ -189,7 +189,12 @@ public class MesaJuego extends JPanel {
 			
 		}
 		public void actualizarMesaApuesta(int apuestaJugador,String nombreJugador) {
-			
+			System.out.println("Entro a mesa");
+			panelJugador1.refrescarLabels(apuestaJugador, nombreJugador);
+			panelJugador2.refrescarLabels(apuestaJugador, nombreJugador);
+			panelJugador3.refrescarLabels(apuestaJugador, nombreJugador);
+			panelJugador4.refrescarLabels(apuestaJugador, nombreJugador);
+			panelJugador5.refrescarLabels(apuestaJugador, nombreJugador);
 		}
 		
 		public int getApuestaUsuario() {

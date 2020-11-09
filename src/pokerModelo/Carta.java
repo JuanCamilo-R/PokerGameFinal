@@ -23,7 +23,7 @@ public class Carta extends JLabel {
 		   case "J": valorNumerico=11;break;
 		   case "Q": valorNumerico=12;break;
 		   case "K": valorNumerico=13;break;
-		   case "As": valorNumerico=1;break;
+		   case "As": valorNumerico=14;break;
 		   default: valorNumerico = Integer.parseInt(valor);break;
 		   } 
 	 }

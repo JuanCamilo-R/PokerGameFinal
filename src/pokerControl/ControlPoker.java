@@ -183,10 +183,9 @@ public class ControlPoker {
 		
 		try
 		{
-			if(turnoActual == 3) {
-				turnoActual++;
-			}
+			
 			while(turnoJugador != turnoActual) {
+				System.out.println("Intento entrar pero se duerme");
 				esperarTurno.await();
 			}
 			
@@ -194,7 +193,11 @@ public class ControlPoker {
 				for(int i = 0; i < 5; i++) {
 					if(jugadoresCPU.get(i).getTurno() == turnoActual) {
 						if(jugadoresCPU.get(i).apostar(100)) {
+							System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre());
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
+							vista.funcionPrueba();
+							turnoActual++;
+							esperarTurno.signalAll();
 						}
 					}
 				}
@@ -205,13 +208,13 @@ public class ControlPoker {
 						if(jugadoresCPU.get(i).getTurno() == turnoActual)
 						{
 							jugadoresCPU.get(i).descartarCartas();
+							turnoActual++;
+							esperarTurno.signalAll();
 						}
 					}
 					descarte[posicionDescarte] = cartasPedidas;
 				}
 			}
-			turnoActual++;
-			esperarTurno.signalAll();
 		}catch(Exception e) {
 			
 		}finally {
@@ -263,5 +266,106 @@ public class ControlPoker {
 	        		
 	        	}
 	        });
+	}
+	
+	public boolean verificarColor(List<Carta> manoJugador) { //True si todas tienen el mismo color, false si no
+		for(int i = 0; i < manoJugador.size()-1; i++) {
+			if(manoJugador.get(i).getPalo() != manoJugador.get(i+1).getPalo()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean escaleraRealColor(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenado;
+		int aux = 10;
+		if(verificarColor(manoJugador)) {
+			manoJugadorOrdenado = ordenarPorNumero(manoJugador);
+			for(int i = 0; i < manoJugadorOrdenado.size(); i++) {
+				if(manoJugadorOrdenado.get(i).getValorNumerico() != aux) {
+					return false;
+				}else {
+					aux++;
+				}
+			}
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean escaleraColor(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenado;
+		if(verificarColor(manoJugador)) {
+			manoJugadorOrdenado = ordenarPorNumero(manoJugador);
+			int aux = manoJugadorOrdenado.get(0).getValorNumerico();
+			for(int i = 0; i < manoJugadorOrdenado.size(); i++) {
+				if(aux != manoJugadorOrdenado.get(i).getValorNumerico()) {
+					return false;
+				}else {
+					aux++;
+				}
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean poker(List<Carta> manoJugador) {
+		int contador = 0;
+		List<Carta> manoJugadorOrdenado;
+		manoJugadorOrdenado = ordenarPorNumero(manoJugador);
+		for(int i = 0; i < manoJugadorOrdenado.size(); i++) {
+			if(manoJugadorOrdenado.get(i).getValorNumerico() == manoJugadorOrdenado.get(i+1).getValorNumerico()) {
+				if(i < 3) {
+					contador++;
+				}
+			}else {
+				for(int j = 1; j < manoJugadorOrdenado.size()-1;j++) {
+					if(manoJugadorOrdenado.get(j).getValorNumerico() == manoJugadorOrdenado.get(j+1).getValorNumerico()) {
+						contador++;
+					}
+				}
+				break;
+			}
+		}
+		if(contador == 3) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	
+	public boolean full(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenado;
+		manoJugadorOrdenado = ordenarPorNumero(manoJugador);
+		if(manoJugadorOrdenado.get(0).getValorNumerico() == manoJugadorOrdenado.get(1).getValorNumerico()) {
+			if(manoJugadorOrdenado.get(2).getValorNumerico() == manoJugadorOrdenado.get(3).getValorNumerico() && manoJugadorOrdenado.get(3).getValorNumerico() == manoJugadorOrdenado.get(4).getValorNumerico()) {
+				return true;
+			}
+		}else if (manoJugadorOrdenado.get(0).getValorNumerico() == manoJugadorOrdenado.get(1).getValorNumerico() && manoJugadorOrdenado.get(1).getValorNumerico() == manoJugadorOrdenado.get(2).getValorNumerico()) {
+			if(manoJugadorOrdenado.get(3).getValorNumerico() == manoJugadorOrdenado.get(4).getValorNumerico()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public List<Carta> ordenarPorNumero(List<Carta> manoJugador) {
+	        Carta temp;
+	        for(int i=1;i < manoJugador.size();i++){
+	            for (int j=0 ; j < manoJugador.size() - 1; j++){
+	                if (manoJugador.get(j).getValorNumerico() > manoJugador.get(j+1).getValorNumerico()){
+	                    temp = manoJugador.get(j);
+	                    manoJugador.set(j, manoJugador.get(j+1));
+	                    manoJugador.set(j+1,temp);
+	                }
+	            }
+	        }
+	        return manoJugador;
 	}
 }
