@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class PanelJugador extends JPanel {
 		nombre = new JLabel();
 		nombre.setFont(new Font("Comic Sans  MS",Font.BOLD,15));
 		nombre.setText( nombreJugador);
-		
+		escucha = new Escuchas();
 		this.isHuman = isHuman;
 		
 		
@@ -50,6 +51,10 @@ public class PanelJugador extends JPanel {
 		
 		for(Carta carta: cartas) {
 			mano.add(carta);
+		}
+		
+		for(int i = 0; i < mano.size(); i++) {
+			mano.get(i).addMouseListener(escucha);
 		}
 		
 		panelMano = new JPanel();
@@ -80,7 +85,7 @@ public class PanelJugador extends JPanel {
 			dineroApostado = new JLabel("Dinero apostado: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial));
-			numeroDineroApostado = new JLabel();
+			numeroDineroApostado = new JLabel("100");
 			
 			panelFichas= new JPanel();
 			panelFichas.setLayout(new FlowLayout());
@@ -97,36 +102,42 @@ public class PanelJugador extends JPanel {
 			confirmarApuesta = new JButton("Confirmar apuesta");
 			confirmarApuesta.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			confirmarApuesta.setPreferredSize(new Dimension(190,30));
+			confirmarApuesta.addMouseListener(escucha);
 			
 			confirmarDescarte = new JButton("Confirmar descarte");
 			confirmarDescarte.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			confirmarDescarte.setPreferredSize(new Dimension(190,30));
 			confirmarDescarte.setEnabled(false);
+			confirmarDescarte.addMouseListener(escucha);
 			
 			cederTurno = new JButton("Retirarse");
 			cederTurno.setPreferredSize(new Dimension(190,30));
 			cederTurno.setFont(new Font("Times New Roman", Font.BOLD, 15));
+			cederTurno.addMouseListener(escucha);
 			
-			fichaDiez = new JButton();
-			fichaCien = new JButton();
+			
+			
 			imagen = new ImageIcon(getClass().getResource("/resources/ficha1.png"));
 			fichaCinco = new JButton();
 			fichaCinco.setBorder(null);
 			fichaCinco.setContentAreaFilled(false);
 			fichaCinco.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(130, 130, Image.SCALE_DEFAULT)));
+			fichaCinco.addMouseListener(escucha);
 			
-
+			fichaDiez = new JButton();
 			imagen = new ImageIcon(getClass().getResource("/resources/ficha3.png"));
 			fichaDiez.setBorder(null);
 			fichaDiez.setContentAreaFilled(false);
 			fichaDiez.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(130, 130, Image.SCALE_DEFAULT)));
+			fichaDiez.addMouseListener(escucha);
 			
-	
+			
+			fichaCien = new JButton();
 			imagen = new ImageIcon(getClass().getResource("/resources/ficha2.png"));
 			fichaCien.setBorder(null);
 			fichaCien.setContentAreaFilled(false);
-			
 			fichaCien.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(130, 130, Image.SCALE_DEFAULT)));
+			fichaCien.addMouseListener(escucha);
 			
 			apuesta = new JLabel("Apuesta");
 			
@@ -246,7 +257,23 @@ public class PanelJugador extends JPanel {
 	}
 	
 	private class Escuchas extends MouseAdapter {
-		
+		public void mouseClicked(MouseEvent event) {
+			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
+			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
+			if(event.getSource() == fichaCinco ) {
+				if(dineroInicial >= dineroApostado) {
+					numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
+				}else {
+					
+				}
+			}
+			if(event.getSource() == fichaDiez ) {
+				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+10));
+			}
+			if(event.getSource() == fichaCien ) {
+				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
+			}
+		}
 	}
 	
 }
