@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import pokerModelo.Baraja;
 import pokerModelo.Carta;
 import pokerModelo.JugadorCPU;
+import pokerVista.MesaJuego;
 import pokerVista.PanelJugador;
 import pokerVista.VistaPoker;
 
@@ -27,6 +28,8 @@ public class ControlPoker {
 	private List<List<Carta>> manoJugadores;
 	private ArrayList<String> nombres;
 	VistaPoker vista;
+	private MesaJuego mesaJuego;
+	private PanelJugador panelUsuario;
 	private JugadorCPU jugador1,jugador2,jugador4,jugador5;
 	private List<Boolean> tipoJugador;
 	private List<Integer> dinero;
@@ -46,8 +49,10 @@ public class ControlPoker {
 		descarte = new int[5];
 		manoJugadores = new ArrayList<List<Carta>>();
 		iniciarJuego();
-		
 		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero);
+		this.mesaJuego = vista.getMesaJuego();
+		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
+
 	}
 	
 	private void iniciarJuego() {
@@ -121,10 +126,10 @@ public class ControlPoker {
 	public void iniciarJugadoresCPU() {
 		
 		int aux = random.nextInt(5)+1;
-		/*JugadorCPU */jugador1 = new JugadorCPU(500, "Samuel", 1);
-		/*JugadorCPU */jugador2 = new JugadorCPU(600, "David", 2);
-		/*JugadorCPU */jugador4 = new JugadorCPU(400, "Valentina", 3);
-		/*JugadorCPU */jugador5 = new JugadorCPU(400, "Santiago", 4);
+		/*JugadorCPU */jugador1 = new JugadorCPU(500, "Samuel", 1, this);
+		/*JugadorCPU */jugador2 = new JugadorCPU(600, "David", 2, this);
+		/*JugadorCPU */jugador4 = new JugadorCPU(400, "Valentina", 3, this);
+		/*JugadorCPU */jugador5 = new JugadorCPU(400, "Santiago", 4, this);
 		switch(aux) {
 			case 1:
 				jugador1.setTurno(1);
@@ -139,6 +144,7 @@ public class ControlPoker {
 				jugador1.setTurno(5);
 				break;
 			case 3:
+				System.out.print("Inicias");
 				jugador4.setTurno(2);
 				jugador5.setTurno(3);
 				jugador1.setTurno(4);
@@ -164,6 +170,8 @@ public class ControlPoker {
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
 		  ejecutorSubprocesos.execute(jugador2);
+		  ejecutorSubprocesos.execute(jugador4);
+		  ejecutorSubprocesos.execute(jugador5);
 		  
 		  ejecutorSubprocesos.shutdown();
 		
@@ -175,6 +183,9 @@ public class ControlPoker {
 		
 		try
 		{
+			if(turnoActual == 3) {
+				turnoActual++;
+			}
 			while(turnoJugador != turnoActual) {
 				esperarTurno.await();
 			}
@@ -208,6 +219,7 @@ public class ControlPoker {
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
 					tipoRonda = true;
+					turnoActual = 1;
 				}
 				if(tipoRonda) { //Ronda de apuesta
 					tipoRonda = false;

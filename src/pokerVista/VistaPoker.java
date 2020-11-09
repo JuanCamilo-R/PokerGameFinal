@@ -29,6 +29,10 @@ public class VistaPoker extends JFrame {
 		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre);
 	}
 	
+	public MesaJuego getMesaJuego() {
+		return mesaJuego;
+	}
+	
 	public int darApuestaUsuario() {
 		return mesaJuego.getApuestaUsuario();
 	}

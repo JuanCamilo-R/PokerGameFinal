@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -35,6 +36,7 @@ public class PanelJugador extends JPanel {
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
+	public int lol;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial) {
@@ -261,17 +263,20 @@ public class PanelJugador extends JPanel {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
 			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 			if(event.getSource() == fichaCinco ) {
-				if(dineroInicial >= dineroApostado) {
-					numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
-				}else {
-					
-				}
+				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
 			}
 			if(event.getSource() == fichaDiez ) {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+10));
 			}
 			if(event.getSource() == fichaCien ) {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
+			}
+			if(event.getSource() == confirmarApuesta) {
+				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
+				if(dineroInicial <= dineroApostado ) {
+					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
+					lol = 5;
+				}
 			}
 		}
 	}

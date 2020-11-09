@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import pokerControl.ControlPoker;
+
 public class JugadorCPU implements Runnable {
 	private String nombreJugador;
 	private int turno, dineroApuesta, dineroInicial, apuestaActual;
 	private Random random;
+	private ControlPoker control;
 	private boolean ronda = false; //True = Ronda de descarte // False = Ronda de apuesta
 	private int cantidadADescartar;
 	private List<Carta> cartas = new ArrayList<Carta>();
 	
 	
-	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar) {
-
+	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
+		
 		this.dineroInicial = dineroInicial;
 		this.nombreJugador = nombreJugador;
 		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
+		this.control = control;
 	}
 	
 	public void recibirCartasIniciales(List<Carta> cartasRecibidas) {
@@ -72,7 +76,7 @@ public class JugadorCPU implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		
+		control.turnos(turno, cantidadADescartar);
 	}
 
 }
