@@ -16,6 +16,8 @@ public class JugadorCPU implements Runnable {
 	private List<Carta> cartas = new ArrayList<Carta>();
 	private int jugada;
 	
+	
+	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
 		
 		this.dineroInicial = dineroInicial;
@@ -64,6 +66,7 @@ public class JugadorCPU implements Runnable {
 	
 	public boolean apostar(int cantidad) {
 		if(dineroInicial>cantidad) {
+			System.out.println("Puedo apostar");
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad+100;
 			dineroInicial -=cantidad;

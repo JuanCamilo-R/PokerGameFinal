@@ -10,6 +10,7 @@ public class VistaPoker extends JFrame {
 	
 	private MesaJuego mesaJuego;
 	public VistaPoker(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
+		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial);
 		initGUI(isHuman, nombre, manoJugador, dineroInicial);
 		setVisible(true);
 		setResizable(false);
@@ -21,7 +22,6 @@ public class VistaPoker extends JFrame {
 	}
 	
 	private void initGUI(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
-		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial);
 		add(mesaJuego);
 	}
 	
