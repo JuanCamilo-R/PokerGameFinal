@@ -355,6 +355,8 @@ public class ControlPoker {
 		return false;
 	}
 	
+	
+	
 	public List<Carta> ordenarPorNumero(List<Carta> manoJugador) {
 	        Carta temp;
 	        for(int i=1;i < manoJugador.size();i++){
@@ -367,5 +369,25 @@ public class ControlPoker {
 	            }
 	        }
 	        return manoJugador;
+	}
+	
+	public boolean escalera(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenada;
+		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
+		if(manoJugadorOrdenada.get(0).getValorNumerico() + 1 == manoJugadorOrdenada.get(1).getValorNumerico() ) {
+			if(manoJugadorOrdenada.get(1).getValorNumerico() + 1 == manoJugadorOrdenada.get(2).getValorNumerico()) {
+				if(manoJugadorOrdenada.get(2).getValorNumerico() + 1 == manoJugadorOrdenada.get(3).getValorNumerico()) {
+					if(manoJugadorOrdenada.get(3).getValorNumerico() + 1 == manoJugadorOrdenada.get(4).getValorNumerico()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean trio(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenada;
+		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
 	}
 }
