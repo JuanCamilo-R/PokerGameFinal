@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JPanel;
 
+import javafx.util.Pair;
 import pokerModelo.Baraja;
 import pokerModelo.Carta;
 import pokerModelo.JugadorCPU;
@@ -109,7 +110,6 @@ public class ControlPoker {
 	private ArrayList<Carta> seleccionarCartas() {
 		// TODO Auto-generated method stub
 		ArrayList<Carta> manoJugador = new ArrayList<Carta>();
-		//se dan 2 cartas al jugador
 		manoJugador.add(baraja.getCarta());
 		manoJugador.add(baraja.getCarta());
 		manoJugador.add(baraja.getCarta());
@@ -267,7 +267,7 @@ public class ControlPoker {
 	        	}
 	        });
 	}
-	
+	//Verificar que todas las cartas tengan el mismo color
 	public boolean verificarColor(List<Carta> manoJugador) { //True si todas tienen el mismo color, false si no
 		for(int i = 0; i < manoJugador.size()-1; i++) {
 			if(manoJugador.get(i).getPalo() != manoJugador.get(i+1).getPalo()) {
@@ -389,5 +389,93 @@ public class ControlPoker {
 	public boolean trio(List<Carta> manoJugador) {
 		List<Carta> manoJugadorOrdenada;
 		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
+		for(int i=0;i<3;i++) {
+			if(manoJugadorOrdenada.get(i).getValorNumerico()==manoJugadorOrdenada.get(i+1).getValorNumerico() &&
+					manoJugadorOrdenada.get(i+1).getValorNumerico() ==manoJugadorOrdenada.get(i+2).getValorNumerico()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean doblePareja(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenada;
+		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
+		if(manoJugadorOrdenada.get(0).getValorNumerico() == manoJugadorOrdenada.get(1).getValorNumerico()
+		   && manoJugadorOrdenada.get(3).getValorNumerico() == manoJugadorOrdenada.get(4).getValorNumerico() ) {
+			return true;
+		}else if(manoJugadorOrdenada.get(1).getValorNumerico() == manoJugadorOrdenada.get(2).getValorNumerico()
+				&& manoJugadorOrdenada.get(3).getValorNumerico() == manoJugadorOrdenada.get(4).getValorNumerico()) {
+			return true;
+		}else if(manoJugadorOrdenada.get(0).getValorNumerico() == manoJugadorOrdenada.get(1).getValorNumerico() 
+				&& manoJugadorOrdenada.get(2).getValorNumerico() == manoJugadorOrdenada.get(3).getValorNumerico()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean pareja(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenada;
+		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
+		for(int i = 0; i < 4 ; i++) {
+			if(manoJugadorOrdenada.get(i).getValorNumerico() == manoJugadorOrdenada.get(i+1).getValorNumerico()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public Carta cartaAlta(List<Carta> manoJugador) {
+		List<Carta> manoJugadorOrdenada;
+		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
+		return manoJugadorOrdenada.get(4);
+	}
+	/*
+	 * Atributo jugada de jugadorCPU
+	 * 10 = Escalera real de color.
+	 * 9 = Escalera de color
+	 * 8 = Poker
+	 * 7 = Full
+	 * 6 = Color
+	 * 5 = Escalera
+	 * 4 = Trio
+	 * 3 = Doble pareja
+	 * 2 = Pareja
+	 * 1 = Carta mas alta
+	 */
+	
+	//Recibe una mano de jugador
+	public int determinarJugada(List<Carta> manoJugador) {
+		if(escaleraRealColor(manoJugador)) {
+			return 10;
+		} else if(escaleraColor(manoJugador)) {
+			return 9;
+		} else if(poker(manoJugador)) {
+			return 8;
+		}else if(full(manoJugador)) {
+			return 7;
+		} else if(verificarColor(manoJugador)) {
+			return 6;
+		}else if(escalera(manoJugador)) {
+			return 5;
+		} else if(trio(manoJugador)) {
+			return 4;
+		} else if(doblePareja(manoJugador)) {
+			return 3;
+		} else if(pareja(manoJugador)) {
+			return 2;
+		}else {
+			return 1;
+		}
+	}
+	
+	public void determinarGanador() {
+		//La mano de cada jugador se empareja con una jugada respectiva
+		List<Pair<Integer, List<Carta>>> parejaJugadasManos = new ArrayList<Pair<Integer, List<Carta>>>();
+		List<Carta> manoJugadaOrdenada;
+		
+		manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(0));
+		
 	}
 }

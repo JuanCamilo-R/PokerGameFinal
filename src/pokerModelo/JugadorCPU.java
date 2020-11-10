@@ -14,7 +14,7 @@ public class JugadorCPU implements Runnable {
 	private boolean ronda = false; //True = Ronda de descarte // False = Ronda de apuesta
 	private int cantidadADescartar;
 	private List<Carta> cartas = new ArrayList<Carta>();
-	
+	private int jugada;
 	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
 		
