@@ -473,9 +473,41 @@ public class ControlPoker {
 	public void determinarGanador() {
 		//La mano de cada jugador se empareja con una jugada respectiva
 		List<Pair<Integer, List<Carta>>> parejaJugadasManos = new ArrayList<Pair<Integer, List<Carta>>>();
-		List<Carta> manoJugadaOrdenada;
+		List<Carta> manoJugadaOrdenada = new ArrayList<Carta>();
 		
-		manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(0));
+		for(int i = 0; i < 5; i++) {
+			manoJugadaOrdenada.clear();
+			manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(i));
+			parejaJugadasManos.add(new Pair<Integer, List<Carta>>(determinarJugada(manoJugadores.get(i)), manoJugadaOrdenada));
+		}
 		
+		parejaJugadasManos = ordenarParejas(parejaJugadasManos);
+		
+		
+	}
+	//Recibimos una parejaJugadasManos ordenados de menor a mayor
+	public boolean checkRepeatPlay(List<Pair<Integer, List<Carta>>> parejaJugadasManos) {
+		List<Integer> jugadas = new ArrayList<Integer>();
+		for(int i = 0; i < 5; i++) {
+			jugadas.add(parejaJugadasManos.get(i).getKey());
+		}
+		if(jugadas.get(4) == jugadas.get(3)) {
+			return true;
+		}
+		return false;
+	}
+	//Ordenamos parejas de menor a mayor dependiendo de su jugada final
+	public List<Pair<Integer, List<Carta>>> ordenarParejas(List<Pair<Integer, List<Carta>>> parejaJugadasManos){
+	     	Pair<Integer, List<Carta>> temp;
+	        for(int i=1;i < parejaJugadasManos.size();i++){
+	            for (int j=0 ; j < parejaJugadasManos.size() - 1; j++){
+	                if (parejaJugadasManos.get(j).getKey() > parejaJugadasManos.get(j+1).getKey()){
+	                    temp = parejaJugadasManos.get(j);
+	                    parejaJugadasManos.set(j, parejaJugadasManos.get(j+1));
+	                    parejaJugadasManos.set(j+1,temp);
+	                }
+	            }
+	        }
+	        return parejaJugadasManos;
 	}
 }
