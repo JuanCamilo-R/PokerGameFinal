@@ -50,9 +50,8 @@ public class ControlPoker {
 		descarte = new int[5];
 		manoJugadores = new ArrayList<List<Carta>>();
 		iniciarJuego();
-		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero);
-		this.mesaJuego = vista.getMesaJuego();
-		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
+		iniciarJugadoresCPU();
+		
 
 	}
 	
@@ -66,7 +65,9 @@ public class ControlPoker {
 		agregarNombres();
 		darTipo();
 		darDinero();
-		iniciarJugadoresCPU();
+		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero);
+		this.mesaJuego = vista.getMesaJuego();
+		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
 	}
 	
 	private void agregarNombres() {
@@ -201,9 +202,9 @@ public class ControlPoker {
 							System.out.println("Turno actual: "+turnoActual);
 							System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre());
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
-							//vista.funcionPrueba();
-							//turnoActual++;
-							//esperarTurno.signalAll();
+							vista.funcionPrueba();
+							turnoActual++;
+							esperarTurno.signalAll();
 						}
 					}
 				}
