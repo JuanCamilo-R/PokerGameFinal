@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import pokerControl.ControlPoker;
 import pokerModelo.Carta;
 
 public class MesaJuego extends JPanel {
@@ -26,9 +27,10 @@ public class MesaJuego extends JPanel {
 	private JButton salir,estadoJuego,ganadores;
 	private JTextArea areaEstado,areaGanadores;
 	private GridBagConstraints constraints;
-
+	private ControlPoker control;
 	
-		public MesaJuego(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
+		public MesaJuego(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial, ControlPoker control) {
+			this.control = control;
 			this.setBackground(Color.GREEN);
 			initGUI(isHuman,nombre,  manoJugador, dineroInicial);
 		}
@@ -36,11 +38,11 @@ public class MesaJuego extends JPanel {
 		public void initGUI(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
 			this.setLayout(new GridBagLayout());
 			constraints = new GridBagConstraints();
-			panelJugador1 = new PanelJugador(isHuman.get(0),nombre.get(0),manoJugador.get(0),dineroInicial.get(0));
-			panelJugador2 = new PanelJugador(isHuman.get(1),nombre.get(1),manoJugador.get(1),dineroInicial.get(1));
-			panelJugador3 = new PanelJugador(isHuman.get(2),nombre.get(2),manoJugador.get(2),dineroInicial.get(2)); //Nosotros
-			panelJugador4 = new PanelJugador(isHuman.get(3),nombre.get(3),manoJugador.get(3),dineroInicial.get(3));
-			panelJugador5 = new PanelJugador(isHuman.get(4),nombre.get(4),manoJugador.get(4),dineroInicial.get(4));
+			panelJugador1 = new PanelJugador(isHuman.get(0),nombre.get(0),manoJugador.get(0),dineroInicial.get(0), this.control);
+			panelJugador2 = new PanelJugador(isHuman.get(1),nombre.get(1),manoJugador.get(1),dineroInicial.get(1), this.control);
+			panelJugador3 = new PanelJugador(isHuman.get(2),nombre.get(2),manoJugador.get(2),dineroInicial.get(2), this.control); //Nosotros
+			panelJugador4 = new PanelJugador(isHuman.get(3),nombre.get(3),manoJugador.get(3),dineroInicial.get(3), this.control);
+			panelJugador5 = new PanelJugador(isHuman.get(4),nombre.get(4),manoJugador.get(4),dineroInicial.get(4), this.control);
 			 
 			panelJugador1.setBackground(Color.GREEN);
 			panelJugador2.setBackground(Color.GREEN);
@@ -189,7 +191,6 @@ public class MesaJuego extends JPanel {
 			
 		}
 		public void actualizarMesaApuesta(int apuestaJugador,String nombreJugador) {
-			System.out.println("Entro a mesa");
 			panelJugador1.refrescarLabels(apuestaJugador, nombreJugador);
 			panelJugador2.refrescarLabels(apuestaJugador, nombreJugador);
 			panelJugador3.refrescarLabels(apuestaJugador, nombreJugador);
@@ -203,5 +204,9 @@ public class MesaJuego extends JPanel {
 		
 		public JPanel getPanelUsuario() {
 			return panelJugador3;
+		}
+		
+		public void getControl(ControlPoker control) {
+			this.control = control;
 		}
 }

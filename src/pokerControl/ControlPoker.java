@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -65,14 +66,14 @@ public class ControlPoker {
 		agregarNombres();
 		darTipo();
 		darDinero();
-		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero);
+		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero, this);
 		this.mesaJuego = vista.getMesaJuego();
 		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
 	}
 	
 	private void agregarNombres() {
 			
-
+			
 			nombres.add(jugador1.getNombre());
 			nombres.add(jugador2.getNombre());
 			nombres.add("Santiago");
@@ -139,17 +140,20 @@ public class ControlPoker {
 			case 1:
 				jugador1.setTurno(1);
 				jugador2.setTurno(2);
+				panelUsuario.setTurno(3);
 				jugador4.setTurno(4);
 				jugador5.setTurno(5);
 				break;
 			case 2:
 				jugador2.setTurno(1);
+				panelUsuario.setTurno(2);
 				jugador4.setTurno(3);
 				jugador5.setTurno(4);
 				jugador1.setTurno(5);
 				break;
 			case 3:
 				System.out.print("Inicias");
+				panelUsuario.setTurno(1);
 				jugador4.setTurno(2);
 				jugador5.setTurno(3);
 				jugador1.setTurno(4);
@@ -160,11 +164,13 @@ public class ControlPoker {
 				jugador5.setTurno(2);
 				jugador1.setTurno(3);
 				jugador2.setTurno(4);
+				panelUsuario.setTurno(5);
 				break;
 			case 5:
 				jugador5.setTurno(1);
 				jugador1.setTurno(2);
 				jugador2.setTurno(3);
+				panelUsuario.setTurno(4);
 				jugador4.setTurno(5);
 		}
 			jugadoresCPU.add(jugador1);
@@ -187,8 +193,7 @@ public class ControlPoker {
 		bloqueo.lock();
 		
 		try
-		{
-			
+		{	
 			while(turnoJugador != turnoActual) {
 				System.out.println("Intento entrar pero se duerme");
 				esperarTurno.await();
@@ -198,13 +203,13 @@ public class ControlPoker {
 				for(int i = 0; i < jugadoresCPU.size(); i++) {
 					if(jugadoresCPU.get(i).getTurno() == turnoActual) {
 						if(jugadoresCPU.get(i).apostar(100)) {
-							System.out.println("Size: "+jugadoresCPU.size());
-							System.out.println("Turno actual: "+turnoActual);
+							//System.out.println("Size: "+jugadoresCPU.size());
+							//System.out.println("Turno actual: "+turnoActual);
 							System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre());
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
-							vista.funcionPrueba();
+							//vista.funcionPrueba();
 							turnoActual++;
-							esperarTurno.signalAll();
+							despertarHilos();
 						}
 					}
 				}
@@ -225,6 +230,7 @@ public class ControlPoker {
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}finally {
+			System.out.println("Turno en control: "+panelUsuario.getTurno());
 			bloqueo.unlock();
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
@@ -238,7 +244,9 @@ public class ControlPoker {
 		}
 		
 	}
-	
+	public synchronized void despertarHilos() {
+		esperarTurno.signalAll();
+	}
 	public void darCartas(JugadorCPU jugador, int cartasADar) {
 		for(int i = 0; i < cartasADar; i++ ) {
 			jugador.recibirCartas(baraja.getCarta());

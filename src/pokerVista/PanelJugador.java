@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+import pokerControl.ControlPoker;
 import pokerModelo.Carta;
 
 
@@ -37,19 +38,21 @@ public class PanelJugador extends JPanel {
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
-	public int lol;
+	private int turno;
+	private boolean siguienteTurno;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
 	private JPanel nosotros;
-	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial) {
+	private ControlPoker control;
+	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial, ControlPoker control) {
 		//nombre = new JLabel(nombreJugador);
+		this.control = control;
 		nombre = new JLabel();
 		nombre.setFont(new Font("Comic Sans  MS",Font.BOLD,15));
 		nombre.setText( nombreJugador);
 		escucha = new Escuchas();
 		this.isHuman = isHuman;
-		
-		
+		siguienteTurno = false;
 		nosotros = this;
 		//Se agrega cada carta a la mano del jugador.
 		
@@ -57,7 +60,6 @@ public class PanelJugador extends JPanel {
 			mano.add(carta);
 		}
 		
-		initGUI();
 
 		for(int i = 0; i < mano.size(); i++) {
 			mano.get(i).addMouseListener(escucha);
@@ -245,10 +247,9 @@ public class PanelJugador extends JPanel {
 		
 	}
 	
-	private void initGUI() {
-		
+	public void getControl(ControlPoker control) {
+		this.control = control;
 	}
-	
 	private void refrescarMano () {
 		panelMano.removeAll();
 		if(mano!=null) {
@@ -258,16 +259,20 @@ public class PanelJugador extends JPanel {
 		}
 	}
 	
+	public void setTurno(int turno) {
+		if(isHuman) {
+			this.turno = turno;
+		}
+	}
+	
 	public void refrescarLabels(int apuesta, String nombreJugador) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				System.out.println("Nombre label: "+nombre.getText());
-				System.out.println("Nombre Jugador: "+nombreJugador);
 				if( nombre.getText() == nombreJugador) {
-					System.out.println("Entro a refrescarLabels");
+					//System.out.println("Entro a refrescarLabels");
 					numeroDineroApostado.setText(String.valueOf(apuesta));
 					numeroDineroInicial.setText(String.valueOf(Integer.parseInt(numeroDineroInicial.getText())-apuesta));
 					nosotros.revalidate();	
@@ -280,6 +285,17 @@ public class PanelJugador extends JPanel {
 		
 	}
 	
+	public boolean getSiguienteTurno() {
+		return siguienteTurno;
+	}
+	
+	public void setSiguienteTurno(boolean turno) {
+		this.siguienteTurno = turno;
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
 	public int getApuestaUsuario() {
 		if(isHuman) {
 			int aux = Integer.parseInt(numeroDineroApostado.getText());
@@ -293,6 +309,7 @@ public class PanelJugador extends JPanel {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
 			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 			if(event.getSource() == fichaCinco ) {
+				System.out.print("Turno usuario: "+turno);
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
 			}
 			if(event.getSource() == fichaDiez ) {
@@ -302,10 +319,15 @@ public class PanelJugador extends JPanel {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
 			}
 			if(event.getSource() == confirmarApuesta) {
+				synchronized(control) {
+					control.despertarHilos();
+				}
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado ) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
+				//siguienteTurno = true;
+				System.out.println(siguienteTurno);
 			}
 		}
 	}

@@ -4,13 +4,16 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import pokerControl.ControlPoker;
 import pokerModelo.Carta;
 
 public class VistaPoker extends JFrame {
 	
 	private MesaJuego mesaJuego;
-	public VistaPoker(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
-		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial);
+	private ControlPoker control;
+	public VistaPoker(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial, ControlPoker control) {
+		this.control = control;
+		mesaJuego = new MesaJuego(isHuman, nombre, manoJugador, dineroInicial, this.control);
 		initGUI(isHuman, nombre, manoJugador, dineroInicial);
 		setVisible(true);
 		setResizable(false);
@@ -26,7 +29,6 @@ public class VistaPoker extends JFrame {
 	}
 	
 	public void actualizarVistaApuesta(int apuestaJugador, String nombre) {
-		System.out.println("Entro a vista");
 		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre);
 	}
 	
