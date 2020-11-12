@@ -69,6 +69,8 @@ public class ControlPoker {
 		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero, this);
 		this.mesaJuego = vista.getMesaJuego();
 		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
+		panelUsuario.getLock(this.bloqueo, this.esperarTurno);
+		panelUsuario.setJugadoresCPU(jugadoresCPU);
 	}
 	
 	private void agregarNombres() {
@@ -193,12 +195,12 @@ public class ControlPoker {
 		bloqueo.lock();
 		
 		try
-		{	
-			while(turnoJugador != turnoActual) {
+		{
+			System.out.println("Entro again");
+			while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
 				System.out.println("Intento entrar pero se duerme");
 				esperarTurno.await();
 			}
-			
 			if(tipoRonda) { //Ronda de apuesta
 				for(int i = 0; i < jugadoresCPU.size(); i++) {
 					if(jugadoresCPU.get(i).getTurno() == turnoActual) {
@@ -209,10 +211,10 @@ public class ControlPoker {
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
 							//vista.funcionPrueba();
 							turnoActual++;
-							despertarHilos();
 						}
 					}
 				}
+				despertarHilos();
 			} else { //Ronda de descarte
 				int posicionDescarte = turnoActual - 1;
 				if(posicionDescarte != 2) {
@@ -224,7 +226,7 @@ public class ControlPoker {
 							//esperarTurno.signalAll();
 						}
 					}
-					descarte[posicionDescarte] = cartasPedidas;
+					//descarte[posicionDescarte] = cartasPedidas;
 				}
 			}
 		}catch(InterruptedException e) {
@@ -243,6 +245,9 @@ public class ControlPoker {
 			}
 		}
 		
+	}
+	public void setTurnoActual() {
+		turnoActual++;
 	}
 	public synchronized void despertarHilos() {
 		esperarTurno.signalAll();
