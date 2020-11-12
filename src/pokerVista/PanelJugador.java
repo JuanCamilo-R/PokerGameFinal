@@ -12,9 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -29,7 +26,6 @@ import javax.swing.border.EtchedBorder;
 
 import pokerControl.ControlPoker;
 import pokerModelo.Carta;
-import pokerModelo.JugadorCPU;
 
 
 
@@ -47,10 +43,7 @@ public class PanelJugador extends JPanel {
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
 	private JPanel nosotros;
-	private List<JugadorCPU> jugadoresCPU;
 	private ControlPoker control;
-	private Lock bloqueo; //manejo de sincronizacion
-	private Condition esperarTurno;//manejo de sincronizacion
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial, ControlPoker control) {
 		//nombre = new JLabel(nombreJugador);
 		this.control = control;
@@ -66,7 +59,6 @@ public class PanelJugador extends JPanel {
 		for(Carta carta: cartas) {
 			mano.add(carta);
 		}
-		
 		
 
 		for(int i = 0; i < mano.size(); i++) {
@@ -255,10 +247,6 @@ public class PanelJugador extends JPanel {
 		
 	}
 	
-	public void setJugadoresCPU(List<JugadorCPU> jugadoresCPU2) {
-		jugadoresCPU = jugadoresCPU2;
-	}
-	
 	public void getControl(ControlPoker control) {
 		this.control = control;
 	}
@@ -275,10 +263,6 @@ public class PanelJugador extends JPanel {
 		if(isHuman) {
 			this.turno = turno;
 		}
-	}
-	public void getLock(Lock bloqueo, Condition esperarTurno) {
-		this.bloqueo = bloqueo;
-		this.esperarTurno = esperarTurno;
 	}
 	
 	public void refrescarLabels(int apuesta, String nombreJugador) {
@@ -321,7 +305,7 @@ public class PanelJugador extends JPanel {
 	}
 	
 	private class Escuchas extends MouseAdapter {
-		public synchronized void mouseClicked(MouseEvent event) {
+		public void mouseClicked(MouseEvent event) {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
 			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 			if(event.getSource() == fichaCinco ) {
@@ -339,7 +323,6 @@ public class PanelJugador extends JPanel {
 				if(dineroInicial <= dineroApostado ) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
-				
 				siguienteTurno = true;
 				control.setTurnoActual();
 				control.turnos(7,4);

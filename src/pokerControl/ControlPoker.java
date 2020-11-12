@@ -69,8 +69,6 @@ public class ControlPoker {
 		vista = new VistaPoker(tipoJugador,nombres, manoJugadores,dinero, this);
 		this.mesaJuego = vista.getMesaJuego();
 		panelUsuario = (PanelJugador) mesaJuego.getPanelUsuario();
-		panelUsuario.getLock(this.bloqueo, this.esperarTurno);
-		panelUsuario.setJugadoresCPU(jugadoresCPU);
 	}
 	
 	private void agregarNombres() {
