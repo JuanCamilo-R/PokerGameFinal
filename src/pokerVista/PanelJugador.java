@@ -272,9 +272,12 @@ public class PanelJugador extends JPanel {
 			public void run() {
 				// TODO Auto-generated method stub
 				if( nombre.getText() == nombreJugador) {
+					if(nombreJugador == "ElBicho") {
+						System.out.println(nombreJugador+" entra a refrescar labels");
+					}
 					//System.out.println("Entro a refrescarLabels");
-					numeroDineroApostado.setText(String.valueOf(apuesta));
 					numeroDineroInicial.setText(String.valueOf(Integer.parseInt(numeroDineroInicial.getText())-apuesta));
+					numeroDineroApostado.setText(String.valueOf(apuesta));
 					nosotros.revalidate();	
 				    nosotros.repaint();
 				    
@@ -322,10 +325,12 @@ public class PanelJugador extends JPanel {
 				if(dineroInicial <= dineroApostado ) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
+				System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
+				refrescarLabels(getApuestaUsuario(), "ElBicho");
 				siguienteTurno = true;
-				System.out.println("Turno usuario: "+turno);
+				//System.out.println("Turno usuario: "+turno);
 				control.setTurnoActual();
-				control.turnos(100,4, "");
+				control.turnos(100,4, "ElBicho", 0);
 				//System.out.println(siguienteTurno);
 			}
 		}

@@ -25,8 +25,12 @@ public class JugadorCPU implements Runnable {
 		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
 		this.control = control;
+		
 	}
 	
+	public int getApuestaActual() {
+		return apuestaActual;
+	}
 	public void recibirCartasIniciales(List<Carta> cartasRecibidas) {
 		cartas = cartasRecibidas;
 	}
@@ -75,10 +79,14 @@ public class JugadorCPU implements Runnable {
 		return false;
 	}
 	
+	public void devolverApuesta(int cantidadDevuelta) {
+		dineroInicial += cantidadDevuelta;
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		control.turnos(turno, cantidadADescartar, nombreJugador);
+		control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual);
 		System.out.println(nombreJugador+" termino aqui");
 	}
 
