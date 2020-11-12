@@ -309,7 +309,6 @@ public class PanelJugador extends JPanel {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
 			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 			if(event.getSource() == fichaCinco ) {
-				System.out.print("Turno usuario: "+turno);
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
 			}
 			if(event.getSource() == fichaDiez ) {
@@ -324,9 +323,10 @@ public class PanelJugador extends JPanel {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
 				siguienteTurno = true;
+				System.out.println("Turno usuario: "+turno);
 				control.setTurnoActual();
-				control.turnos(7,4);
-				System.out.println(siguienteTurno);
+				control.turnos(100,4, "");
+				//System.out.println(siguienteTurno);
 			}
 		}
 	}

@@ -78,7 +78,8 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		control.turnos(turno, cantidadADescartar);
+		control.turnos(turno, cantidadADescartar, nombreJugador);
+		System.out.println(nombreJugador+" termino aqui");
 	}
 
 }

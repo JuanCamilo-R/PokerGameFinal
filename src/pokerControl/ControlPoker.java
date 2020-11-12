@@ -188,50 +188,41 @@ public class ControlPoker {
 		
 	}
 	
-	public void turnos(int turnoJugador, int cartasPedidas) {
+	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador) {
 		
 		bloqueo.lock();
 		
 		try
 		{
-			System.out.println("Entro again");
+			
 			while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
-				System.out.println("Intento entrar pero se duerme");
+				System.out.println(nombreJugador+" intento entrar pero se duerme");
 				esperarTurno.await();
 			}
 			if(tipoRonda) { //Ronda de apuesta
-				for(int i = 0; i < jugadoresCPU.size(); i++) {
-					if(jugadoresCPU.get(i).getTurno() == turnoActual) {
-						if(jugadoresCPU.get(i).apostar(100)) {
-							//System.out.println("Size: "+jugadoresCPU.size());
-							//System.out.println("Turno actual: "+turnoActual);
-							System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre());
-							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
-							//vista.funcionPrueba();
-							turnoActual++;
-						}
-					}
+				//System.out.println("Size: "+jugadoresCPU.size());
+				//System.out.println("Turno actual: "+turnoActual);
+				System.out.println("Entro hilo: "+nombreJugador);
+				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
+				System.out.println("Turno en general: "+turnoActual);
+				if(turnoJugador <= 5) {
+					vista.actualizarVistaApuesta(100, nombreJugador);
 				}
-				despertarHilos();
-			} else { //Ronda de descarte
-				int posicionDescarte = turnoActual - 1;
-				if(posicionDescarte != 2) {
-					for(int i = 0; i < jugadoresCPU.size(); i++) {
-						if(jugadoresCPU.get(i).getTurno() == turnoActual)
-						{
-							//jugadoresCPU.get(i).descartarCartas();
-							//turnoActual++;
-							//esperarTurno.signalAll();
-						}
-					}
-					//descarte[posicionDescarte] = cartasPedidas;
+				//vista.funcionPrueba();
+				if(turnoJugador <= 5) {
+					turnoActual++;
 				}
+				esperarTurno.signalAll();
 			}
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}finally {
-			System.out.println("Turno en control: "+panelUsuario.getTurno());
+			panelUsuario.setSiguienteTurno(false);
 			bloqueo.unlock();
+			if(turnoActual == 6) {
+				System.out.println("Entro al final: "+nombreJugador);
+			}
+			/*
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
 					tipoRonda = true;
@@ -240,7 +231,7 @@ public class ControlPoker {
 				if(tipoRonda) { //Ronda de apuesta
 					tipoRonda = false;
 				}
-			}
+			}*/
 		}
 		
 	}
