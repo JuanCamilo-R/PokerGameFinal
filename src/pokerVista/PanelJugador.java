@@ -319,14 +319,13 @@ public class PanelJugador extends JPanel {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
 			}
 			if(event.getSource() == confirmarApuesta) {
-				synchronized(control) {
-					control.despertarHilos();
-				}
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado ) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
-				//siguienteTurno = true;
+				siguienteTurno = true;
+				control.setTurnoActual();
+				control.turnos(7,4);
 				System.out.println(siguienteTurno);
 			}
 		}

@@ -194,7 +194,7 @@ public class ControlPoker {
 		
 		try
 		{	
-			while(turnoJugador != turnoActual) {
+			while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
 				System.out.println("Intento entrar pero se duerme");
 				esperarTurno.await();
 			}
@@ -209,9 +209,9 @@ public class ControlPoker {
 							vista.actualizarVistaApuesta(100, jugadoresCPU.get(i).getNombre());
 							//vista.funcionPrueba();
 							turnoActual++;
-							despertarHilos();
 						}
 					}
+					despertarHilos();
 				}
 			} else { //Ronda de descarte
 				int posicionDescarte = turnoActual - 1;
@@ -224,7 +224,7 @@ public class ControlPoker {
 							//esperarTurno.signalAll();
 						}
 					}
-					descarte[posicionDescarte] = cartasPedidas;
+					//descarte[posicionDescarte] = cartasPedidas;
 				}
 			}
 		}catch(InterruptedException e) {
@@ -246,6 +246,10 @@ public class ControlPoker {
 	}
 	public synchronized void despertarHilos() {
 		esperarTurno.signalAll();
+	}
+	
+	public void setTurnoActual() {
+		turnoActual++;
 	}
 	public void darCartas(JugadorCPU jugador, int cartasADar) {
 		for(int i = 0; i < cartasADar; i++ ) {
