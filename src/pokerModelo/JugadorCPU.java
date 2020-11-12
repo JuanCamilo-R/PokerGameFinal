@@ -69,7 +69,7 @@ public class JugadorCPU implements Runnable {
 	}
 	
 	public boolean apostar(int cantidad) {
-		if(dineroInicial>cantidad) {
+		if(dineroInicial>= cantidad) {
 			//System.out.println("Puedo apostar");
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad+100;
@@ -86,7 +86,7 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual);
+		control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
 		System.out.println(nombreJugador+" termino aqui");
 	}
 

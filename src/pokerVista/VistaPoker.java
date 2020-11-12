@@ -28,8 +28,8 @@ public class VistaPoker extends JFrame {
 		add(mesaJuego);
 	}
 	
-	public void actualizarVistaApuesta(int apuestaJugador, String nombre) {
-		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre);
+	public void actualizarVistaApuesta(int apuestaJugador, String nombre, String dineroInicial) {
+		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre, dineroInicial);
 	}
 	
 	public void funcionPrueba() {

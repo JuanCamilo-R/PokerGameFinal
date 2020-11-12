@@ -189,7 +189,7 @@ public class ControlPoker {
 		
 	}
 	
-	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta) {
+	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta, int dineroInicial) {
 		bloqueo.lock();
 		try
 		{
@@ -205,7 +205,7 @@ public class ControlPoker {
 				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				System.out.println("Turno en general: "+turnoActual);
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,apuesta)) {
-					vista.actualizarVistaApuesta(apuesta, nombreJugador);
+					vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(dineroInicial));
 					verificarApuesta(nombreJugador);
 				}
 
@@ -242,10 +242,11 @@ public class ControlPoker {
 				if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 					System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas en la mitad");
 					int apuesta = panelUsuario.getApuestaUsuario();
-					jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
-					//System.out.println("Apuesta de "+nombreJugador+ " antes de apostar otra vez"+jugadoresCPU.get(i).getApuestaActual());
-					jugadoresCPU.get(i).apostar(apuesta);
-					vista.actualizarVistaApuesta(apuesta, nombreJugador);
+					//jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
+					System.out.println("Apuesta de "+nombreJugador+ " antes de apostar otra vez"+jugadoresCPU.get(i).getApuestaActual());
+					if(jugadoresCPU.get(i).apostar(apuesta)) {
+						vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+					}
 				}
 			}
 		}
@@ -255,9 +256,14 @@ public class ControlPoker {
 			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
 				int apuesta = panelUsuario.getApuestaUsuario();
+				System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
 				jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
-				jugadoresCPU.get(i).apostar(apuesta);
-				vista.actualizarVistaApuesta(apuesta, jugadoresCPU.get(i).getNombre());
+				System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
+				if(jugadoresCPU.get(i).apostar(apuesta)){
+					vista.actualizarVistaApuesta(apuesta, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+				}
+				System.out.println(jugadoresCPU.get(i).getNombre()+ " apuesta al final: "+apuesta);
+				System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
 			}
 		}
 	}

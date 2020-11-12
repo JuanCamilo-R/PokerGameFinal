@@ -265,7 +265,11 @@ public class PanelJugador extends JPanel {
 		}
 	}
 	
-	public void refrescarLabels(int apuesta, String nombreJugador) {
+	public String getDineroInicial() {
+		return this.numeroDineroInicial.getText();
+	}
+	
+	public void refrescarLabels(int apuesta, String nombreJugador, String dineroInicial) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -276,7 +280,7 @@ public class PanelJugador extends JPanel {
 						System.out.println(nombreJugador+" entra a refrescar labels");
 					}
 					//System.out.println("Entro a refrescarLabels");
-					numeroDineroInicial.setText(String.valueOf(Integer.parseInt(numeroDineroInicial.getText())-apuesta));
+					numeroDineroInicial.setText(dineroInicial);
 					numeroDineroApostado.setText(String.valueOf(apuesta));
 					nosotros.revalidate();	
 				    nosotros.repaint();
@@ -326,11 +330,11 @@ public class PanelJugador extends JPanel {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
 				}
 				System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
-				refrescarLabels(getApuestaUsuario(), "ElBicho");
+				refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 				siguienteTurno = true;
 				//System.out.println("Turno usuario: "+turno);
 				control.setTurnoActual();
-				control.turnos(100,4, "ElBicho", 0);
+				control.turnos(100,4, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
 				//System.out.println(siguienteTurno);
 			}
 		}
