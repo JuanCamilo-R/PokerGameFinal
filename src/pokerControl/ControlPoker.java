@@ -143,43 +143,71 @@ public class ControlPoker {
 	public void iniciarJugadoresCPU() {
 		
 		int aux = random.nextInt(5)+1;
+		mesaJuego.espaciar();
+		mesaJuego.mensaje("Orden de turnos:");
 		switch(aux) {
 			case 1:
 				jugador1.setTurno(1);
+				mesaJuego.mensaje(jugador1.getNombre());
 				jugador2.setTurno(2);
+				mesaJuego.mensaje(jugador2.getNombre());
 				panelUsuario.setTurno(3);
+				mesaJuego.mensaje(nombres.get(2));
 				jugador4.setTurno(4);
+				mesaJuego.mensaje(jugador4.getNombre());
 				jugador5.setTurno(5);
+				mesaJuego.mensaje(jugador5.getNombre());
 				break;
 			case 2:
 				jugador2.setTurno(1);
+				mesaJuego.mensaje(jugador2.getNombre());
 				panelUsuario.setTurno(2);
+				mesaJuego.mensaje(nombres.get(2));
 				jugador4.setTurno(3);
+				mesaJuego.mensaje(jugador4.getNombre());
 				jugador5.setTurno(4);
+				mesaJuego.mensaje(jugador5.getNombre());
 				jugador1.setTurno(5);
+				mesaJuego.mensaje(jugador1.getNombre());
 				break;
 			case 3:
 				System.out.print("Inicias");
 				panelUsuario.setTurno(1);
+				mesaJuego.mensaje(nombres.get(2));
 				jugador4.setTurno(2);
+				mesaJuego.mensaje(jugador4.getNombre());
 				jugador5.setTurno(3);
+				mesaJuego.mensaje(jugador5.getNombre());
 				jugador1.setTurno(4);
+				mesaJuego.mensaje(jugador1.getNombre());
 				jugador2.setTurno(5);
+				mesaJuego.mensaje(jugador2.getNombre());
 				break;
 			case 4:
 				jugador4.setTurno(1);
+				mesaJuego.mensaje(jugador4.getNombre());
 				jugador5.setTurno(2);
+				mesaJuego.mensaje(jugador5.getNombre());
 				jugador1.setTurno(3);
+				mesaJuego.mensaje(jugador1.getNombre());
 				jugador2.setTurno(4);
+				mesaJuego.mensaje(jugador2.getNombre());
 				panelUsuario.setTurno(5);
+				mesaJuego.mensaje(nombres.get(2));
 				break;
 			case 5:
 				jugador5.setTurno(1);
+				mesaJuego.mensaje(jugador5.getNombre());
 				jugador1.setTurno(2);
+				mesaJuego.mensaje(jugador1.getNombre());
 				jugador2.setTurno(3);
+				mesaJuego.mensaje(jugador2.getNombre());
 				panelUsuario.setTurno(4);
+				mesaJuego.mensaje(nombres.get(2));
 				jugador4.setTurno(5);
+				mesaJuego.mensaje(jugador4.getNombre());
 		}
+
 		
 		jugadoresCPU.add(jugador1);
 		  jugadoresCPU.add(jugador2);
@@ -189,6 +217,9 @@ public class ControlPoker {
 		for(int i = 0; i < 4 ;i++) {
 			jugadoresCPU.get(i).recibirCartasIniciales(manoJugadores.get(i));
 		}
+
+		mesaJuego.espaciar();
+
 			
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
