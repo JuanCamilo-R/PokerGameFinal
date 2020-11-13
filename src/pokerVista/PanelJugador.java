@@ -368,14 +368,22 @@ public class PanelJugador extends JPanel {
 					
 				}
 				else {
+					if(control.getTipoRonda()) {
 					System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
 					refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 					siguienteTurno = true;
 					//System.out.println("Turno usuario: "+turno);
 					control.setTurnoActual();
-					control.turnos(100,4, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
+					control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
 					saberSiAposto =false;
 					//System.out.println(siguienteTurno);
+					if(getTurno()==5) {
+						control.activarRondaDescarte();
+					}
+					}else {
+						
+					}
+					
 				}
 				
 			}
