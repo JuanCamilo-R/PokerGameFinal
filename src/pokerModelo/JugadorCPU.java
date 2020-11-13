@@ -15,6 +15,7 @@ public class JugadorCPU implements Runnable {
 	private int cantidadADescartar;
 	private List<Carta> cartas = new ArrayList<Carta>();
 	private int jugada;
+	private int vecesApuesta = 0;
 	
 	
 	
@@ -25,7 +26,8 @@ public class JugadorCPU implements Runnable {
 		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
 		this.control = control;
-		//apostar(100);
+		apostar(100);
+		vecesApuesta++;
 	}
 	
 	public int getApuestaActual() {
@@ -70,9 +72,10 @@ public class JugadorCPU implements Runnable {
 	
 	public boolean apostar(int cantidad) {
 		if(dineroInicial>= cantidad) {
-			//System.out.println("Puedo apostar");
+			vecesApuesta++;
+			System.out.println(nombreJugador+" apuesta veces: "+vecesApuesta);
 			apuestaActual = cantidad;
-			dineroApuesta=cantidad+100;
+			dineroApuesta=cantidad;
 			dineroInicial -=cantidad;
 			return true;
 		}
@@ -87,6 +90,7 @@ public class JugadorCPU implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
+		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
 		System.out.println(nombreJugador+" termino aqui");
 	}
 

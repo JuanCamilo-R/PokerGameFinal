@@ -207,6 +207,7 @@ public class ControlPoker {
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,apuesta)) {
 					vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(dineroInicial));
 					verificarApuesta(nombreJugador);
+					
 				}
 
 				//vista.funcionPrueba();
@@ -236,41 +237,52 @@ public class ControlPoker {
 			}*/
 		}
 	}
-	public void verificarApuesta(String nombreJugador) {
+	public synchronized void verificarApuesta(String nombreJugador) {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
 				if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 					System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas en la mitad");
 					int apuesta = panelUsuario.getApuestaUsuario();
-					//jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
-					System.out.println("Apuesta de "+nombreJugador+ " antes de apostar otra vez"+jugadoresCPU.get(i).getApuestaActual());
+					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
+					jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
 					if(jugadoresCPU.get(i).apostar(apuesta)) {
+						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
+						System.out.println("Apuesta de "+nombreJugador+ " ha apostado: "+jugadoresCPU.get(i).getApuestaActual());
 						vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+					}else {
+						vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						System.out.println(jugadoresCPU.get(i).getNombre()+ "ha recibido por no poder apostar en la mitad: "+jugadoresCPU.get(i).getApuestaActual());
+						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de no apostar otra vez en la mitad: "+jugadoresCPU.get(i).getDineroInicial());
 					}
 				}
 			}
 		}
 	}
-	public void verificarApuestasFinal(String nombre) {
+	public  synchronized void verificarApuestasFinal(String nombre) {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
 				int apuesta = panelUsuario.getApuestaUsuario();
-				System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
+				//System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
 				jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
-				System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
+				//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
+				
 				if(jugadoresCPU.get(i).apostar(apuesta)){
+					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
+					System.out.println("Apuesta de "+nombre+ " ha apostado al final: "+jugadoresCPU.get(i).getApuestaActual());
 					vista.actualizarVistaApuesta(apuesta, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+				}else {
+					vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
 				}
-				System.out.println(jugadoresCPU.get(i).getNombre()+ " apuesta al final: "+apuesta);
-				System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
 			}
 		}
 	}
-	public boolean setApuestaJugador(String nombreJugador, int cantidadApuesta) {
+	public synchronized boolean setApuestaJugador(String nombreJugador, int cantidadApuesta) {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
 				if(jugadoresCPU.get(i).apostar(cantidadApuesta)) {
+					System.out.println(jugadoresCPU.get(i).getNombre()+" aposto: "+cantidadApuesta);
 					return true;
 				}
 			}
