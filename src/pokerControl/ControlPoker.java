@@ -181,13 +181,16 @@ public class ControlPoker {
 				jugador4.setTurno(5);
 		}
 		
-		jugadoresCPU.add(jugador1);
+		  jugadoresCPU.add(jugador1);
 		  jugadoresCPU.add(jugador2);
 		  jugadoresCPU.add(jugador4);
 		  jugadoresCPU.add(jugador5);
 		
 		for(int i = 0; i < 4 ;i++) {
 			jugadoresCPU.get(i).recibirCartasIniciales(manoJugadores.get(i));
+				if(i>=2) {
+					jugadoresCPU.get(i).recibirCartasIniciales(manoJugadores.get(i+1));
+				}
 		}
 			
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
@@ -244,6 +247,7 @@ public class ControlPoker {
 						System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre()+"222");
 						jugadoresCPU.get(i).descartarCartas();				
 						darCartas(jugadoresCPU.get(i).getCantidadADescartar(),i);
+						vista.actualizarVistaCartas( jugadoresCPU.get(i).getNombre(),jugadoresCPU.get(i).getCartas());
 						turnoActual++;
 						System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte \n");
 						controlar++;

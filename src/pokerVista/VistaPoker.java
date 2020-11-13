@@ -29,10 +29,14 @@ public class VistaPoker extends JFrame {
 	}
 	
 	public void actualizarVistaApuesta(int apuestaJugador, String nombre, String dineroInicial) {
+		
 		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre, dineroInicial);
 	}
 	
-	
+	public void actualizarVistaCartas(String nombre,List<Carta> cartasNuevas) {
+		System.out.print("Entre a vista");
+		mesaJuego.actualizarMesaCartas(nombre, cartasNuevas);
+	}
 	
 	public void funcionPrueba() {
 		System.out.println("Entro a funcion prueba");
