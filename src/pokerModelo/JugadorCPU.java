@@ -28,7 +28,6 @@ public class JugadorCPU implements Runnable {
 		random = new Random();
 		this.control = control;
 		apostar(100);
-		vecesApuesta++;
 	}
 	
 	public int getApuestaActual() {
@@ -78,6 +77,7 @@ public class JugadorCPU implements Runnable {
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad;
 			dineroInicial -=cantidad;
+			System.out.println("Dinero inicial de "+nombreJugador+": "+dineroInicial);
 			return true;
 		}
 		return false;
