@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -45,6 +46,7 @@ public class PanelJugador extends JPanel {
 	private JPanel nosotros;
 	private ControlPoker control;
 	private boolean saberSiAposto;
+	private int contadorCartasPedidas = 0; 
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial, ControlPoker control) {
 		//nombre = new JLabel(nombreJugador);
 		this.control = control;
@@ -345,6 +347,18 @@ public class PanelJugador extends JPanel {
 		return 0;
 	}
 	
+	private void eliminarCarta(Carta cartaEliminar) { 
+		   mano = Collections.synchronizedList(mano);
+		   synchronized (mano){
+			   for(int i = 0;i < mano.size(); i++) {
+				 if(cartaEliminar.getValor() == mano.get(i).getValor() && cartaEliminar.getPalo()==mano.get(i).getPalo() ) {
+					 mano.remove(i);
+				 }   
+			   }
+			   
+		   }
+	   }
+	
 	private class Escuchas extends MouseAdapter {
 		public void mouseClicked(MouseEvent event) {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
@@ -368,25 +382,40 @@ public class PanelJugador extends JPanel {
 					
 				}
 				else {
-					if(control.getTipoRonda()) {
-					System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
-					refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
-					siguienteTurno = true;
-					//System.out.println("Turno usuario: "+turno);
-					control.setTurnoActual();
-					control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
-					saberSiAposto =false;
-					//System.out.println(siguienteTurno);
-					if(getTurno()==5) {
-						control.activarRondaDescarte();
-					}
-					}else {
-						
+					if(control.getTipoRonda()) { //Ronda apuesta
+						System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
+						refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
+						siguienteTurno = true;
+						//System.out.println("Turno usuario: "+turno);
+						control.setTurnoActual();
+						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
+						saberSiAposto =false;
+						//System.out.println(siguienteTurno);
+						confirmarDescarte.setEnabled(true);
+						if(getTurno()==5) {
+							control.activarRondaDescarte();
+						}
 					}
 					
 				}
 				
 			}
+			
+			for(int i = 0; i < mano.size(); i++) {
+				if(event.getSource() == mano.get(i)) {
+					contadorCartasPedidas++;
+					eliminarCarta(mano.get(i));
+					refrescarMano();
+					panelMano.revalidate();
+					panelMano.repaint();
+				}
+			}
+			
+			if(event.getSource() == confirmarDescarte) {
+				
+			}
+			
+			
 		}
 	}
 	
