@@ -44,6 +44,7 @@ public class PanelJugador extends JPanel {
 	private Border loweredbevel;
 	private JPanel nosotros;
 	private ControlPoker control;
+	private boolean saberSiAposto;
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial, ControlPoker control) {
 		//nombre = new JLabel(nombreJugador);
 		this.control = control;
@@ -54,6 +55,7 @@ public class PanelJugador extends JPanel {
 		this.isHuman = isHuman;
 		siguienteTurno = false;
 		nosotros = this;
+		saberSiAposto =false;
 		//Se agrega cada carta a la mano del jugador.
 		
 		for(Carta carta: cartas) {
@@ -204,7 +206,7 @@ public class PanelJugador extends JPanel {
 			dineroApostado = new JLabel("|   Dinero apostado: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial));
-			numeroDineroApostado = new JLabel();
+			numeroDineroApostado = new JLabel("100");
 			
 			this.dineroInicial.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			dineroApostado.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -317,25 +319,33 @@ public class PanelJugador extends JPanel {
 			int dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 			if(event.getSource() == fichaCinco ) {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+5));
+				saberSiAposto =true;
 			}
 			if(event.getSource() == fichaDiez ) {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+10));
+				saberSiAposto =true;
 			}
 			if(event.getSource() == fichaCien ) {
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
+				saberSiAposto =true;
 			}
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
-				if(dineroInicial <= dineroApostado ) {
-					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto!");
+				if(dineroInicial <= dineroApostado || saberSiAposto==false) {
+					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
+					
 				}
-				System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
-				refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
-				siguienteTurno = true;
-				//System.out.println("Turno usuario: "+turno);
-				control.setTurnoActual();
-				control.turnos(100,4, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
-				//System.out.println(siguienteTurno);
+				else {
+					System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
+					refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
+					siguienteTurno = true;
+					//System.out.println("Turno usuario: "+turno);
+					control.setTurnoActual();
+					control.turnos(100,4, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
+					saberSiAposto =false;
+					//System.out.println(siguienteTurno);
+				}
+				
 			}
 		}
 	}

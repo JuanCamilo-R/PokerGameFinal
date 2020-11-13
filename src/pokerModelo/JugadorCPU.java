@@ -25,7 +25,7 @@ public class JugadorCPU implements Runnable {
 		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
 		this.control = control;
-		
+		//apostar(100);
 	}
 	
 	public int getApuestaActual() {
