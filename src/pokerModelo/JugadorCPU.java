@@ -17,8 +17,7 @@ public class JugadorCPU implements Runnable {
 	private int jugada;
 	private int vecesApuesta = 0;
 	private boolean interrumpido = false;
-	
-	
+	private int paso=1;
 	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
 		
@@ -97,15 +96,29 @@ public class JugadorCPU implements Runnable {
 	public boolean getInterrumpido() {
 		return interrumpido;
 	}
+	public void iniciarRondaDescarte() {
+		paso=2;
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(control.getControlador()<10) {
-			control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
+		while(!this.interrumpido) {
+			switch(paso) {
+				case 1:
+					control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());
+				paso=0;
+				if(turno == 5) {
+					control.activarRondaDescarte();
+				}
+				break;
+				case 2:
+					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
+					break;
 		}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
 		System.out.println(nombreJugador+" termino aqui");
 		System.out.println("Rama descartes final");
 	}
 
+	}
 }

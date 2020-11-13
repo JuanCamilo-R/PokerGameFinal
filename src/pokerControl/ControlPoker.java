@@ -206,7 +206,7 @@ public class ControlPoker {
 	public int getTurno() {
 		return turnoActual;
 	}
-	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta, int dineroInicial) {
+	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
 		bloqueo.lock();
 
 
@@ -225,8 +225,8 @@ public class ControlPoker {
 				System.out.println("Entro hilo: "+nombreJugador);
 				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				System.out.println("Turno en general: "+turnoActual);
-				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,apuesta)) {
-					vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(dineroInicial));
+				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
+					vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(dineroInicial));
 					verificarApuesta(nombreJugador);
 					controlar++;
 					
@@ -243,7 +243,7 @@ public class ControlPoker {
 				for(int i = 0; i < jugadoresCPU.size(); i++) {
 					if(jugadoresCPU.get(i).getTurno() == turnoActual)
 					{
-						descarte[posicionDescarte] = cartasPedidas;
+						descarte[posicionDescarte] = dato;
 						System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre()+"222");
 						jugadoresCPU.get(i).descartarCartas();				
 						darCartas(jugadoresCPU.get(i).getCantidadADescartar(),i);
@@ -266,7 +266,7 @@ public class ControlPoker {
 				System.out.println("Entro al final: "+nombreJugador);
 			}*/
 			bloqueo.unlock();
-		//	panelUsuario.setSiguienteTurno(false);
+			panelUsuario.setSiguienteTurno(false);
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
 					System.out.print("Empiezo ronda apuesta");
@@ -285,6 +285,16 @@ public class ControlPoker {
 				}
 			}
 		}
+	}
+	public void activarRondaDescarte() {
+		turnoActual =1;
+		tipoRonda =false;
+		for(int i=0;i<jugadoresCPU.size();i++) {
+			jugadoresCPU.get(i).iniciarRondaDescarte();
+		}
+	}
+	public boolean getTipoRonda() {
+		return tipoRonda;
 	}
 	private void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
