@@ -32,6 +32,8 @@ public class VistaPoker extends JFrame {
 		mesaJuego.actualizarMesaApuesta(apuestaJugador,nombre, dineroInicial);
 	}
 	
+	
+	
 	public void funcionPrueba() {
 		System.out.println("Entro a funcion prueba");
 	}

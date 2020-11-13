@@ -198,6 +198,8 @@ public class MesaJuego extends JPanel {
 			panelJugador5.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 		}
 		
+		
+		
 		public int getApuestaUsuario() {
 			return panelJugador3.getApuestaUsuario();
 		}

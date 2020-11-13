@@ -205,7 +205,7 @@ public class ControlPoker {
 	}
 	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta, int dineroInicial) {
 		bloqueo.lock();
-		System.out.println(nombreJugador+ " entro a turnos");
+		//System.out.println(nombreJugador+ " entro a turnos");
 		try
 		{
 			
@@ -235,6 +235,7 @@ public class ControlPoker {
 				if(turnoJugador <= 5) {
 					turnoActual++;
 				}
+				
 				esperarTurno.signalAll();
 			}else {
 				int posicionDescarte = turnoActual - 1;
@@ -243,10 +244,10 @@ public class ControlPoker {
 					{
 						descarte[posicionDescarte] = cartasPedidas;
 						System.out.println("Entro hilo: "+jugadoresCPU.get(i).getNombre()+"222");
-						jugadoresCPU.get(i).descartarCartas();
+						jugadoresCPU.get(i).descartarCartas();				
+						darCartas(jugadoresCPU.get(i).getCantidadADescartar(),i);
 						turnoActual++;
-					//	darCartas(jugadoresCPU.get(i).getCantidadADescartar());
-						System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte");
+						System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte \n");
 						controlar++;
 						
 						
@@ -283,6 +284,26 @@ public class ControlPoker {
 			}
 		}
 	}
+	private void darCartas(int cantidad,int i) {	
+        //cartas para jugadores simulados
+		System.out.print("Dar cartasaaaa \n");
+		List<Carta> cartas2 = new ArrayList<Carta>();
+		
+		for(int j=0;j<cantidad;j++) {
+			cartas2.add(baraja.getCarta());
+		}
+		asignarCartas(cartas2,i,cantidad);
+				
+	}
+	
+	public void asignarCartas(List<Carta> cartas,int i,int cantidad) {
+		for(int j=0;j<cantidad;j++) {
+			jugadoresCPU.get(i).recibirCartas(cartas.get(j));
+			System.out.print("Cantidad "+jugadoresCPU.get(i).getCantidadADescartar()+"   ");
+			System.out.print("Valor "+cartas.get(j).getValor()+"   \n");
+		}
+
+	}
 	public void sumarControl() {
 		controlar++;
 	}
@@ -301,12 +322,12 @@ public class ControlPoker {
 						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
 						System.out.println("Apuesta de "+nombreJugador+ " ha apostado: "+jugadoresCPU.get(i).getApuestaActual());
 						vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-						//jugadoresCPU.get(i).interrumpir();
+						jugadoresCPU.get(i).interrumpir();
 					}else {
 						vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 						System.out.println(jugadoresCPU.get(i).getNombre()+ "ha recibido por no poder apostar en la mitad: "+jugadoresCPU.get(i).getApuestaActual());
 						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de no apostar otra vez en la mitad: "+jugadoresCPU.get(i).getDineroInicial());
-						//jugadoresCPU.get(i).interrumpir();
+						jugadoresCPU.get(i).interrumpir();
 					}
 				}
 			}
@@ -358,11 +379,12 @@ public class ControlPoker {
 	public synchronized void despertarHilos() {
 		esperarTurno.signalAll();
 	}
+	/*
 	public void darCartas(JugadorCPU jugador, int cartasADar) {
 		for(int i = 0; i < cartasADar; i++ ) {
 			jugador.recibirCartas(baraja.getCarta());
 		}
-	}
+	}*/
 	
 	//Dar cartas iniciales (Se llama en la ronda 1) No se usa para descartar cartas
 	public void darCartasIniciales(JugadorCPU jugador) {

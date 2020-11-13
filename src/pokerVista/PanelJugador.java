@@ -279,7 +279,7 @@ public class PanelJugador extends JPanel {
 				// TODO Auto-generated method stub
 				if( nombre.getText() == nombreJugador) {
 					if(nombreJugador == "ElBicho") {
-						System.out.println(nombreJugador+" entra a refrescar labels");
+					//	System.out.println(nombreJugador+" entra a refrescar labels");
 					}
 					//System.out.println("Entro a refrescarLabels");
 					numeroDineroInicial.setText(dineroInicial);

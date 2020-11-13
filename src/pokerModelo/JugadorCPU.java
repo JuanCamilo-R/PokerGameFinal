@@ -100,7 +100,7 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(control.getControlador()<6) {
+		while(control.getControlador()<10) {
 			control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
 		}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
