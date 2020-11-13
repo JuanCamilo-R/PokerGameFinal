@@ -40,7 +40,10 @@ public class JugadorCPU implements Runnable {
 	
 	public void descartarCartas() {
 		for(int i = 0; i < cantidadADescartar; i++) {
-			cartas.remove(i);
+			cartas.remove(0);
+			System.out.print("Cantidad"+cantidadADescartar+"   ");
+			System.out.print("Valor"+cartas.get(0).getValor()+"   ");
+			
 		}	
 	}
 	
@@ -97,7 +100,7 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(!this.interrumpido) {
+		while(control.getControlador()<6) {
 			control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
 		}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
