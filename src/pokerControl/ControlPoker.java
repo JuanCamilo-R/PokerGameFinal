@@ -37,6 +37,7 @@ public class ControlPoker {
 	private List<Integer> dinero;
 	private int[] descarte;
 	private int ronda = 0;
+	private boolean dormir = false;
 	private Lock bloqueo = new ReentrantLock(); //manejo de sincronizacion
 	private Condition esperarTurno = bloqueo.newCondition(); //manejo de sincronizacion
 	private boolean tipoRonda = true; //True si es el momento de apostar y false si es el momento de descartar
@@ -174,10 +175,6 @@ public class ControlPoker {
 				panelUsuario.setTurno(4);
 				jugador4.setTurno(5);
 		}
-			jugadoresCPU.add(jugador1);
-			jugadoresCPU.add(jugador2);
-			jugadoresCPU.add(jugador4);
-			jugadoresCPU.add(jugador5);
 			
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
@@ -186,14 +183,22 @@ public class ControlPoker {
 		  ejecutorSubprocesos.execute(jugador5);
 		  
 		  ejecutorSubprocesos.shutdown();
+		  
+		  jugadoresCPU.add(jugador1);
+		  jugadoresCPU.add(jugador2);
+		  jugadoresCPU.add(jugador4);
+		  jugadoresCPU.add(jugador5);
 		
 	}
-	
+	public int getTurno() {
+		return turnoActual;
+	}
 	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta, int dineroInicial) {
 		bloqueo.lock();
+		System.out.println(nombreJugador+ "entro a turnos");
 		try
 		{
-
+			
 			while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
 				System.out.println(nombreJugador+" intento entrar pero se duerme");
 				esperarTurno.await();
@@ -249,16 +254,25 @@ public class ControlPoker {
 						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
 						System.out.println("Apuesta de "+nombreJugador+ " ha apostado: "+jugadoresCPU.get(i).getApuestaActual());
 						vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						jugadoresCPU.get(i).interrumpir();
 					}else {
 						vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 						System.out.println(jugadoresCPU.get(i).getNombre()+ "ha recibido por no poder apostar en la mitad: "+jugadoresCPU.get(i).getApuestaActual());
 						System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de no apostar otra vez en la mitad: "+jugadoresCPU.get(i).getDineroInicial());
+						jugadoresCPU.get(i).interrumpir();
 					}
 				}
 			}
+			
 		}
 	}
 	public  synchronized void verificarApuestasFinal(String nombre) {
+		/*
+		for(int i = 0; i < jugadoresCPU.size(); i++) {
+			jugadoresCPU.get(i).run();
+		}
+		*/
+		dormir = false;
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
@@ -271,9 +285,11 @@ public class ControlPoker {
 					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
 					System.out.println("Apuesta de "+nombre+ " ha apostado al final: "+jugadoresCPU.get(i).getApuestaActual());
 					vista.actualizarVistaApuesta(apuesta, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+					jugadoresCPU.get(i).interrumpir();
 				}else {
 					vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
+					jugadoresCPU.get(i).interrumpir();
 				}
 			}
 		}

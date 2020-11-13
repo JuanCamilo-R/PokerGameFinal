@@ -16,6 +16,7 @@ public class JugadorCPU implements Runnable {
 	private List<Carta> cartas = new ArrayList<Carta>();
 	private int jugada;
 	private int vecesApuesta = 0;
+	private boolean interrumpido = false;
 	
 	
 	
@@ -86,10 +87,19 @@ public class JugadorCPU implements Runnable {
 		dineroInicial += cantidadDevuelta;
 	}
 	
+	public void interrumpir() {
+		interrumpido = true;
+	}
+	
+	public boolean getInterrumpido() {
+		return interrumpido;
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
+		while(!this.interrumpido) {
+			control.turnos(turno, cantidadADescartar, nombreJugador, apuestaActual, getDineroInicial());
+		}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
 		System.out.println(nombreJugador+" termino aqui");
 	}
