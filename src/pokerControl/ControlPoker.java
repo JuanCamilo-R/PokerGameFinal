@@ -205,7 +205,10 @@ public class ControlPoker {
 	}
 	public void turnos(int turnoJugador, int cartasPedidas, String nombreJugador, int apuesta, int dineroInicial) {
 		bloqueo.lock();
-		//System.out.println(nombreJugador+ " entro a turnos");
+
+
+		System.out.println(nombreJugador+ "entro a turnos");
+
 		try
 		{
 			
@@ -220,12 +223,7 @@ public class ControlPoker {
 				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				System.out.println("Turno en general: "+turnoActual);
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,apuesta)) {
-					for(int i=0;i<jugadoresCPU.size();i++) {
-						if(jugadoresCPU.get(i).getNombre()==nombreJugador) {
-							vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-						}
-					}
-					
+					vista.actualizarVistaApuesta(apuesta, nombreJugador, String.valueOf(dineroInicial));
 					verificarApuesta(nombreJugador);
 					controlar++;
 					
