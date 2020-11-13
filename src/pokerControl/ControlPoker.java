@@ -311,7 +311,7 @@ public class ControlPoker {
 				System.out.println("Entro al final: "+nombreJugador);
 			}*/
 			bloqueo.unlock();
-		//	panelUsuario.setSiguienteTurno(false);
+			panelUsuario.setSiguienteTurno(false);
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
 					System.out.print("Empiezo ronda apuesta");
@@ -319,7 +319,7 @@ public class ControlPoker {
 					turnoActual = 1;
 					panelUsuario.setSiguienteTurno(false);
 				}
-				if(tipoRonda && panelUsuario.getSiguienteTurno()) { //Ronda de apuesta
+				if(tipoRonda && !panelUsuario.getSiguienteTurno()) { //Ronda de apuesta
 					tipoRonda = false;
 					verificarApuestasFinal(nombreJugador);
 					System.out.print("Empiezo ronda descarte");
