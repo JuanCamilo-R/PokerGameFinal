@@ -206,6 +206,13 @@ public class ControlPoker {
 	public int getTurno() {
 		return turnoActual;
 	}
+	public void activarRondaDescarte() {
+		turnoActual=1;
+		tipoRonda = false;
+		for(int i=0;i<jugadoresCPU.size();i++) {
+			jugadoresCPU.get(i).iniciarRondaDescarte();
+		}
+	}
 	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
 		bloqueo.lock();
 
@@ -250,9 +257,6 @@ public class ControlPoker {
 						vista.actualizarVistaCartas( jugadoresCPU.get(i).getNombre(),jugadoresCPU.get(i).getCartas());
 						turnoActual++;
 						System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte \n");
-						controlar++;
-						
-						
 					}
 				}
 				esperarTurno.signalAll();
@@ -266,7 +270,7 @@ public class ControlPoker {
 				System.out.println("Entro al final: "+nombreJugador);
 			}*/
 			bloqueo.unlock();
-			panelUsuario.setSiguienteTurno(false);
+		//	panelUsuario.setSiguienteTurno(false);
 			if(turnoActual == 6) {
 				if(tipoRonda == false) { //Ronda de descarte
 					System.out.print("Empiezo ronda apuesta");
@@ -286,16 +290,6 @@ public class ControlPoker {
 			}
 		}
 	}
-	public void activarRondaDescarte() {
-		turnoActual =1;
-		tipoRonda =false;
-		for(int i=0;i<jugadoresCPU.size();i++) {
-			jugadoresCPU.get(i).iniciarRondaDescarte();
-		}
-	}
-	public boolean getTipoRonda() {
-		return tipoRonda;
-	}
 	private void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
 		System.out.print("Dar cartasaaaa \n");
@@ -306,6 +300,9 @@ public class ControlPoker {
 		}
 		asignarCartas(cartas2,i,cantidad);
 				
+	}
+	public boolean getTipoRonda() {
+		return tipoRonda;
 	}
 	
 	public void asignarCartas(List<Carta> cartas,int i,int cantidad) {

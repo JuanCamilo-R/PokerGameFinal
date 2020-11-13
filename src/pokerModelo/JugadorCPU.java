@@ -113,12 +113,13 @@ public class JugadorCPU implements Runnable {
 				break;
 				case 2:
 					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
+					paso = 0;
 					break;
 		}
+	}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
 		System.out.println(nombreJugador+" termino aqui");
 		System.out.println("Rama descartes final");
-	}
 
 	}
 }
