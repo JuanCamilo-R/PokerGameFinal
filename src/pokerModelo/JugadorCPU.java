@@ -105,6 +105,7 @@ public class JugadorCPU implements Runnable {
 		}
 		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
 		System.out.println(nombreJugador+" termino aqui");
+		System.out.println("Rama descartes final");
 	}
 
 }
