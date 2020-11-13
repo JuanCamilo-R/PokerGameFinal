@@ -233,10 +233,14 @@ public class ControlPoker {
 				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				System.out.println("Turno en general: "+turnoActual);
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
-					vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(dineroInicial));
+					for(int i=0;i<jugadoresCPU.size();i++) {
+						if(jugadoresCPU.get(i).getNombre()==nombreJugador) {
+							vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						}
+					}
 					verificarApuesta(nombreJugador);
 					controlar++;
-					
+
 				}
 
 				//vista.funcionPrueba();
