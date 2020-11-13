@@ -94,7 +94,7 @@ public class PanelJugador extends JPanel {
 			this.dineroInicial = new JLabel("Dinero inicial: ");
 			dineroApostado = new JLabel("Dinero apostado: ");
 			
-			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial));
+			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial-100));
 			numeroDineroApostado = new JLabel("100");
 			
 			panelFichas= new JPanel();

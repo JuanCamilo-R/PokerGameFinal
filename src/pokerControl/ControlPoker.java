@@ -221,7 +221,10 @@ public class ControlPoker {
 				}
 		}
 
+
 		mesaJuego.espaciar();
+
+
 
 			
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
@@ -264,7 +267,11 @@ public class ControlPoker {
 				System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				System.out.println("Turno en general: "+turnoActual);
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
-					vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(dineroInicial));
+					for(int i=0;i<jugadoresCPU.size();i++) {
+						if(jugadoresCPU.get(i).getNombre()==nombreJugador) {
+							vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						}
+					}
 					verificarApuesta(nombreJugador);
 					controlar++;
 					
@@ -309,12 +316,12 @@ public class ControlPoker {
 				if(tipoRonda == false) { //Ronda de descarte
 					System.out.print("Empiezo ronda apuesta");
 					tipoRonda = true;
-					verificarApuestasFinal(nombreJugador);
 					turnoActual = 1;
 					panelUsuario.setSiguienteTurno(false);
 				}
 				if(tipoRonda && panelUsuario.getSiguienteTurno()) { //Ronda de apuesta
 					tipoRonda = false;
+					verificarApuestasFinal(nombreJugador);
 					System.out.print("Empiezo ronda descarte");
 					panelUsuario.setSiguienteTurno(false);
 					System.out.print("Tipo ronda"+tipoRonda);

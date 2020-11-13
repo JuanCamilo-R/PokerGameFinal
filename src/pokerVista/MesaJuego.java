@@ -218,7 +218,7 @@ public class MesaJuego extends JPanel {
 		public void getControl(ControlPoker control) {
 			this.control = control;
 		}
-		
+
 		public void mensaje(String mensaje) {
 			areaEstado.append(mensaje+"\n");
 		}

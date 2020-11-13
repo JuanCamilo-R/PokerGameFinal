@@ -116,8 +116,6 @@ public class JugadorCPU implements Runnable {
 					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
 					break;
 		}
-		System.out.println(nombreJugador+" dinero sobrante al final: "+dineroInicial);
-		System.out.println(nombreJugador+" termino aqui");
 	}
 
  }
