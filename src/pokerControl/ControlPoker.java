@@ -395,7 +395,7 @@ public class ControlPoker {
 		*/
 		dormir = false;
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
-			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
+			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario() && !jugadoresCPU.get(i).getInterrumpido()) {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
 				int apuesta = PanelJugador.apuestaMínima;
 				//System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
