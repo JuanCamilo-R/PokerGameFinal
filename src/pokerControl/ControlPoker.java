@@ -293,7 +293,7 @@ public class ControlPoker {
 						vista.actualizarVistaCartas( jugadoresCPU.get(i).getNombre(),jugadoresCPU.get(i).getCartas());
 						turnoActual++;
 						System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte \n");
-						controlar++;
+						
 						
 						
 					}
@@ -318,14 +318,17 @@ public class ControlPoker {
 					tipoRonda = true;
 					turnoActual = 1;
 					panelUsuario.setSiguienteTurno(false);
+					
 				}
 				if(tipoRonda && !panelUsuario.getSiguienteTurno()) { //Ronda de apuesta
 					tipoRonda = false;
+					controlar++;
 					verificarApuestasFinal(nombreJugador);
 					System.out.print("Empiezo ronda descarte");
 					panelUsuario.setSiguienteTurno(false);
 					System.out.print("Tipo ronda"+tipoRonda);
 					turnoActual = 1;
+					
 					activarRondaDescarte();
 					System.out.print("Tipo turno"+turnoActual);
 				}
@@ -460,8 +463,10 @@ public class ControlPoker {
 	}
 	
 	public void descarteHumano(Carta cartaEliminada) {
-		for(int i=0;i<5;i++) {
+		
+		for(int i=0;i<manoJugadores.get(2).size();i++) {
 			if(cartaEliminada == manoJugadores.get(2).get(i)) {
+				System.out.print("Entreeeeeee a descarte humano");
 				manoJugadores.get(2).remove(i);
 			}
 		}
@@ -471,7 +476,11 @@ public class ControlPoker {
 		for(int i=0;i<nuevasCartas.size();i++) {
 			manoJugadores.get(2).add(nuevasCartas.get(i));
 		}
+		panelUsuario.recibirCartasHumano(manoJugadores.get(2));
 	}
+	
+	
+
 	
 	public void darCartasHumanos(int contadorCartas) {
 		List<Carta> cartasNuevasHumano = new ArrayList<Carta>();

@@ -19,7 +19,7 @@ public class JugadorCPU implements Runnable {
 	private int vecesApuesta = 0;
 	private boolean interrumpido = false;
 	private int paso=1;
-	
+	private int contador;
 	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
 		
@@ -104,10 +104,11 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(!this.interrumpido) {
+		while(!this.interrumpido && control.getControlador()<=2) {
 			switch(paso) {
 				case 1:
 					control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());
+					
 				paso=0;
 				if(turno == 5) {
 					System.out.print("Activo ronda de descarte \n");
@@ -115,7 +116,9 @@ public class JugadorCPU implements Runnable {
 				}
 				break;
 				case 2:
-					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
+					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());
+					
+					paso=1;
 					break;
 		}
 	}

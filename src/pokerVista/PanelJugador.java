@@ -354,7 +354,11 @@ public class PanelJugador extends JPanel {
 		   }
 	   }
 	
-
+	public void recibirCartasHumano(List<Carta> nuevasCartas) {
+		mano.clear();
+		mano = nuevasCartas;
+	}
+	
 	private class Escuchas extends MouseAdapter {
 		public void mouseClicked(MouseEvent event) {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
@@ -403,8 +407,9 @@ public class PanelJugador extends JPanel {
 			for(int i = 0; i < mano.size(); i++) {
 				if(event.getSource() == mano.get(i)) {
 					contadorCartasPedidas++;
-					eliminarCarta(mano.get(i));
 					control.descarteHumano(mano.get(i));
+					eliminarCarta(mano.get(i));
+					
 					refrescarMano();
 					panelMano.revalidate();
 					panelMano.repaint();
@@ -414,13 +419,21 @@ public class PanelJugador extends JPanel {
 			if(event.getSource() == confirmarDescarte) {
 				control.darCartasHumanos(contadorCartasPedidas);
 				
+				refrescarMano();
+				
+				panelMano.revalidate();
+				panelMano.repaint();
+				setSiguienteTurno(true);
+				control.setTurnoActual();
+				control.turnos(10,"hi", 2, 0);
+				
 			}
 			
 			
 		}
 	}
 
-
+	
  
 	
 }
