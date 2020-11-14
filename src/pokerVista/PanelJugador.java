@@ -66,9 +66,7 @@ public class PanelJugador extends JPanel {
 		}
 		
 
-		for(int i = 0; i < mano.size(); i++) {
-			mano.get(i).addMouseListener(escucha);
-		}
+		
 		
 		panelMano = new JPanel();
 		panelMano.setBackground(Color.GREEN);
@@ -399,7 +397,14 @@ public class PanelJugador extends JPanel {
 						saberSiAposto =false;
 						//System.out.println(siguienteTurno);
 						confirmarDescarte.setEnabled(true);
+						confirmarApuesta.setEnabled(false);
+						for(int i = 0; i < mano.size(); i++) {
+							
+							mano.get(i).addMouseListener(escucha);
+						}
 						if(getTurno()==5) {
+							
+							
 							control.activarRondaDescarte();
 						}
 					}
@@ -432,6 +437,9 @@ public class PanelJugador extends JPanel {
 				control.setTurnoActual();
 				System.out.println(nombre.getText()+" TURNO DEL HILO QUE ENTRA: "+getTurno());
 				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
+				
+				confirmarDescarte.setEnabled(false);
+				confirmarApuesta.setEnabled(true);
 				
 				if(getTurno() == 5) {
 					control.activarRondaApuestas();

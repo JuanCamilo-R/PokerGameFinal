@@ -82,7 +82,7 @@ public class Instrucciones extends JFrame {
 		add(apuesta,contraints);
 		
 		
-		textoCuarta = new JLabel("4.Empieza ronda de descarte, podemos apostar dando click sobre las cartas y finalizamos dando en confirmar");
+		textoCuarta = new JLabel("4.Empieza ronda de descarte, podemos descartar dando click sobre las cartas y finalizamos dando en confirmar");
 		textoCuarta.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		contraints.gridx=0;
 		contraints.gridy=5;
