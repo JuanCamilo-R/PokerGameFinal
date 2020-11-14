@@ -109,6 +109,7 @@ public class JugadorCPU implements Runnable {
 					control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());
 				paso=0;
 				if(turno == 5) {
+					System.out.print("Activo ronda de descarte \n");
 					control.activarRondaDescarte();
 				}
 				break;
@@ -117,6 +118,7 @@ public class JugadorCPU implements Runnable {
 					break;
 		}
 	}
+		System.out.print("Mori \n");
 
  }
 }
