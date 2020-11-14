@@ -39,7 +39,8 @@ public class PanelJugador extends JPanel {
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
-	private int turno, apuestaMínima=0;
+	private int turno;
+	public static int apuestaMínima=100;
 	private boolean siguienteTurno;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
@@ -347,16 +348,6 @@ public class PanelJugador extends JPanel {
 		}
 		return 0;
 	}
-	
-
-	public int getApuestaMínima() {
-		return apuestaMínima;
-	}
-
-	public void setApuestaMínima(int apuestaMínima) {
-		this.apuestaMínima = apuestaMínima;
-	}
-
 
 	private void eliminarCarta(Carta cartaEliminar) { 
 		   mano = Collections.synchronizedList(mano);
@@ -389,13 +380,16 @@ public class PanelJugador extends JPanel {
 			}
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
-				if(dineroInicial <= dineroApostado || saberSiAposto==false) {
+				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMínima) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
 					
 				}
 				else {
 					if(control.getTipoRonda()) { //Ronda apuesta
 						System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
+						if(getApuestaUsuario()>apuestaMínima) {
+							apuestaMínima=getApuestaUsuario();
+						}
 						refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 						siguienteTurno = true;
 						//System.out.println("Turno usuario: "+turno);

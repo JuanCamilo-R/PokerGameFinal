@@ -368,7 +368,7 @@ public class ControlPoker {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
 				if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 					System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas en la mitad");
-					int apuesta = panelUsuario.getApuestaMínima();
+					int apuesta = PanelJugador.apuestaMínima;
 					System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
 					jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
 					if(jugadoresCPU.get(i).apostar(apuesta)) {
@@ -397,7 +397,7 @@ public class ControlPoker {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
-				int apuesta = panelUsuario.getApuestaMínima();
+				int apuesta = PanelJugador.apuestaMínima;
 				//System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
 				jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
 				//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
@@ -420,8 +420,8 @@ public class ControlPoker {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
 				if(jugadoresCPU.get(i).apostar(cantidadApuesta)) {
 					System.out.println(jugadoresCPU.get(i).getNombre()+" aposto: "+cantidadApuesta);
-					if(cantidadApuesta>panelUsuario.getApuestaMínima()) {
-						panelUsuario.setApuestaMínima(cantidadApuesta);
+					if(cantidadApuesta>PanelJugador.apuestaMínima) {
+						PanelJugador.apuestaMínima=cantidadApuesta;
 						System.out.println(nombreJugador+" aumentó la apuesta mínima a "+cantidadApuesta);
 					}
 					return true;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import pokerControl.ControlPoker;
+import pokerVista.PanelJugador;
 
 public class JugadorCPU implements Runnable {
 	private String nombreJugador;
