@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import pokerControl.ControlPoker;
 import pokerModelo.Carta;
@@ -157,7 +158,7 @@ public class MesaJuego extends JPanel {
 			constraints.anchor = constraints.NORTHEAST;
 			add(estadoJuego,constraints);
 
-			
+			/*
 			ganadores = new JButton("Ver ganadores");
 			ganadores.setPreferredSize(new Dimension(150,20));
 			constraints.gridx = 4;
@@ -166,31 +167,50 @@ public class MesaJuego extends JPanel {
 			constraints.gridwidth = 1;
 			constraints.anchor = constraints.NORTHEAST;
 			add(ganadores,constraints);
-
+			*/
 			areaEstado = new JTextArea(15,40);
 			areaEstado.setBackground(Color.white);
 			areaEstado.setEditable(false);
 			JScrollPane scroll = new JScrollPane(areaEstado);
-			constraints.gridx = 3;
+			scroll.setPreferredSize(new Dimension(430,300)); 
+			constraints.gridx = 4;
 			constraints.gridy = 4;
 			constraints.gridheight = 3;
 			constraints.gridwidth = 3;
 			constraints.anchor = constraints.CENTER;
 			add(scroll,constraints);
-			
+			/*
 			areaGanadores = new JTextArea(15,40);
 			areaGanadores.setEditable(false);
-			JScrollPane scroll2 = new JScrollPane(areaGanadores);
+			//JScrollPane scroll2 = new JScrollPane(areaGanadores);
 			constraints.gridx = 3;
 			constraints.gridy = 4;
 			constraints.gridheight = 3;
 			constraints.gridwidth = 3;
 			constraints.anchor = constraints.CENTER;
-			add(scroll2,constraints);
+			//add(scroll2,constraints);
+			*/
+			
+		}
+		
+		public void actualizarAreaEstado(int apuestaJugador,String nombreJugador, String mensaje) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					areaEstado.append(nombreJugador+mensaje+apuestaJugador+" \n");
+				}
+			});
 			
 			
 		}
 		public void actualizarMesaApuesta(int apuestaJugador,String nombreJugador, String dineroInicial) {
+			
+			
+			
+			
+			
 			panelJugador1.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 			panelJugador2.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 			//panelJugador3.refrescarLabels(apuestaJugador, nombreJugador);

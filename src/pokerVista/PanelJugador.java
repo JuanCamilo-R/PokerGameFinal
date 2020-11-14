@@ -40,7 +40,7 @@ public class PanelJugador extends JPanel {
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
 	private int turno;
-	public static int apuestaMinima=100;
+	public  static int apuestaMinima=100;
 	private boolean siguienteTurno;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
@@ -381,6 +381,7 @@ public class PanelJugador extends JPanel {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
 					
 				}
+				//Si puedo apostar
 				else {
 					if(control.getTipoRonda()) { //Ronda apuesta
 						System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
@@ -390,7 +391,10 @@ public class PanelJugador extends JPanel {
 						refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 						siguienteTurno = true;
 						//System.out.println("Turno usuario: "+turno);
+						System.out.println("TURNO ACTUAL EN APUESTA ESCUCHAS: "+control.getTurno());
 						control.setTurnoActual();
+						
+						System.out.println(nombre+" TURNO DEL HILO QUE ENTRA: "+getTurno());
 						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
 						saberSiAposto =false;
 						//System.out.println(siguienteTurno);
@@ -424,8 +428,14 @@ public class PanelJugador extends JPanel {
 				panelMano.revalidate();
 				panelMano.repaint();
 				setSiguienteTurno(true);
+				System.out.println("TURNO ACTUAL EN DESCARTE ESCUCHAS: "+control.getTurno());
 				control.setTurnoActual();
-				control.turnos(10,"hi", 2, 0);
+				System.out.println(nombre.getText()+" TURNO DEL HILO QUE ENTRA: "+getTurno());
+				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
+				
+				if(getTurno() == 5) {
+					control.activarRondaApuestas();
+				}
 				
 			}
 			

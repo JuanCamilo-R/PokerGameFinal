@@ -29,7 +29,6 @@ public class JugadorCPU implements Runnable {
 		random = new Random();
 		this.control = control;
 		apostar(100);
-		vecesApuesta++;
 	}
 	
 	public int getApuestaActual() {
@@ -42,8 +41,8 @@ public class JugadorCPU implements Runnable {
 	public void descartarCartas() {
 		for(int i = 0; i < cantidadADescartar; i++) {
 			cartas.remove(0);
-			System.out.print("Cantidad"+cantidadADescartar+"   ");
-			System.out.print("Valor"+cartas.get(0).getValor()+"   ");
+			//System.out.print("Cantidad"+cantidadADescartar+"   ");
+			//System.out.print("Valor"+cartas.get(0).getValor()+"   ");
 			
 		}	
 	}
@@ -75,6 +74,10 @@ public class JugadorCPU implements Runnable {
 		return turno;
 	}
 	
+	public int getVecesApostado() {
+		return vecesApuesta;
+	}
+	
 	public boolean apostar(int cantidad) {
 		if(dineroInicial>= cantidad) {
 			vecesApuesta++;
@@ -101,28 +104,42 @@ public class JugadorCPU implements Runnable {
 	public void iniciarRondaDescarte() {
 		paso = 2;
 	}
+	
+	public void iniciarRondaApuesta() {
+		paso = 1;
+		apuestaActual = 100;
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(!this.interrumpido && control.getControlador()<=2) {
+		while(!this.interrumpido && control.getControlador() <= 2) {
 			switch(paso) {
 				case 1:
+					//Apuesta
 					control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());
 					
 				paso=0;
 				if(turno == 5) {
-					System.out.print("Activo ronda de descarte \n");
+					System.out.println("Activo ronda de descarte \n");
 					control.activarRondaDescarte();
 				}
 				break;
 				case 2:
+					//Descarte
 					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());
+					paso = 0;
+					System.out.println(nombreJugador+" TURNO: "+turno);
+					if(turno == 5) {
+						System.out.println(nombreJugador+" activo ronda de apuesta again");
+						control.activarRondaApuestas();
+					}
 					
-					paso=1;
+					
+					
 					break;
 		}
 	}
-		System.out.print("Mori \n");
+		System.out.print(nombreJugador+" murio \n");
 
  }
 }
