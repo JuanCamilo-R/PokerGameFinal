@@ -40,7 +40,7 @@ public class PanelJugador extends JPanel {
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
 	private int turno;
-	public static int apuestaMínima=100;
+	public static int apuestaMinima=100;
 	private boolean siguienteTurno;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
@@ -373,15 +373,15 @@ public class PanelJugador extends JPanel {
 			}
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
-				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMínima) {
+				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
 					
 				}
 				else {
 					if(control.getTipoRonda()) { //Ronda apuesta
 						System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
-						if(getApuestaUsuario()>apuestaMínima) {
-							apuestaMínima=getApuestaUsuario();
+						if(getApuestaUsuario()>apuestaMinima) {
+							apuestaMinima=getApuestaUsuario();
 						}
 						refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 						siguienteTurno = true;
