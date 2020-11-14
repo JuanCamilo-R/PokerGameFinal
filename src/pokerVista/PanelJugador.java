@@ -396,12 +396,22 @@ public class PanelJugador extends JPanel {
 						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
 						saberSiAposto =false;
 						//System.out.println(siguienteTurno);
-						confirmarDescarte.setEnabled(true);
 						confirmarApuesta.setEnabled(false);
+						
+					if(control.getControlador()<2) {
+						confirmarDescarte.setEnabled(true);
 						for(int i = 0; i < mano.size(); i++) {
 							
 							mano.get(i).addMouseListener(escucha);
 						}
+					}else {
+						confirmarDescarte.setEnabled(false);
+						for(int i = 0; i < mano.size(); i++) {
+							
+							mano.get(i).removeMouseListener(escucha);
+						}
+					}
+						
 						apuesta.setVisible(false);
 						if(getTurno()==5) {
 							
@@ -440,8 +450,13 @@ public class PanelJugador extends JPanel {
 				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
 				
 				confirmarDescarte.setEnabled(false);
+				if(control.getControlador()<2) {
+					apuesta.setVisible(true);
+				}else {
+					apuesta.setVisible(false);
+				}
 				confirmarApuesta.setEnabled(true);
-				apuesta.setVisible(true);
+				
 				if(getTurno() == 5) {
 					control.activarRondaApuestas();
 				}
