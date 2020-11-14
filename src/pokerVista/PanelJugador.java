@@ -298,29 +298,22 @@ public class PanelJugador extends JPanel {
 	
 	public void refrescarCartas(String nombreJugador, List<Carta> cartasNuevas) {
 		SwingUtilities.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				if( nombre.getText() == nombreJugador) {
 					if(nombreJugador == "ElBicho") {
-					//	System.out.println(nombreJugador+" entra a refrescar labels");
 					}
 					System.out.print("Entre a panel"+nombreJugador+"  ");
-					/*for(Carta carta: cartasNuevas) {
-						mano.add(carta);
-					}*/
-					
+
 					panelMano.removeAll();
 					if(cartasNuevas!=null) {
 						for(Carta carta : cartasNuevas) {
 							panelMano.add(carta);
 						}
 					}
-					//refrescarMano();
 					nosotros.revalidate();	
 				    nosotros.repaint();
-				    
 				}
 			}
 			
@@ -405,6 +398,7 @@ public class PanelJugador extends JPanel {
 				if(event.getSource() == mano.get(i)) {
 					contadorCartasPedidas++;
 					eliminarCarta(mano.get(i));
+					control.descarteHumano(mano.get(i));
 					refrescarMano();
 					panelMano.revalidate();
 					panelMano.repaint();
@@ -412,11 +406,15 @@ public class PanelJugador extends JPanel {
 			}
 			
 			if(event.getSource() == confirmarDescarte) {
+				control.darCartasHumanos(contadorCartasPedidas);
 				
 			}
 			
 			
 		}
 	}
+
+
+ 
 	
 }

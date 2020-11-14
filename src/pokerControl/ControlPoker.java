@@ -129,9 +129,7 @@ public class ControlPoker {
 	}
 	
 	
-	public void asignarCartas() {
-		
-	}
+	
 	
 	public void definirJugadoresCPU() {
 		/*JugadorCPU */jugador1 = new JugadorCPU(500, "Samuel", 1, this);
@@ -334,7 +332,7 @@ public class ControlPoker {
 			}
 		}
 	}
-	private void darCartas(int cantidad,int i) {	
+	public void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
 		System.out.print("Dar cartasaaaa \n");
 		List<Carta> cartas2 = new ArrayList<Carta>();
@@ -357,6 +355,7 @@ public class ControlPoker {
 		}
 
 	}
+	
 	public void sumarControl() {
 		controlar++;
 	}
@@ -454,6 +453,28 @@ public class ControlPoker {
 		for(int i = 0; i < jugador.getCantidadADescartar(); i++) {
 			jugador.recibirCartas(baraja.getCarta());
 		}
+	}
+	
+	public void descarteHumano(Carta cartaEliminada) {
+		for(int i=0;i<5;i++) {
+			if(cartaEliminada == manoJugadores.get(2).get(i)) {
+				manoJugadores.get(2).remove(i);
+			}
+		}
+	}
+	
+	public void agregarCarta(List<Carta> nuevasCartas) {
+		for(int i=0;i<nuevasCartas.size();i++) {
+			manoJugadores.get(2).add(nuevasCartas.get(i));
+		}
+	}
+	
+	public void darCartasHumanos(int contadorCartas) {
+		List<Carta> cartasNuevasHumano = new ArrayList<Carta>();
+		for(int i=0;i<contadorCartas;i++) {
+			cartasNuevasHumano.add(baraja.getCarta());
+		}
+		agregarCarta(cartasNuevasHumano);
 	}
 	
 	public void obtenerApuestaUsuario(PanelJugador jugadorUsuario) {
