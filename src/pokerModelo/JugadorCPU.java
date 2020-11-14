@@ -83,6 +83,7 @@ public class JugadorCPU implements Runnable {
 			dineroInicial -=cantidad;
 			return true;
 		}
+		interrumpir();
 		return false;
 	}
 	
