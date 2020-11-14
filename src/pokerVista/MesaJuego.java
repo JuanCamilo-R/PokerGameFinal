@@ -136,16 +136,6 @@ public class MesaJuego extends JPanel {
 			add(panelJugador4,constraints);
 			
 			
-	
-			
-			estadoJuego = new JButton("Ver estado el juego");
-			estadoJuego.setPreferredSize(new Dimension(150,20));
-			constraints.gridx = 4;
-			constraints.gridy = 3;
-			constraints.gridheight = 1;
-			constraints.gridwidth = 1;
-			constraints.anchor = constraints.NORTHEAST;
-			add(estadoJuego,constraints);
 
 			areaEstado = new JTextArea(15,40);
 			areaEstado.setBackground(Color.white);
@@ -158,17 +148,7 @@ public class MesaJuego extends JPanel {
 			constraints.gridwidth = 3;
 			constraints.anchor = constraints.CENTER;
 			add(scroll,constraints);
-			/*
-			areaGanadores = new JTextArea(15,40);
-			areaGanadores.setEditable(false);
-			//JScrollPane scroll2 = new JScrollPane(areaGanadores);
-			constraints.gridx = 3;
-			constraints.gridy = 4;
-			constraints.gridheight = 3;
-			constraints.gridwidth = 3;
-			constraints.anchor = constraints.CENTER;
-			//add(scroll2,constraints);
-			*/
+
 			
 		}
 		

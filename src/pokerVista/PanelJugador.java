@@ -402,6 +402,7 @@ public class PanelJugador extends JPanel {
 							
 							mano.get(i).addMouseListener(escucha);
 						}
+						apuesta.setVisible(false);
 						if(getTurno()==5) {
 							
 							
@@ -440,7 +441,7 @@ public class PanelJugador extends JPanel {
 				
 				confirmarDescarte.setEnabled(false);
 				confirmarApuesta.setEnabled(true);
-				
+				apuesta.setVisible(true);
 				if(getTurno() == 5) {
 					control.activarRondaApuestas();
 				}

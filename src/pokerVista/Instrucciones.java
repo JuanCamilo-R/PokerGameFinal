@@ -119,7 +119,7 @@ public class Instrucciones extends JFrame {
 		contraints.anchor = contraints.WEST;
 		add(textoSexto,contraints);
 		
-		textoSeptimo = new JLabel("Siempre se deben igualar las apuestas");
+		textoSeptimo = new JLabel("Siempre se deben igualar las apuestas, si hay empate se escoge la carta mas alta");
 		textoSeptimo.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		contraints.gridx=0;
 		contraints.gridy=9;
