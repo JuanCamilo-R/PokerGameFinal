@@ -123,7 +123,7 @@ public class PanelJugador extends JPanel {
 			confirmarDescarte.setEnabled(false);
 			confirmarDescarte.addMouseListener(escucha);
 			
-			cederTurno = new JButton("Retirarse");
+			cederTurno = new JButton("Retirarse/iniciar de nuevo");
 			cederTurno.setPreferredSize(new Dimension(190,30));
 			cederTurno.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			cederTurno.addMouseListener(escucha);

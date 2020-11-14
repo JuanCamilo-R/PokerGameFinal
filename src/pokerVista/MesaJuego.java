@@ -8,11 +8,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -21,18 +24,24 @@ import javax.swing.SwingUtilities;
 import pokerControl.ControlPoker;
 import pokerModelo.Carta;
 
+
+
 public class MesaJuego extends JPanel {
 	private PanelJugador panelJugador1,panelJugador2,panelJugador3,panelJugador4,panelJugador5;
 	private ImageIcon imagen;
 	private JLabel logo, tipoRonda,espacio;
-	private JButton salir,estadoJuego,ganadores;
-	private JTextArea areaEstado,areaGanadores;
+	private JButton salir,estadoJuego,instrucciones;
+	private JTextArea areaEstado;
 	private GridBagConstraints constraints;
 	private ControlPoker control;
-	
+	private JPanel panelBotones2;
+	private Escuchas2 escuchas;
+	private Instrucciones instrucciones2;
 		public MesaJuego(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial, ControlPoker control) {
 			this.control = control;
 			this.setBackground(Color.GREEN);
+			escuchas = new Escuchas2();
+			instrucciones2 = new  Instrucciones();
 			initGUI(isHuman,nombre,  manoJugador, dineroInicial);
 		}
 		
@@ -90,26 +99,28 @@ public class MesaJuego extends JPanel {
 			constraints.fill = constraints.CENTER;
 			add(tipoRonda, constraints);
 			
+			panelBotones2 = new JPanel();
+			panelBotones2.setLayout(new GridLayout(3,1));
+			panelBotones2.setBackground(Color.GREEN);
 			
 			salir = new JButton("Salirse");
 			salir.setFont(new Font("Times New Roman", Font.BOLD, 20));
+			salir.addMouseListener(escuchas);
+			panelBotones2.add(salir);
+			
+			instrucciones = new JButton("Instrucciones");
+			instrucciones.setFont(new Font("Times New Roman", Font.BOLD, 20));
+			instrucciones.addMouseListener(escuchas);
+			panelBotones2.add(instrucciones);
+			
+
 			constraints.gridx =1;
 			constraints.gridy =2;
 			constraints.gridwidth =1;
 			constraints.gridheight =1;
 			constraints.anchor = constraints.CENTER;
 			constraints.fill = constraints.CENTER;
-			add(salir, constraints);
-			
-			espacio = new JLabel("   ");
-			espacio.setFont(new Font("Times New Roman", Font.BOLD, 20));
-			constraints.gridx =1;
-			constraints.gridy =3;
-			constraints.gridwidth =1;
-			constraints.gridheight =1;
-			constraints.anchor = constraints.CENTER;
-			constraints.fill = constraints.CENTER;
-			add(espacio, constraints);
+			add(panelBotones2,constraints);
 			
 			
 			constraints.gridx =4;
@@ -124,29 +135,7 @@ public class MesaJuego extends JPanel {
 			constraints.gridheight =1;
 			add(panelJugador4,constraints);
 			
-			/*
-			panelEstado= new JPanel();
-			panelEstado.setLayout(new GridLayout(2,2));
 			
-			estadoJuego = new JButton("Ver estado el juego");
-			estadoJuego.setPreferredSize(new Dimension(10,10));
-			panelEstado.add(estadoJuego);
-			
-			ganadores = new JButton("Ver ganadores");
-			ganadores.setPreferredSize(new Dimension(10,10));
-			panelEstado.add(ganadores);
-		
-			//areaEstado,areaGanadores;
-			areaEstado = new JTextArea("");
-			//areaEstado.setPreferredSize(new Dimension(100,100));
-			panelEstado.add(areaEstado);
-			
-			constraints.gridx = 4;
-			constraints.gridy = 4;
-			constraints.gridheight = 1;
-			constraints.gridwidth = 1;
-			constraints.anchor = GridBagConstraints.NORTH;
-			add(panelEstado,constraints);*/
 	
 			
 			estadoJuego = new JButton("Ver estado el juego");
@@ -158,16 +147,6 @@ public class MesaJuego extends JPanel {
 			constraints.anchor = constraints.NORTHEAST;
 			add(estadoJuego,constraints);
 
-			/*
-			ganadores = new JButton("Ver ganadores");
-			ganadores.setPreferredSize(new Dimension(150,20));
-			constraints.gridx = 4;
-			constraints.gridy = 4;
-			constraints.gridheight = 1;
-			constraints.gridwidth = 1;
-			constraints.anchor = constraints.NORTHEAST;
-			add(ganadores,constraints);
-			*/
 			areaEstado = new JTextArea(15,40);
 			areaEstado.setBackground(Color.white);
 			areaEstado.setEditable(false);
@@ -245,5 +224,21 @@ public class MesaJuego extends JPanel {
 		
 		public void espaciar() {
 			mensaje("****************************************************************************************");
+		}
+		
+		private class Escuchas2 extends MouseAdapter {
+			public void mouseClicked(MouseEvent event) {
+				
+				if(event.getSource() == salir) {
+					System.exit(0);
+				}
+				
+				if (event.getSource() == instrucciones) {
+					instrucciones2.setVisible(true);
+
+				}
+			}
+			
+			
 		}
 }
