@@ -38,7 +38,7 @@ public class PanelJugador extends JPanel {
 	private Escuchas escucha;
 	private JButton confirmarApuesta, cederTurno, fichaDiez, fichaCinco, fichaCien, confirmarDescarte;
 	private ImageIcon imagen;
-	private int turno;
+	private int turno, apuestaMínima=0;
 	private boolean siguienteTurno;
 	private GridBagConstraints constraints;
 	private Border loweredbevel;
@@ -95,7 +95,7 @@ public class PanelJugador extends JPanel {
 			dineroApostado = new JLabel("Dinero apostado: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial-100));
-			numeroDineroApostado = new JLabel("100");
+			numeroDineroApostado = new JLabel("0");
 			
 			panelFichas= new JPanel();
 			panelFichas.setLayout(new FlowLayout());
@@ -206,7 +206,7 @@ public class PanelJugador extends JPanel {
 			dineroApostado = new JLabel("|   Dinero apostado: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial));
-			numeroDineroApostado = new JLabel("100");
+			numeroDineroApostado = new JLabel("0");
 			
 			this.dineroInicial.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			dineroApostado.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -284,6 +284,7 @@ public class PanelJugador extends JPanel {
 					//System.out.println("Entro a refrescarLabels");
 					numeroDineroInicial.setText(dineroInicial);
 					numeroDineroApostado.setText(String.valueOf(apuesta));
+					System.out.println("El dinero apostado es "+apuesta);
 					nosotros.revalidate();	
 				    nosotros.repaint();
 				    
@@ -345,6 +346,14 @@ public class PanelJugador extends JPanel {
 		return 0;
 	}
 	
+	public int getApuestaMínima() {
+		return apuestaMínima;
+	}
+
+	public void setApuestaMínima(int apuestaMínima) {
+		this.apuestaMínima = apuestaMínima;
+	}
+
 	private class Escuchas extends MouseAdapter {
 		public void mouseClicked(MouseEvent event) {
 			int dineroInicial = Integer.parseInt(numeroDineroInicial.getText());
