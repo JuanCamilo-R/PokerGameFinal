@@ -226,6 +226,7 @@ public class MesaJuego extends JPanel {
 				}
 				
 				if(event.getSource() == cederTurno) {
+					control.interrumpirJuego();
 					control.reiniciarJuego();
 				}
 				

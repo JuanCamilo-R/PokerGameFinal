@@ -77,10 +77,13 @@ public class JugadorCPU implements Runnable {
 	public int getVecesApostado() {
 		return vecesApuesta;
 	}
-	
+	public void reiniciarApuesta() {
+		apuestaActual = 0;
+	}
 	public boolean apostar(int cantidad) {
 		if(dineroInicial>= cantidad) {
 			vecesApuesta++;
+			System.out.println(nombreJugador+ " a puesta "+cantidad+" en su objeto");
 			//System.out.println(nombreJugador+" apuesta veces: "+vecesApuesta);
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad;
@@ -112,7 +115,7 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(control.getControlador() <= 2) {
+		while(control.getControlador() <= 2 && !this.interrumpido) {
 			switch(paso) {
 				case 1:
 					//Apuesta
@@ -142,7 +145,7 @@ public class JugadorCPU implements Runnable {
 					break;
 		}
 	}
-		//System.out.print(nombreJugador+" murio \n");
+		System.out.print(nombreJugador+" murio \n");
 
  }
 }
