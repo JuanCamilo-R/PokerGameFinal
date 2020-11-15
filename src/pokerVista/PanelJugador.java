@@ -262,15 +262,16 @@ public class PanelJugador extends JPanel {
 						mano.add(carta);
 					}
 					refrescarMano();
-					
+					contadorCartasPedidas = 0;
 					numeroDineroApostado.setText("0");
 					numeroDineroInicial.setText(String.valueOf(dineroInicial-100));
 					//fichaCinco.addMouseListener(escucha);
 					//fichaDiez.addMouseListener(escucha);
 					//fichaCien.addMouseListener(escucha);
 					confirmarApuesta.setEnabled(true);
-					//confirmarApuesta.addMouseListener(escucha);
+					confirmarApuesta.addMouseListener(escucha);
 					confirmarDescarte.setEnabled(false);
+					confirmarDescarte.addMouseListener(escucha);
 					nosotros.revalidate();
 					nosotros.repaint();
 				}else {
@@ -435,7 +436,7 @@ public class PanelJugador extends JPanel {
 						//System.out.println(siguienteTurno);
 						confirmarApuesta.setEnabled(false);
 						confirmarApuesta.removeMouseListener(escucha);
-					if(control.getControlador()<=2) {
+					if(control.getControlador()<2) {
 						confirmarDescarte.setEnabled(true);
 						
 						apuesta.setText("Descarta...");
@@ -445,7 +446,7 @@ public class PanelJugador extends JPanel {
 							System.out.println(mano.get(i));
 							mano.get(i).addMouseListener(escucha);
 						}
-						fichaCinco.removeMouseMotionListener(escucha);
+						fichaCinco.removeMouseListener(escucha);
 						fichaDiez.removeMouseListener(escucha);
 						fichaCien.removeMouseListener(escucha);
 					}else {

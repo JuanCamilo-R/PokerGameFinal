@@ -208,7 +208,8 @@ public class MesaJuego extends JPanel {
 		}
 		
 		public void reiniciarJuego(List<List<Carta>> cartas, List<Integer> dineroInicial) {
-			areaEstado.removeAll();
+			areaEstado.selectAll();
+			areaEstado.replaceSelection("");
 			panelJugador1.reiniciarJuego(cartas.get(0), dineroInicial.get(0));
 			panelJugador2.reiniciarJuego(cartas.get(1), dineroInicial.get(1));
 			panelJugador3.reiniciarJuego(cartas.get(2), dineroInicial.get(2));

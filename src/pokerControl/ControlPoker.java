@@ -166,7 +166,7 @@ public class ControlPoker {
 		int aux = random.nextInt(5)+1;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
-		switch(aux) {
+		switch(1) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
