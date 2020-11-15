@@ -254,6 +254,7 @@ public class PanelJugador extends JPanel {
 			public void run() {
 				// TODO Auto-generated method stub
 				if(isHuman) {
+					PanelJugador.apuestaMinima = 100;
 					apuesta.setText("Apuesta");
 					apuesta.setVisible(true);
 					mano.clear();
@@ -273,6 +274,7 @@ public class PanelJugador extends JPanel {
 					nosotros.revalidate();
 					nosotros.repaint();
 				}else {
+					PanelJugador.apuestaMinima = 100;
 					mano.clear();
 					for(Carta carta: cartas) {
 						mano.add(carta);
@@ -413,6 +415,9 @@ public class PanelJugador extends JPanel {
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
+					System.out.println("DINERO INICIAL: "+dineroInicial);
+					System.out.println("DINERO APOSTADO: "+dineroApostado);
+					System.out.println("DINERO APUESTA MINIMA: "+apuestaMinima);
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
 					
 				}
@@ -486,6 +491,7 @@ public class PanelJugador extends JPanel {
 			
 			if(event.getSource() == confirmarDescarte) {
 				control.darCartasHumanos(contadorCartasPedidas);
+				PanelJugador.apuestaMinima = 0;
 				refrescarMano();
 				//System.out.println("CARTAS PEDIDAS: "+ contadorCartasPedidas);
 				//System.out.println("Mano size: "+mano.size());
@@ -499,7 +505,10 @@ public class PanelJugador extends JPanel {
 				//System.out.println(" controlador: "+control.getControlador());
 				confirmarDescarte.setEnabled(false);
 				confirmarDescarte.removeMouseListener(escucha);
-				
+				for(int i = 0; i < mano.size(); i++) {
+					System.out.println(mano.get(i));
+					mano.get(i).removeMouseListener(escucha);
+				}
 				if(control.getControlador()<=2) {
 					numeroDineroApostado.setText("0");
 					
