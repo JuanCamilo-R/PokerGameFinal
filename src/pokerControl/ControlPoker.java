@@ -2,6 +2,7 @@ package pokerControl;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -43,14 +44,17 @@ public class ControlPoker {
 	private Condition esperarTurnoDescarte = bloqueo.newCondition();
 	private boolean tipoRonda = true; //True si es el momento de apostar y false si es el momento de descartar
 	private List<JugadorCPU> jugadoresCPU;
+	List<List<Carta>> manosIguales;
 	private int posicionDescarte;
 	private int controlador;
+	private int posicionEmpate;
 	public ControlPoker() {
 		turnos = new ArrayList<Integer>();
 		nombres = new ArrayList<String>();
 		random = new Random();
 		jugadoresCPU = new ArrayList<JugadorCPU>();
 		tipoJugador = new ArrayList<Boolean>();
+		manosIguales = new ArrayList<List<Carta>>();
 		dinero = new ArrayList<Integer>();
 		baraja = new Baraja();
 		descarte = new int[5];
@@ -244,6 +248,19 @@ public class ControlPoker {
 		turnoActual = 1;
 		setControlador();
 		System.out.println("CONTROLADOR EN DESCARTE: "+controlador);
+		if(controlador == 3) {
+			System.out.println("Entro a controlador = 3");
+			System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
+			verCartas();
+			/*
+			List<Carta> manoJugadorSamuel;
+			System.out.println("");
+			manoJugadorSamuel = ordenarPorNumero(manoJugadores.get(0));
+			for(int i = 0; i < manoJugadorSamuel.size(); i++) {
+				System.out.print(manoJugadorSamuel.get(i).getValorNumerico()+ "  ");
+			}
+			*/
+		}
 		tipoRonda = false;
 		for(int i=0;i<jugadoresCPU.size();i++) {
 			jugadoresCPU.get(i).iniciarRondaDescarte();
@@ -696,7 +713,7 @@ public class ControlPoker {
 		}
 		return false;
 	}
-	
+	//Obtengo la carta de mayor numero
 	public Carta cartaAlta(List<Carta> manoJugador) {
 		List<Carta> manoJugadorOrdenada;
 		manoJugadorOrdenada = ordenarPorNumero(manoJugador);
@@ -741,18 +758,108 @@ public class ControlPoker {
 		}
 	}
 	
-	public void determinarGanador() {
+	public void verCartas() {
+		System.out.println("Mano jugadores: ");
+		for(int i = 0; i < manoJugadores.size(); i++) {
+			System.out.println(manoJugadores.get(i));
+		}
+	}
+	
+	public String determinarGanador(List<Pair<Integer, List<Carta>>> parejaJugadasManos) {
+		int contador = 1;
+		int valor = 0;
+		//No hay parejas
+		if(!checkRepeatPlay(parejaJugadasManos)) {
+			List<Carta> manoGanadora = parejaJugadasManos.get(4).getValue();
+			System.out.println("NO HAY EMPATE");
+			System.out.println("Mano Ganadora: ");
+			for(int i = 0; i < manoGanadora.size(); i++) {
+				System.out.println(manoGanadora.get(i));
+			}
+			for(int i = 0; i < manoJugadores.size(); i++) {
+				for(int j = 0; j < manoJugadores.get(i).size(); j++) {
+					if(manoJugadores.get(i).get(j).getValor() == manoGanadora.get(j).getValor() &&
+					   manoJugadores.get(i).get(j).getValorNumerico() == manoGanadora.get(j).getValorNumerico()) 
+					{
+						contador++;
+						if(contador == 5) {
+							valor = i;
+							break;
+						}
+					}
+				}
+			}
+			System.out.println("Contador en comparar en no empate: "+contador);
+			System.out.println("Valor en no empate: "+valor);
+			return getNombreGanador(valor);
+			
+		}else {
+			int aux;
+			int comparacion;
+			aux = cartaAlta(manosIguales.get(0)).getValorNumerico();
+			for(int i = 1; i < manosIguales.size(); i++) {
+				comparacion = cartaAlta(manosIguales.get(i)).getValorNumerico();
+				if(aux <= comparacion) {
+					aux = comparacion;
+				}
+			}
+			return getNombreGanador(buscarCarta(aux));
+		}
+	}
+	
+	public int buscarCarta(int numero) {
+		int valor = 0;
+		int valorFinal = 0;
+		for(int i = 0; i < manosIguales.size(); i++) {
+			if(numero == cartaAlta(manosIguales.get(i)).getValorNumerico()) {
+				valor = i;
+			}
+		}
+		
+		for(int i = 0; i < manoJugadores.size(); i++) {
+			if(manosIguales.get(valor) == manoJugadores.get(i)) {
+				valorFinal = i;
+			}
+		}
+		
+		return valorFinal;
+	}
+	
+	public String getNombreGanador(int valor) {
+		switch(valor) {
+			case 0:
+				return "Samuel";
+			case 1:
+				return "David";
+			case 2:
+				return "ElBicho";
+			case 3:
+				return "Valentina";
+			case 4:
+				return "Santiago";
+			default:
+				return "";
+		
+		}
+	}
+	
+	public List<Pair<Integer, List<Carta>>> determinarParejas() {
 		//La mano de cada jugador se empareja con una jugada respectiva
 		List<Pair<Integer, List<Carta>>> parejaJugadasManos = new ArrayList<Pair<Integer, List<Carta>>>();
 		List<Carta> manoJugadaOrdenada = new ArrayList<Carta>();
 		
 		for(int i = 0; i < 5; i++) {
-			manoJugadaOrdenada.clear();
 			manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(i));
 			parejaJugadasManos.add(new Pair<Integer, List<Carta>>(determinarJugada(manoJugadores.get(i)), manoJugadaOrdenada));
+			
 		}
 		
 		parejaJugadasManos = ordenarParejas(parejaJugadasManos);
+		for(int i = 0; i < parejaJugadasManos.size(); i++) {
+			System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
+			System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
+		}
+		return parejaJugadasManos;
 		
 		
 	}
@@ -762,9 +869,22 @@ public class ControlPoker {
 		for(int i = 0; i < 5; i++) {
 			jugadas.add(parejaJugadasManos.get(i).getKey());
 		}
+		
+		for(int i = 0; i < jugadas.size() - 1; i++) {
+			if(jugadas.get(i) == jugadas.get(i+1) && Collections.max(jugadas) == jugadas.get(i+1)) {
+				
+				manosIguales.add(parejaJugadasManos.get(i).getValue());
+				manosIguales.add(parejaJugadasManos.get(i+1).getValue());
+			}
+		}
+		for(int i = 0; i < manosIguales.size(); i++) {
+			System.out.println("MANOS IGUALES");
+			System.out.println(manosIguales.get(i));
+		}
 		if(jugadas.get(4) == jugadas.get(3)) {
 			return true;
 		}
+		
 		return false;
 	}
 	//Ordenamos parejas de menor a mayor dependiendo de su jugada final
