@@ -83,7 +83,7 @@ public class JugadorCPU implements Runnable {
 	public boolean apostar(int cantidad) {
 		if(dineroInicial>= cantidad) {
 			vecesApuesta++;
-			System.out.println(nombreJugador+ " a puesta "+cantidad+" en su objeto");
+			System.out.println(nombreJugador+ " apuesta "+cantidad+" en su objeto");
 			//System.out.println(nombreJugador+" apuesta veces: "+vecesApuesta);
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad;

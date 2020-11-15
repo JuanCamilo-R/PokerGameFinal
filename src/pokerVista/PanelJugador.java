@@ -519,14 +519,16 @@ public class PanelJugador extends JPanel {
 					fichaCinco.addMouseListener(escucha);
 					fichaDiez.addMouseListener(escucha);
 					fichaCien.addMouseListener(escucha);
+					confirmarApuesta.setEnabled(true);
+					confirmarApuesta.addMouseListener(escucha);
 				}else {
 					apuesta.setVisible(false);
 					fichaCinco.removeMouseListener(escucha);
 					fichaDiez.removeMouseListener(escucha);
 					fichaCien.removeMouseListener(escucha);
 				}
-				confirmarApuesta.setEnabled(true);
-				confirmarApuesta.addMouseListener(escucha);
+				System.out.println("LLEGUE");
+				
 				
 				if(getTurno() == 5) {
 					control.activarRondaApuestas();

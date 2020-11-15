@@ -171,7 +171,7 @@ public class ControlPoker {
 		int aux = random.nextInt(5)+1;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
-		switch(4) {
+		switch(1) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
@@ -270,10 +270,10 @@ public class ControlPoker {
 	public void reiniciarApuestas() {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			System.out.println(jugadoresCPU.get(i).getNombre()+" tiene como turno: "+jugadoresCPU.get(i).getTurno());
-			if(jugadoresCPU.get(i).getTurno() > panelUsuario.getTurno()) {
+			//if(jugadoresCPU.get(i).getTurno() > panelUsuario.getTurno()) {
 				jugadoresCPU.get(i).reiniciarApuesta();
 				System.out.println(jugadoresCPU.get(i).getNombre()+" apuesta actual: "+jugadoresCPU.get(i).getApuestaActual());
-			}
+			//}
 			mesaJuego.actualizarMesaApuesta(jugadoresCPU.get(i).getApuestaActual(),jugadoresCPU.get(i).getNombre()
 					, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 		}
