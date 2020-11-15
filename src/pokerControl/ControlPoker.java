@@ -137,9 +137,14 @@ public class ControlPoker {
 	}
 	
 	public void reiniciarJuego() {
+		System.out.print("\033[H\033[2J");  
+	    System.out.flush();  
 		tipoRonda = true;
 		controlador = 0;
 		turnoActual = 1;
+		for(int i = 0; i < 5; i++) {
+			manoJugadores.get(i).clear();
+		}
 		manoJugadores.clear();
 		jugadoresCPU.clear();
 		manosIguales.clear();
@@ -166,7 +171,7 @@ public class ControlPoker {
 		int aux = random.nextInt(5)+1;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
-		switch(1) {
+		switch(5) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
@@ -269,8 +274,8 @@ public class ControlPoker {
 		
 		//System.out.println("CONTROLADOR EN DESCARTE: "+controlador);
 		if(controlador == 3) {
-			//System.out.println("Entro a controlador = 3");
-			//System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
+			System.out.println("Entro a controlador = 3");
+			System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
 			/*
 			List<Carta> manoJugadorSamuel;
 			System.out.println("");
@@ -531,7 +536,7 @@ public class ControlPoker {
 	}
 	//Descarta y se le da cartas al instante
 	public void descartarCartas(JugadorCPU jugador) {
-		jugador.descartarCartas();
+		//jugador.descartarCartas();
 		//Damos la cantidad de cartas que el jugador descarto
 		for(int i = 0; i < jugador.getCantidadADescartar(); i++) {
 			jugador.recibirCartas(baraja.getCarta());
@@ -542,16 +547,25 @@ public class ControlPoker {
 		
 		for(int i=0;i<manoJugadores.get(2).size();i++) {
 			if(cartaEliminada == manoJugadores.get(2).get(i)) {
+				//System.out.println("Elimino carta "+cartaEliminada.getValorNumerico());
 				//System.out.print("Entreeeeeee a descarte humano");
 				manoJugadores.get(2).remove(i);
 			}
 		}
+		//System.out.println("MANO EN DESCARTE HUMANO CONTROL");
+		//for(int i = 0; i < manoJugadores.get(2).size(); i++) {
+			//System.out.println(manoJugadores.get(2));
+		//}
 	}
 	
 	public void agregarCarta(List<Carta> nuevasCartas) {
+		
+		//System.out.println("MANO JUGADOR HUMANO ANTES DE AÑADIR NUEVAS CARTAS");
+		//System.out.println(manoJugadores.get(2));
 		for(int i=0;i<nuevasCartas.size();i++) {
 			manoJugadores.get(2).add(nuevasCartas.get(i));
 		}
+		//System.out.println("MANO JUGADOR HUMANO EN CONTROL SIZE: "+manoJugadores.get(2));
 		panelUsuario.recibirCartasHumano(manoJugadores.get(2));
 	}
 	
@@ -563,6 +577,8 @@ public class ControlPoker {
 		for(int i=0;i<contadorCartas;i++) {
 			cartasNuevasHumano.add(baraja.getCarta());
 		}
+		System.out.println("CARTAS NUEVAS HUMANO");
+		System.out.println(cartasNuevasHumano);
 		agregarCarta(cartasNuevasHumano);
 	}
 	
@@ -795,13 +811,13 @@ public class ControlPoker {
 		//No hay parejas
 		if(!checkRepeatPlay(parejaJugadasManos)) {
 			List<Carta> manoGanadora = parejaJugadasManos.get(4).getValue();
-			//System.out.println("NO HAY EMPATE");
-			//System.out.println("Mano Ganadora: ");
-			/*
+			System.out.println("NO HAY EMPATE");
+			System.out.println("Mano Ganadora: ");
+			
 			for(int i = 0; i < manoGanadora.size(); i++) {
 				System.out.println(manoGanadora.get(i));
 			}
-			*/
+			
 			for(int i = 0; i < manoJugadores.size(); i++) {
 				for(int j = 0; j < manoJugadores.get(i).size(); j++) {
 					if(manoJugadores.get(i).get(j).getValor() == manoGanadora.get(j).getValor() &&
@@ -815,8 +831,8 @@ public class ControlPoker {
 					}
 				}
 			}
-			//System.out.println("Contador en comparar en no empate: "+contador);
-			//System.out.println("Valor en no empate: "+valor);
+			System.out.println("Contador en comparar en no empate: "+contador);
+			System.out.println("Valor en no empate: "+valor);
 			return getNombreGanador(valor);
 			
 		}else {
@@ -881,8 +897,8 @@ public class ControlPoker {
 		
 		parejaJugadasManos = ordenarParejas(parejaJugadasManos);
 		for(int i = 0; i < parejaJugadasManos.size(); i++) {
-			//System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
-			//System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
+			System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
+			System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
 		}
 		return parejaJugadasManos;
 		
@@ -902,12 +918,12 @@ public class ControlPoker {
 				manosIguales.add(parejaJugadasManos.get(i+1).getValue());
 			}
 		}
-		/*
+		
 		for(int i = 0; i < manosIguales.size(); i++) {
-			//System.out.println("MANOS IGUALES");
-			//System.out.println(manosIguales.get(i));
+			System.out.println("MANOS IGUALES");
+			System.out.println(manosIguales.get(i));
 		}
-		*/
+		
 		if(jugadas.get(4) == jugadas.get(3)) {
 			return true;
 		}

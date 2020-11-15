@@ -123,7 +123,6 @@ public class PanelJugador extends JPanel {
 			confirmarDescarte.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			confirmarDescarte.setPreferredSize(new Dimension(190,30));
 			confirmarDescarte.setEnabled(false);
-			confirmarDescarte.addMouseListener(escucha);
 			
 			
 			
@@ -271,7 +270,6 @@ public class PanelJugador extends JPanel {
 					confirmarApuesta.setEnabled(true);
 					confirmarApuesta.addMouseListener(escucha);
 					confirmarDescarte.setEnabled(false);
-					confirmarDescarte.addMouseListener(escucha);
 					nosotros.revalidate();
 					nosotros.repaint();
 				}else {
@@ -385,7 +383,8 @@ public class PanelJugador extends JPanel {
 					 mano.remove(i);
 				 }   
 			   }
-			   
+			   //System.out.println("MANO EN PANEL JUGADOR");
+			   //System.out.println(mano);
 		   }
 	   }
 	
@@ -438,10 +437,10 @@ public class PanelJugador extends JPanel {
 						confirmarApuesta.removeMouseListener(escucha);
 					if(control.getControlador()<2) {
 						confirmarDescarte.setEnabled(true);
-						
+						confirmarDescarte.addMouseListener(escucha);
 						apuesta.setText("Descarta...");
-						System.out.println("Mano size: "+mano.size());
-						System.out.println("IMPRIMIR MANO:.....");
+						//System.out.println("Mano size: "+mano.size());
+						//System.out.println("IMPRIMIR MANO:.....");
 						for(int i = 0; i < mano.size(); i++) {
 							System.out.println(mano.get(i));
 							mano.get(i).addMouseListener(escucha);
@@ -453,6 +452,9 @@ public class PanelJugador extends JPanel {
 						apuesta.setText("");
 						confirmarDescarte.setEnabled(false);
 						confirmarDescarte.removeMouseListener(escucha);
+						fichaCinco.removeMouseListener(escucha);
+						fichaDiez.removeMouseListener(escucha);
+						fichaCinco.removeMouseListener(escucha);
 						for(int i = 0; i < mano.size(); i++) {
 							mano.get(i).removeMouseListener(escucha);
 						}
@@ -483,10 +485,9 @@ public class PanelJugador extends JPanel {
 			
 			if(event.getSource() == confirmarDescarte) {
 				control.darCartasHumanos(contadorCartasPedidas);
-				
 				refrescarMano();
-				
-				
+				System.out.println("CARTAS PEDIDAS: "+ contadorCartasPedidas);
+				System.out.println("Mano size: "+mano.size());
 				setSiguienteTurno(true);
 				System.out.println("TURNO ACTUAL EN DESCARTE ESCUCHAS: "+control.getTurno());
 				control.setTurnoActual();
@@ -495,6 +496,7 @@ public class PanelJugador extends JPanel {
 				System.out.println(" controlador: "+control.getControlador());
 				confirmarDescarte.setEnabled(false);
 				confirmarDescarte.removeMouseListener(escucha);
+				
 				if(control.getControlador()<=2) {
 					System.out.println("ENTRO A CONDICION DE CONTROLADOR");
 					apuesta.setText("Apuesta...");
@@ -504,6 +506,9 @@ public class PanelJugador extends JPanel {
 					fichaCien.addMouseListener(escucha);
 				}else {
 					apuesta.setVisible(false);
+					fichaCinco.removeMouseListener(escucha);
+					fichaDiez.removeMouseListener(escucha);
+					fichaCien.removeMouseListener(escucha);
 				}
 				confirmarApuesta.setEnabled(true);
 				confirmarApuesta.addMouseListener(escucha);
