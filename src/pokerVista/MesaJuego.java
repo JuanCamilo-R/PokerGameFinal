@@ -30,7 +30,7 @@ public class MesaJuego extends JPanel {
 	private PanelJugador panelJugador1,panelJugador2,panelJugador3,panelJugador4,panelJugador5;
 	private ImageIcon imagen;
 	private JLabel logo, tipoRonda,espacio;
-	private JButton salir,estadoJuego,instrucciones;
+	private JButton salir,estadoJuego,instrucciones, cederTurno;
 	private JTextArea areaEstado;
 	private GridBagConstraints constraints;
 	private ControlPoker control;
@@ -42,17 +42,18 @@ public class MesaJuego extends JPanel {
 			this.setBackground(Color.GREEN);
 			escuchas = new Escuchas2();
 			instrucciones2 = new  Instrucciones();
-			initGUI(isHuman,nombre,  manoJugador, dineroInicial);
-		}
-		
-		public void initGUI(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial) {
-			this.setLayout(new GridBagLayout());
-			constraints = new GridBagConstraints();
 			panelJugador1 = new PanelJugador(isHuman.get(0),nombre.get(0),manoJugador.get(0),dineroInicial.get(0), this.control);
 			panelJugador2 = new PanelJugador(isHuman.get(1),nombre.get(1),manoJugador.get(1),dineroInicial.get(1), this.control);
 			panelJugador3 = new PanelJugador(isHuman.get(2),nombre.get(2),manoJugador.get(2),dineroInicial.get(2), this.control); //Nosotros
 			panelJugador4 = new PanelJugador(isHuman.get(3),nombre.get(3),manoJugador.get(3),dineroInicial.get(3), this.control);
 			panelJugador5 = new PanelJugador(isHuman.get(4),nombre.get(4),manoJugador.get(4),dineroInicial.get(4), this.control);
+			initGUI();
+		}
+		
+		public void initGUI() {
+			this.setLayout(new GridBagLayout());
+			constraints = new GridBagConstraints();
+			
 			 
 			panelJugador1.setBackground(Color.GREEN);
 			panelJugador2.setBackground(Color.GREEN);
@@ -89,19 +90,13 @@ public class MesaJuego extends JPanel {
 			constraints.anchor = constraints.CENTER;
 			add(logo, constraints);
 			
-			tipoRonda = new JLabel("Inicia");
-			tipoRonda.setFont(new Font("Times New Roman", Font.BOLD, 20));
-			constraints.gridx =1;
-			constraints.gridy =1;
-			constraints.gridwidth =1;
-			constraints.gridheight =1;
-			constraints.anchor = constraints.CENTER;
-			constraints.fill = constraints.CENTER;
-			add(tipoRonda, constraints);
+			
 			
 			panelBotones2 = new JPanel();
 			panelBotones2.setLayout(new GridLayout(3,1));
 			panelBotones2.setBackground(Color.GREEN);
+			
+			
 			
 			salir = new JButton("Salirse");
 			salir.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -113,6 +108,11 @@ public class MesaJuego extends JPanel {
 			instrucciones.addMouseListener(escuchas);
 			panelBotones2.add(instrucciones);
 			
+			cederTurno = new JButton("Iniciar de nuevo");
+			cederTurno.setPreferredSize(new Dimension(190,30));
+			cederTurno.setFont(new Font("Times New Roman", Font.BOLD, 20));
+			cederTurno.addMouseListener(escuchas);
+			panelBotones2.add(cederTurno);
 
 			constraints.gridx =1;
 			constraints.gridy =2;
@@ -178,7 +178,7 @@ public class MesaJuego extends JPanel {
 		}
 		
 		public void actualizarMesaCartas(String nombreJugador,List<Carta> cartasNuevas) {
-			System.out.print("Entre a mesa");
+			//System.out.print("Entre a mesa");
 			panelJugador1.refrescarCartas( nombreJugador, cartasNuevas);
 			panelJugador2.refrescarCartas( nombreJugador, cartasNuevas);
 			//panelJugador3.refrescarLabels(apuestaJugador, nombreJugador);
@@ -202,15 +202,30 @@ public class MesaJuego extends JPanel {
 			areaEstado.append(mensaje+"\n");
 		}
 		
+		
 		public void espaciar() {
 			mensaje("****************************************************************************************");
 		}
 		
+		public void reiniciarJuego(List<List<Carta>> cartas, List<Integer> dineroInicial) {
+			areaEstado.removeAll();
+			panelJugador1.reiniciarJuego(cartas.get(0), dineroInicial.get(0));
+			panelJugador2.reiniciarJuego(cartas.get(1), dineroInicial.get(1));
+			panelJugador3.reiniciarJuego(cartas.get(2), dineroInicial.get(2));
+			panelJugador4.reiniciarJuego(cartas.get(3), dineroInicial.get(3));
+			panelJugador5.reiniciarJuego(cartas.get(3), dineroInicial.get(4));
+			this.revalidate();
+			this.repaint();
+		}
 		private class Escuchas2 extends MouseAdapter {
 			public void mouseClicked(MouseEvent event) {
 				
 				if(event.getSource() == salir) {
 					System.exit(0);
+				}
+				
+				if(event.getSource() == cederTurno) {
+					control.reiniciarJuego();
 				}
 				
 				if (event.getSource() == instrucciones) {
