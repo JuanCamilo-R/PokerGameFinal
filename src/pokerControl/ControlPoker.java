@@ -39,6 +39,7 @@ public class ControlPoker {
 	private int[] descarte;
 	private int ronda = 0;
 	private boolean dormir = false;
+	private boolean asteriscosAbiertos = false;
 	private Lock bloqueo = new ReentrantLock(); //manejo de sincronizacion
 	private Condition esperarTurnoApuesta = bloqueo.newCondition(); //manejo de sincronizacion
 	private Condition esperarTurnoDescarte = bloqueo.newCondition();
@@ -171,7 +172,7 @@ public class ControlPoker {
 		int aux = random.nextInt(5)+1;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
-		switch(1) {
+		switch(5) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
@@ -266,26 +267,6 @@ public class ControlPoker {
 	public int getTurno() {
 		return turnoActual;
 	}
-	
-	public void reiniciarApuestas() {
-		for(int i = 0; i < jugadoresCPU.size(); i++) {
-			System.out.println(jugadoresCPU.get(i).getNombre()+" tiene como turno: "+jugadoresCPU.get(i).getTurno());
-			//if(jugadoresCPU.get(i).getTurno() > panelUsuario.getTurno()) {
-				System.out.println(jugadoresCPU.get(i).getNombre()+" apuesta actual: "+jugadoresCPU.get(i).getApuestaActual());
-			//}
-			jugadoresCPU.get(i).reiniciarApuesta();
-			mesaJuego.actualizarMesaApuesta(jugadoresCPU.get(i).getApuestaActual(),jugadoresCPU.get(i).getNombre()
-					, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-			
-		}
-	}
-	
-	public void verApuestas() {
-		for(int i = 0; i < jugadoresCPU.size(); i++) {
-			//System.out.println(jugadoresCPU.get(i).getNombre()+" apuesta actual: "+jugadoresCPU.get(i).getApuestaActual());
-			
-		}
-	}
 	public void activarRondaDescarte() {
 		turnoActual = 1;
 		if(controlador <= 3) {
@@ -316,13 +297,6 @@ public class ControlPoker {
 	public int getControlador() {
 		return controlador;
 	}
-	
-	public void interrumpirJuego() {
-		jugador1.interrumpir();
-		jugador2.interrumpir();
-		jugador4.interrumpir();
-		jugador5.interrumpir();
-	}
 	public void activarRondaApuestas() {
 		turnoActual = 1;
 		tipoRonda = true;
@@ -336,13 +310,18 @@ public class ControlPoker {
 		}
 	}
 	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
+		
 		bloqueo.lock();
-
+			
 
 		//System.out.println(nombreJugador+ "entro a turnos");
 		
 		try
 		{
+			if(!asteriscosAbiertos) {
+				mesaJuego.espaciar();
+				asteriscosAbiertos=true;
+			}
 			
 			
 			if(tipoRonda) { //Ronda de apuesta
@@ -352,7 +331,7 @@ public class ControlPoker {
 				}
 				//System.out.println("Size: "+jugadoresCPU.size());
 				//System.out.println("Turno actual: "+turnoActual);
-				System.out.println("Entro hilo: "+nombreJugador);
+				//System.out.println("Entro hilo: "+nombreJugador);
 				//System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
 				//System.out.println("Turno en general: "+turnoActual);
 				//System.out.println(nombreJugador+" va a apostar en turnos: "+dato);
@@ -362,12 +341,10 @@ public class ControlPoker {
 							vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 						}
 					}
-					if(turnoJugador > panelUsuario.getTurno()) {
-						verificarApuesta(nombreJugador);
-					}
-					
-					
-					
+					verificarApuesta(nombreJugador);
+				}
+				else if(nombreJugador.equals("ElBicho")){
+					vista.actualizarAreaEstado(panelUsuario.getApuestaUsuario(), nombreJugador, " apuesta ");
 				}
 
 				//vista.funcionPrueba();
@@ -383,35 +360,47 @@ public class ControlPoker {
 					System.out.println(nombreJugador+" intento a ronda descarte entrar pero se duerme");
 					esperarTurnoDescarte.await();
 				}
-				System.out.println(nombreJugador+" entro a descartes");
 				if(turnoJugador <= 5) {
-					 posicionDescarte = turnoActual - 1;
-					 descartar(dato, nombreJugador,turnoJugador);
-					 //System.out.println("TURNO ACTUAL EN DESCARTE: "+turnoActual);
-					 turnoActual++;
-					 //System.out.println(nombreJugador+" TURNO DEL HILO QUE ENTRA: "+turnoJugador);
+					posicionDescarte = turnoActual - 1;
+					descartar(dato, nombreJugador,turnoJugador);
+					//System.out.println("TURNO ACTUAL EN DESCARTE: "+turnoActual);
+					turnoActual++;
+					//System.out.println(nombreJugador+" TURNO DEL HILO QUE ENTRA: "+turnoJugador);
 				}
-				//System.out.println(nombreJugador+ "es el encargado de despertar a todos");
+				if(nombreJugador.equals("ElBicho")) {
+					if(panelUsuario.getContadorCartasPedidas()!=1) {
+						mesaJuego.mensaje(nombreJugador+" descartó "+panelUsuario.getContadorCartasPedidas()+" cartas");
+					}
+					else {
+						mesaJuego.mensaje(nombreJugador+" descartó "+panelUsuario.getContadorCartasPedidas()+" carta");
+					}
+				}
+				System.out.println(nombreJugador+ "es el encargado de despertar a todos");
 				esperarTurnoDescarte.signalAll();
 			}
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}finally {
+			/*panelUsuario.setSiguienteTurno(false);
+			if(turnoActual == 6) {
+				verificarApuestasFinal(nombreJugador);
+				System.out.println("Entro al final: "+nombreJugador);
+			}*/
 			bloqueo.unlock();
 			panelUsuario.setSiguienteTurno(false);
-			if(turnoActual == 6 && tipoRonda) {
-				for(int i = 0; i < jugadoresCPU.size(); i++) {
-					if(jugadoresCPU.get(i).getTurno() < panelUsuario.getTurno()) {
-						if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
-							verificarApuestasFinal(jugadoresCPU.get(i).getNombre());
-						}
-					}
+			
+			if(turnoActual == 6) {
+				if(tipoRonda) {
+					verificarApuestasFinal(nombreJugador);
 				}
-			}
+				mesaJuego.espaciar();
+				asteriscosAbiertos=false;
 			}
 		}
+	}
 	
 	public void descartar(int dato, String nombreJugador, int turnoJugador) {
+		System.out.println(nombreJugador+" descartando...");
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getTurno() == turnoActual)
 			{
@@ -420,6 +409,12 @@ public class ControlPoker {
 				jugadoresCPU.get(i).descartarCartas();				
 				darCartas(jugadoresCPU.get(i).getCantidadADescartar(),i);
 				vista.actualizarVistaCartas( jugadoresCPU.get(i).getNombre(),jugadoresCPU.get(i).getCartas());
+				if(jugadoresCPU.get(i).getCantidadADescartar()!=1) {
+					mesaJuego.mensaje(nombreJugador+" descartó "+jugadoresCPU.get(i).getCantidadADescartar()+" cartas");
+				}
+				else {
+					mesaJuego.mensaje(nombreJugador+" descartó "+jugadoresCPU.get(i).getCantidadADescartar()+" carta");
+				}
 				//vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 				//System.out.println("de"+panelUsuario.getSiguienteTurno()+"descarte \n");
 				
@@ -427,6 +422,7 @@ public class ControlPoker {
 				
 			}
 		}
+		
 	}
 	public void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
@@ -455,28 +451,30 @@ public class ControlPoker {
 	public synchronized void verificarApuesta(String nombreJugador) {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
-				if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario() && jugadoresCPU.get(i).getVecesApostado() >= 2) {
-					
+				//System.out.println(jugadoresCPU.get(i).getNombre()+ " veces apostado: "+jugadoresCPU.get(i).getVecesApostado());
+				if(jugadoresCPU.get(i).getApuestaActual() != panelUsuario.getApuestaUsuario()) {
+					//System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas en la mitad");
 					int apuestaCPU = jugadoresCPU.get(i).getApuestaActual();
 					int apuestaUsuario = PanelJugador.apuestaMinima;
-					System.out.println("A "+nombreJugador+" se le devuelve: "+ jugadoresCPU.get(i).getApuestaActual());
+					//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
 					jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
 					if(jugadoresCPU.get(i).apostar(apuestaUsuario)) {
-						System.out.println(nombreJugador+ "apuesta "+jugadoresCPU.get(i).getVecesApostado()+ "veces ");
-						System.out.println(nombreJugador+"apuesta: "+apuestaUsuario);
-						if(jugadoresCPU.get(i).getVecesApostado() != 3) {
-							vista.actualizarVistaApuesta(apuestaUsuario, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						if(jugadoresCPU.get(i).getTurno()<panelUsuario.getTurno() && jugadoresCPU.get(i).getApuestaActual()!=PanelJugador.apuestaMinima) {
+							System.out.println(nombreJugador+ "apuesta: "+apuestaUsuario);
+							//System.out.println("Llego aqui");
 							vista.actualizarAreaEstado(apuestaUsuario, nombreJugador, " apuesta para igualar ");
-							
 						}else {
-							
 							vista.actualizarAreaEstado(apuestaUsuario, nombreJugador, " apuesta ");
+							//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de recibir su apuesta: "+jugadoresCPU.get(i).getDineroInicial());
+							System.out.println("Apuesta de "+nombreJugador+ " ha apostado: "+jugadoresCPU.get(i).getApuestaActual());
 							vista.actualizarVistaApuesta(apuestaUsuario, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 						}
 						
 			
 					}else {
 						vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+						//System.out.println(jugadoresCPU.get(i).getNombre()+ "ha recibido por no poder apostar en la mitad: "+jugadoresCPU.get(i).getApuestaActual());
+						//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de no apostar otra vez en la mitad: "+jugadoresCPU.get(i).getDineroInicial());
 						
 					}
 				}
@@ -496,17 +494,18 @@ public class ControlPoker {
 				System.out.println(jugadoresCPU.get(i).getNombre()+" verifica apuestas al final");
 				int apuestaUsuario = PanelJugador.apuestaMinima;
 				int apuestaCPU = jugadoresCPU.get(i).getApuestaActual();
-				
+				System.out.println("Apuesta de "+jugadoresCPU.get(i).getNombre()+ " antes de apostar otra vez al final "+jugadoresCPU.get(i).getApuestaActual());
 				jugadoresCPU.get(i).devolverApuesta(jugadoresCPU.get(i).getApuestaActual());
-				
+				//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "antes de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
 				
 				if(jugadoresCPU.get(i).apostar(apuestaUsuario)){
 					vista.actualizarAreaEstado(apuestaUsuario, jugadoresCPU.get(i).getNombre(), " apuesta al final para igualar: ");
+					System.out.println("Apuesta de "+nombre+ " ha apostado al final: "+jugadoresCPU.get(i).getApuestaActual());
 					vista.actualizarVistaApuesta(apuestaUsuario, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 			
 				}else {
 					vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-					
+					//System.out.println("Dinero actual de "+jugadoresCPU.get(i).getNombre()+ "despues de apostar otra vez al final: "+jugadoresCPU.get(i).getDineroInicial());
 				
 				}
 			}
@@ -516,8 +515,10 @@ public class ControlPoker {
 		for(int i = 0; i < jugadoresCPU.size(); i++) {
 			if(jugadoresCPU.get(i).getNombre() == nombreJugador) {
 				if(jugadoresCPU.get(i).apostar(cantidadApuesta)) {
+					//System.out.println(jugadoresCPU.get(i).getNombre()+" aposto: "+cantidadApuesta);
 					if(cantidadApuesta>PanelJugador.apuestaMinima) {
 						PanelJugador.apuestaMinima=cantidadApuesta;
+						//System.out.println(nombreJugador+" aumentó la apuesta mínima a "+cantidadApuesta);
 					}
 					return true;
 				}
@@ -556,7 +557,8 @@ public class ControlPoker {
 		
 		for(int i=0;i<manoJugadores.get(2).size();i++) {
 			if(cartaEliminada == manoJugadores.get(2).get(i)) {
-				
+				//System.out.println("Elimino carta "+cartaEliminada.getValorNumerico());
+				//System.out.print("Entreeeeeee a descarte humano");
 				manoJugadores.get(2).remove(i);
 			}
 		}
@@ -819,7 +821,7 @@ public class ControlPoker {
 		//No hay parejas
 		if(!checkRepeatPlay(parejaJugadasManos)) {
 			List<Carta> manoGanadora = parejaJugadasManos.get(4).getValue();
-			//System.out.println("NO HAY EMPATE");
+			System.out.println("NO HAY EMPATE");
 			System.out.println("Mano Ganadora: ");
 			
 			for(int i = 0; i < manoGanadora.size(); i++) {
@@ -839,8 +841,8 @@ public class ControlPoker {
 					}
 				}
 			}
-			//System.out.println("Contador en comparar en no empate: "+contador);
-			//System.out.println("Valor en no empate: "+valor);
+			System.out.println("Contador en comparar en no empate: "+contador);
+			System.out.println("Valor en no empate: "+valor);
 			return getNombreGanador(valor);
 			
 		}else {
@@ -904,10 +906,10 @@ public class ControlPoker {
 		}
 		
 		parejaJugadasManos = ordenarParejas(parejaJugadasManos);
-		//for(int i = 0; i < parejaJugadasManos.size(); i++) {
-			//System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
-			//System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
-		//}
+		for(int i = 0; i < parejaJugadasManos.size(); i++) {
+			System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
+			System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
+		}
 		return parejaJugadasManos;
 		
 		

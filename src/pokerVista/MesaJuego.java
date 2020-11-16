@@ -199,7 +199,12 @@ public class MesaJuego extends JPanel {
 		}
 
 		public void mensaje(String mensaje) {
-			areaEstado.append(mensaje+"\n");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					areaEstado.append(mensaje+"\n");
+				}
+			});
+			
 		}
 		
 		
@@ -226,7 +231,7 @@ public class MesaJuego extends JPanel {
 				}
 				
 				if(event.getSource() == cederTurno) {
-					control.interrumpirJuego();
+					//control.interrumpirJuego();
 					control.reiniciarJuego();
 				}
 				
