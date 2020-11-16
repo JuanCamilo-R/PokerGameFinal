@@ -407,6 +407,13 @@ public class ControlPoker {
 			}
 		}
 	}
+	
+	public void interrumpirHilos() {
+		jugador1.interrumpir();
+		jugador2.interrumpir();
+		jugador4.interrumpir();
+		jugador5.interrumpir();
+	}
 	public void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
 		//System.out.print("Dar cartasaaaa \n");

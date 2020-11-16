@@ -116,7 +116,7 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(control.getControlador() <= 2) {
+		while(control.getControlador() <= 2 && !this.interrumpido) {
 			switch(paso) {
 				case 1:
 					//Apuesta
