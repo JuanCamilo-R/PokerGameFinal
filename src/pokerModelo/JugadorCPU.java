@@ -105,6 +105,10 @@ public class JugadorCPU implements Runnable {
 		paso = 2;
 	}
 	
+	public void reiniciarApuesta() {
+		apuestaActual=100;
+	}
+	
 	public void iniciarRondaApuesta() {
 		paso = 1;
 		apuestaActual = 100;
@@ -117,10 +121,7 @@ public class JugadorCPU implements Runnable {
 				case 1:
 					//Apuesta
 					
-				control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());
-					
-					
-					
+				control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());	
 				paso = 0;
 				if(turno == 5 ) {
 					
@@ -129,10 +130,8 @@ public class JugadorCPU implements Runnable {
 				}
 				break;
 				case 2:
-					//Descarte
-					
-					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());
-					
+					//Descarte	
+					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
 					paso = 0;
 					//System.out.println(nombreJugador+" TURNO: "+turno);
 					if(turno == 5) {

@@ -414,7 +414,7 @@ public class PanelJugador extends JPanel {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
-					
+					numeroDineroApostado.setText("0");
 				}
 				//Si puedo apostar
 				else {
@@ -484,6 +484,9 @@ public class PanelJugador extends JPanel {
 			}
 			
 			if(event.getSource() == confirmarDescarte) {
+				control.reiniciarApuesta();
+				numeroDineroApostado.setText("0");
+				PanelJugador.apuestaMinima=100;
 				control.darCartasHumanos(contadorCartasPedidas);
 				refrescarMano();
 				System.out.println("CARTAS PEDIDAS: "+ contadorCartasPedidas);
@@ -496,7 +499,9 @@ public class PanelJugador extends JPanel {
 				System.out.println(" controlador: "+control.getControlador());
 				confirmarDescarte.setEnabled(false);
 				confirmarDescarte.removeMouseListener(escucha);
-				
+				for(int i = 0; i < mano.size(); i++) {
+					mano.get(i).removeMouseListener(escucha);
+				}
 				if(control.getControlador()<=2) {
 					System.out.println("ENTRO A CONDICION DE CONTROLADOR");
 					apuesta.setText("Apuesta...");

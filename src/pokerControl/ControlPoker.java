@@ -323,12 +323,7 @@ public class ControlPoker {
 					System.out.println(nombreJugador+" intento a ronda apuesta entrar pero se duerme");
 					esperarTurnoApuesta.await();
 				}
-				//System.out.println("Size: "+jugadoresCPU.size());
-				//System.out.println("Turno actual: "+turnoActual);
-				//System.out.println("Entro hilo: "+nombreJugador);
-				//System.out.println("Turno del jugador: "+nombreJugador+" = " + turnoJugador);
-				//System.out.println("Turno en general: "+turnoActual);
-				//System.out.println(nombreJugador+" va a apostar en turnos: "+dato);
+				System.out.println(nombreJugador+" va a apostar en turnos: "+dato);
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
 					for(int i=0;i<jugadoresCPU.size();i++) {
 						if(jugadoresCPU.get(i).getNombre()==nombreJugador) {
@@ -366,11 +361,10 @@ public class ControlPoker {
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}finally {
-			/*panelUsuario.setSiguienteTurno(false);
-			if(turnoActual == 6) {
+			//panelUsuario.setSiguienteTurno(false);
+			if(turnoActual == 6 && tipoRonda) {
 				verificarApuestasFinal(nombreJugador);
-				System.out.println("Entro al final: "+nombreJugador);
-			}*/
+			}
 			bloqueo.unlock();
 			panelUsuario.setSiguienteTurno(false);
 			/*
@@ -427,7 +421,16 @@ public class ControlPoker {
 	public boolean getTipoRonda() {
 		return tipoRonda;
 	}
-	
+	public void reiniciarApuesta() {
+		jugador1.reiniciarApuesta();
+		vista.actualizarVistaApuesta(jugador1.getApuestaActual(),jugador1.getNombre(),String.valueOf(jugador1.getDineroInicial()));
+		jugador2.reiniciarApuesta();
+		vista.actualizarVistaApuesta(jugador2.getApuestaActual(),jugador2.getNombre(),String.valueOf(jugador2.getDineroInicial()));
+		jugador4.reiniciarApuesta();
+		vista.actualizarVistaApuesta(jugador4.getApuestaActual(),jugador4.getNombre(),String.valueOf(jugador4.getDineroInicial()));
+		jugador5.reiniciarApuesta();
+		vista.actualizarVistaApuesta(jugador5.getApuestaActual(),jugador5.getNombre(),String.valueOf(jugador5.getDineroInicial()));
+	}
 	public void asignarCartas(List<Carta> cartas,int i,int cantidad) {
 		for(int j=0;j<cantidad;j++) {
 			jugadoresCPU.get(i).recibirCartas(cartas.get(j));
