@@ -277,6 +277,7 @@ public class PanelJugador extends JPanel {
 					for(Carta carta: cartas) {
 						mano.add(carta);
 					}
+					refrescarMano();
 					numeroDineroInicial.setText("0");
 					numeroDineroInicial.setText(String.valueOf(dineroInicial));
 				}

@@ -214,7 +214,7 @@ public class MesaJuego extends JPanel {
 			panelJugador2.reiniciarJuego(cartas.get(1), dineroInicial.get(1));
 			panelJugador3.reiniciarJuego(cartas.get(2), dineroInicial.get(2));
 			panelJugador4.reiniciarJuego(cartas.get(3), dineroInicial.get(3));
-			panelJugador5.reiniciarJuego(cartas.get(3), dineroInicial.get(4));
+			panelJugador5.reiniciarJuego(cartas.get(4), dineroInicial.get(4));
 			this.revalidate();
 			this.repaint();
 		}
