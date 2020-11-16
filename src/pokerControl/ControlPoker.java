@@ -461,6 +461,7 @@ public class ControlPoker {
 						if(jugadoresCPU.get(i).getVecesApostado() != 3) {
 							System.out.println(nombreJugador+ "apuesta: "+apuestaUsuario);
 							//System.out.println("Llego aqui");
+							vista.actualizarVistaApuesta(apuestaUsuario, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 							vista.actualizarAreaEstado(apuestaUsuario, nombreJugador, " apuesta para igualar ");
 						}else {
 							vista.actualizarAreaEstado(apuestaUsuario, nombreJugador, " apuesta ");
