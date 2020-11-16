@@ -408,16 +408,13 @@ public class PanelJugador extends JPanel {
 				saberSiAposto =true;
 			}
 			if(event.getSource() == fichaCien ) {
-				System.out.println("Apuesto cien");
 				numeroDineroApostado.setText(String.valueOf(Integer.parseInt(numeroDineroApostado.getText())+100));
 				saberSiAposto =true;
 			}
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
-					System.out.println("DINERO INICIAL: "+dineroInicial);
-					System.out.println("DINERO APOSTADO: "+dineroApostado);
-					System.out.println("DINERO APUESTA MINIMA: "+apuestaMinima);
+					
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
 					
 				}
@@ -434,19 +431,18 @@ public class PanelJugador extends JPanel {
 						//System.out.println("TURNO ACTUAL EN APUESTA ESCUCHAS: "+control.getTurno());
 						control.setTurnoActual();
 						
-						//System.out.println(nombre+" TURNO DEL HILO QUE ENTRA: "+getTurno());
+						
 						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
 						saberSiAposto =false;
 						//System.out.println(siguienteTurno);
 						confirmarApuesta.setEnabled(false);
 						confirmarApuesta.removeMouseListener(escucha);
+						System.out.println("CONTROLADOR EN CONFIRMAR APUESTA: "+control.getControlador());
 					if(control.getControlador()<2) {
 						
 						confirmarDescarte.setEnabled(true);
 						confirmarDescarte.addMouseListener(escucha);
 						apuesta.setText("Descarta...");
-						//System.out.println("Mano size: "+mano.size());
-						//System.out.println("IMPRIMIR MANO:.....");
 						for(int i = 0; i < mano.size(); i++) {
 							System.out.println(mano.get(i));
 							mano.get(i).addMouseListener(escucha);
@@ -455,12 +451,13 @@ public class PanelJugador extends JPanel {
 						fichaDiez.removeMouseListener(escucha);
 						fichaCien.removeMouseListener(escucha);
 					}else {
+						System.out.println("ENTRE AQUI X2");
 						apuesta.setText("");
 						confirmarDescarte.setEnabled(false);
 						confirmarDescarte.removeMouseListener(escucha);
 						fichaCinco.removeMouseListener(escucha);
 						fichaDiez.removeMouseListener(escucha);
-						fichaCinco.removeMouseListener(escucha);
+						fichaCien.removeMouseListener(escucha);
 						for(int i = 0; i < mano.size(); i++) {
 							mano.get(i).removeMouseListener(escucha);
 						}
@@ -493,22 +490,19 @@ public class PanelJugador extends JPanel {
 				control.darCartasHumanos(contadorCartasPedidas);
 				PanelJugador.apuestaMinima = 0;
 				refrescarMano();
-				//System.out.println("CARTAS PEDIDAS: "+ contadorCartasPedidas);
-				//System.out.println("Mano size: "+mano.size());
 				setSiguienteTurno(true);
-				//System.out.println("TURNO ACTUAL EN DESCARTE ESCUCHAS: "+control.getTurno());
 				control.setTurnoActual();
 				control.reiniciarApuestas();
 				control.verApuestas();
-				//System.out.println(nombre.getText()+" TURNO DEL HILO QUE ENTRA: "+getTurno());
 				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
-				//System.out.println(" controlador: "+control.getControlador());
+				System.out.println(" controlador: "+control.getControlador());
 				confirmarDescarte.setEnabled(false);
 				confirmarDescarte.removeMouseListener(escucha);
 				for(int i = 0; i < mano.size(); i++) {
 					System.out.println(mano.get(i));
 					mano.get(i).removeMouseListener(escucha);
 				}
+				System.out.println("CONTROLADOR EN CONFIRMAR DESCARTE: "+control.getControlador());
 				if(control.getControlador()<=2) {
 					numeroDineroApostado.setText("0");
 					
