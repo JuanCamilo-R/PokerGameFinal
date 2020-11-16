@@ -429,14 +429,19 @@ public class ControlPoker {
 		return tipoRonda;
 	}
 	public void reiniciarApuesta() {
-		jugador1.reiniciarApuesta();
-		vista.actualizarVistaApuesta(jugador1.getApuestaActual(),jugador1.getNombre(),String.valueOf(jugador1.getDineroInicial()));
-		jugador2.reiniciarApuesta();
-		vista.actualizarVistaApuesta(jugador2.getApuestaActual(),jugador2.getNombre(),String.valueOf(jugador2.getDineroInicial()));
-		jugador4.reiniciarApuesta();
-		vista.actualizarVistaApuesta(jugador4.getApuestaActual(),jugador4.getNombre(),String.valueOf(jugador4.getDineroInicial()));
-		jugador5.reiniciarApuesta();
-		vista.actualizarVistaApuesta(jugador5.getApuestaActual(),jugador5.getNombre(),String.valueOf(jugador5.getDineroInicial()));
+		
+		for(int i = 0; i < jugadoresCPU.size(); i++) {
+			jugadoresCPU.get(i).reiniciarApuesta();
+			if(jugadoresCPU.get(i).getTurno() < panelUsuario.getTurno()) {
+				vista.actualizarVistaApuesta(jugadoresCPU.get(i).getApuestaActual(), jugadoresCPU.get(i).getNombre(),
+						String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+			}else {
+				System.out.println("ENTRO AQUIIIIIIIII8"+jugadoresCPU.get(i).getNombre());
+				vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(),
+						String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
+			}
+			
+		}
 	}
 	public void asignarCartas(List<Carta> cartas,int i,int cantidad) {
 		for(int j=0;j<cantidad;j++) {
