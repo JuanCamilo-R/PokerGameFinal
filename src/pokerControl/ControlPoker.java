@@ -137,6 +137,7 @@ public class ControlPoker {
 	}
 	
 	public void reiniciarJuego() {
+		PanelJugador.apuestaMinima=100;
 		System.out.print("\033[H\033[2J");  
 	    System.out.flush();  
 		tipoRonda = true;
@@ -155,6 +156,7 @@ public class ControlPoker {
 		mesaJuego.reiniciarJuego(manoJugadores,dinero);
 		//activarRondaApuestas();
 		iniciarJugadoresCPU();
+		reiniciarApuesta();
 		
 	}
 	
@@ -246,13 +248,7 @@ public class ControlPoker {
 				jugadoresCPU.get(i).recibirCartasIniciales(manoJugadores.get(i+1));
 			}
 		}
-
-
 		mesaJuego.espaciar();
-
-
-
-			
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
 		  ejecutorSubprocesos.execute(jugador2);
@@ -428,6 +424,8 @@ public class ControlPoker {
 	public boolean getTipoRonda() {
 		return tipoRonda;
 	}
+	
+	
 	public void reiniciarApuesta() {
 		
 		for(int i = 0; i < jugadoresCPU.size(); i++) {

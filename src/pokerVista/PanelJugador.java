@@ -96,8 +96,8 @@ public class PanelJugador extends JPanel {
 		
 		
 		if(isHuman) {
-			this.dineroInicial = new JLabel("Dinero inicial: ");
-			dineroApostado = new JLabel("Dinero apostado: ");
+			this.dineroInicial = new JLabel("Dinero actual: ");
+			dineroApostado = new JLabel("Apuesta actual: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial-100));
 			numeroDineroApostado = new JLabel("0");
@@ -203,8 +203,8 @@ public class PanelJugador extends JPanel {
 		if(!isHuman) {
 			panelTexto2 = new JPanel();
 			panelTexto2.setBackground(Color.GREEN);
-			this.dineroInicial = new JLabel("Dinero inicial: ");
-			dineroApostado = new JLabel("|   Dinero apostado: ");
+			this.dineroInicial = new JLabel("Dinero actual: ");
+			dineroApostado = new JLabel("|   Apuesta actual: ");
 			
 			numeroDineroInicial  = new JLabel(String.valueOf(dineroInicial));
 			numeroDineroApostado = new JLabel("0");
