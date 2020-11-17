@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,6 +38,7 @@ public class MesaJuego extends JPanel {
 	private JPanel panelBotones2;
 	private Escuchas2 escuchas;
 	private Instrucciones instrucciones2;
+	private JFrame vista;
 		public MesaJuego(List<Boolean> isHuman,List<String> nombre, List<List<Carta>> manoJugador, List<Integer> dineroInicial, ControlPoker control) {
 			this.control = control;
 			this.setBackground(Color.GREEN);
@@ -221,8 +223,10 @@ public class MesaJuego extends JPanel {
 				}
 				
 				if(event.getSource() == cederTurno) {
+					
 					control.interrumpirHilos();
 					control.reiniciarJuego();
+					
 				}
 				
 				if (event.getSource() == instrucciones) {

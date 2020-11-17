@@ -95,6 +95,7 @@ public class JugadorCPU implements Runnable {
 	}
 	
 	public void interrumpir() {
+		System.out.println(nombreJugador+ " he sido interrumpido");
 		interrumpido = true;
 	}
 	
@@ -102,6 +103,7 @@ public class JugadorCPU implements Runnable {
 		return interrumpido;
 	}
 	public void iniciarRondaDescarte() {
+		System.out.println("He sido despertado para ronda de descartes - "+nombreJugador);
 		paso = 2;
 	}
 	
@@ -141,7 +143,7 @@ public class JugadorCPU implements Runnable {
 					break;
 		}
 	}
-		//System.out.print(nombreJugador+" murio \n");
+		System.out.print(nombreJugador+" murio \n");
 
  }
 }
