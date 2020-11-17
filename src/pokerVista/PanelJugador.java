@@ -264,9 +264,13 @@ public class PanelJugador extends JPanel {
 					contadorCartasPedidas = 0;
 					numeroDineroApostado.setText("0");
 					numeroDineroInicial.setText(String.valueOf(dineroInicial-100));
-					//fichaCinco.addMouseListener(escucha);
-					//fichaDiez.addMouseListener(escucha);
-					//fichaCien.addMouseListener(escucha);
+					fichaCinco.addMouseListener(escucha);
+					fichaDiez.addMouseListener(escucha);
+					fichaCien.addMouseListener(escucha);
+					for(int i = 0; i < mano.size(); i++) {
+						mano.get(i).removeMouseListener(escucha);
+					}
+					confirmarDescarte.removeMouseListener(escucha);
 					confirmarApuesta.setEnabled(true);
 					confirmarApuesta.addMouseListener(escucha);
 					confirmarDescarte.setEnabled(false);
@@ -455,13 +459,20 @@ public class PanelJugador extends JPanel {
 						confirmarDescarte.removeMouseListener(escucha);
 						fichaCinco.removeMouseListener(escucha);
 						fichaDiez.removeMouseListener(escucha);
-						fichaCinco.removeMouseListener(escucha);
+						fichaCien.removeMouseListener(escucha);
 						for(int i = 0; i < mano.size(); i++) {
 							mano.get(i).removeMouseListener(escucha);
 						}
 					}
-						
-						
+						if(control.getControlador()>=3) {
+							fichaCinco.removeMouseListener(escucha);
+							fichaDiez.removeMouseListener(escucha);
+							fichaCien.removeMouseListener(escucha);
+							for(int i = 0; i < mano.size(); i++) {
+								mano.get(i).removeMouseListener(escucha);
+							}
+						}
+				
 						if(getTurno()==5) {
 							control.activarRondaDescarte();
 						}
@@ -510,14 +521,26 @@ public class PanelJugador extends JPanel {
 					fichaCinco.addMouseListener(escucha);
 					fichaDiez.addMouseListener(escucha);
 					fichaCien.addMouseListener(escucha);
+					confirmarApuesta.setEnabled(true);
+					confirmarApuesta.addMouseListener(escucha);
 				}else {
 					apuesta.setVisible(false);
 					fichaCinco.removeMouseListener(escucha);
 					fichaDiez.removeMouseListener(escucha);
 					fichaCien.removeMouseListener(escucha);
 				}
+				/*
 				confirmarApuesta.setEnabled(true);
-				confirmarApuesta.addMouseListener(escucha);
+				confirmarApuesta.addMouseListener(escucha);*/
+				if(control.getControlador()>=3) {
+					fichaCinco.removeMouseListener(escucha);
+					fichaDiez.removeMouseListener(escucha);
+					fichaCien.removeMouseListener(escucha);
+					for(int i = 0; i < mano.size(); i++) {
+						mano.get(i).removeMouseListener(escucha);
+					}
+				}
+				
 				
 				if(getTurno() == 5) {
 					control.activarRondaApuestas();
