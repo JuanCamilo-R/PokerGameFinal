@@ -259,6 +259,7 @@ public class PanelJugador extends JPanel {
 				// TODO Auto-generated method stub
 				if(isHuman) {
 					siguienteTurno = false;
+					saberSiAposto = false;
 					apuesta.setText("Apuesta");
 					apuesta.setVisible(true);
 					mano.clear();
