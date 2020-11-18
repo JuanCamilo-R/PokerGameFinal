@@ -196,7 +196,12 @@ public class MesaJuego extends JPanel {
 		}
 
 		public void mensaje(String mensaje) {
-			areaEstado.append(mensaje+"\n");
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					areaEstado.append(mensaje+"\n");
+				}
+			});
+			
 		}
 		
 		

@@ -48,6 +48,10 @@ public class PanelJugador extends JPanel {
 	private ControlPoker control;
 	private boolean saberSiAposto;
 	private int contadorCartasPedidas = 0; 
+	public int getContadorCartasPedidas() {
+		return contadorCartasPedidas;
+	}
+
 	public PanelJugador(boolean isHuman, String nombreJugador, List<Carta> cartas, int dineroInicial, ControlPoker control) {
 		//nombre = new JLabel(nombreJugador);
 		this.control = control;
