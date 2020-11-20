@@ -195,6 +195,10 @@ public class PanelJugador extends JPanel {
 		constraints.gridwidth = 1;
 		add(panelMano, constraints);
 		
+		//Le ponemos bordes a cada panel
+		loweredbevel = BorderFactory.createBevelBorder(EtchedBorder.LOWERED);
+		this.setBorder(loweredbevel);
+		
 		//Le agregamos mas cosas al panel si es el usuario
 		if(isHuman) {
 			
