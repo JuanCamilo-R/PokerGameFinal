@@ -49,6 +49,8 @@ public class ControlPoker {
 	private int controlador = 0;
 	private int posicionEmpate;
 	private boolean asteriscosAbiertos=false;
+	private int hilosCorriendo=0;;
+	private boolean interrumpiendo=false;
 	public ControlPoker() {
 		turnos = new ArrayList<Integer>();
 		nombres = new ArrayList<String>();
@@ -80,7 +82,7 @@ public class ControlPoker {
 		definirJugadoresCPU();
 		darTipo();
 		agregarNombres();
-		darTipo();
+		//darTipo();
 		darDinero();
 		
 		
@@ -147,6 +149,10 @@ public class ControlPoker {
 		for(int i = 0; i < 5; i++) {
 			manoJugadores.get(i).clear();
 		}
+		jugador1 = null;
+		jugador2 = null;
+		jugador4 = null;
+		jugador5 = null;
 		manoJugadores.clear();
 		jugadoresCPU.clear();
 		manosIguales.clear();
@@ -172,6 +178,7 @@ public class ControlPoker {
 	public void iniciarJugadoresCPU() {
 		
 		int aux = random.nextInt(5)+1;
+		asteriscosAbiertos=true;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
 
@@ -251,6 +258,7 @@ public class ControlPoker {
 			}
 		}
 		mesaJuego.espaciar();
+		asteriscosAbiertos=false;
 	      ExecutorService ejecutorSubprocesos = Executors.newCachedThreadPool();
 		  ejecutorSubprocesos.execute(jugador1); 
 		  ejecutorSubprocesos.execute(jugador2);
@@ -322,6 +330,10 @@ public class ControlPoker {
 			
 			if(tipoRonda) { //Ronda de apuesta
 				while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
+					if(interrumpiendo) {
+						System.out.println("Chau se cuidan");
+						break;
+					}
 					System.out.println(nombreJugador+" intento a ronda apuesta entrar pero se duerme");
 					esperarTurnoApuesta.await();
 				}
@@ -332,11 +344,12 @@ public class ControlPoker {
 							vista.actualizarVistaApuesta(dato, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
 						}
 					}
+					if(!interrumpiendo)
 					verificarApuesta(nombreJugador);
 					
 					
 				}
-				else if(nombreJugador.equals("ElBicho")) {
+				else if(nombreJugador.equals("ElBicho") && !interrumpiendo) {
 					vista.actualizarAreaEstado(panelUsuario.getApuestaUsuario(), nombreJugador, " apuesta: ");
 				}
 
@@ -350,18 +363,23 @@ public class ControlPoker {
 				esperarTurnoApuesta.signalAll();
 			}else {
 				while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
+					if(interrumpiendo) {
+						break;
+					}
 					System.out.println(nombreJugador+" intento a ronda descarte entrar pero se duerme");
 					esperarTurnoDescarte.await();
 				}
 				System.out.println(nombreJugador+" es el encargado de despertar a los hilos en la ronda de descarte");
 				if(turnoJugador <= 5) {
 					 posicionDescarte = turnoActual - 1;
+					 if(!interrumpiendo) {
 					 descartar(dato, nombreJugador,turnoJugador);
+					 }
 					 //System.out.println("TURNO ACTUAL EN DESCARTE: "+turnoActual);
 					 turnoActual++;
 					 System.out.println(nombreJugador+"ENTRA A RONDA DESCARTE");
 				}
-				if(nombreJugador.equals("ElBicho")) {
+				if(nombreJugador.equals("ElBicho") && !interrumpiendo) {
 					if(panelUsuario.getContadorCartasPedidas()!=1) {
 						mesaJuego.mensaje(nombreJugador+" descartó "+panelUsuario.getContadorCartasPedidas()+" cartas");
 					}
@@ -376,7 +394,7 @@ public class ControlPoker {
 			e.printStackTrace();
 		}finally {
 			//panelUsuario.setSiguienteTurno(false);
-			if(turnoActual == 6) {
+			if(turnoActual == 6 && !interrumpiendo) {
 				if(tipoRonda) {
 					verificarApuestasFinal(nombreJugador);
 				}
@@ -433,11 +451,24 @@ public class ControlPoker {
 	}
 	
 	public void interrumpirHilos() {
+		interrumpiendo=true;
 		System.out.println("HE INTERRUMPIDO A TODOS LOS HILOS");
+		//turnos(0,"",0,0);
 		jugador1.interrumpir();
 		jugador2.interrumpir();
 		jugador4.interrumpir();
 		jugador5.interrumpir();
+		while(hilosCorriendo>0) {
+			System.out.println("Aún quedan "+hilosCorriendo+ " hilos por terminar");
+			System.out.println("Turno actual: "+turnoActual+"; turno usuario: "+panelUsuario.getTurno());
+			if(turnoActual==panelUsuario.getTurno()) {
+				panelUsuario.setSiguienteTurno(true);
+				turnoActual++;
+				turnos(100, "ElBicho", 0, 100);
+			}
+		}
+		System.out.println("Todos los hilos terminados, reiniciando el juego...");
+		interrumpiendo=false;
 	}
 	public void darCartas(int cantidad,int i) {	
         //cartas para jugadores simulados
@@ -990,5 +1021,12 @@ public class ControlPoker {
 	            }
 	        }
 	        return parejaJugadasManos;
+	}
+	
+	public synchronized void naceHilo() {
+		hilosCorriendo++;
+	}
+	public synchronized void muereHilo() {
+		hilosCorriendo--;
 	}
 }

@@ -22,7 +22,7 @@ public class JugadorCPU implements Runnable {
 	private int contador;
 	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
-		
+		control.naceHilo();
 		this.dineroInicial = dineroInicial;
 		this.nombreJugador = nombreJugador;
 		this.cantidadADescartar = cantidadADescartar;
@@ -119,6 +119,7 @@ public class JugadorCPU implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while(control.getControlador() <= 2 && !this.interrumpido) {
+			System.out.println(nombreJugador+" dice: Mátame puta");
 			switch(paso) {
 				case 1:
 					//Apuesta
@@ -144,6 +145,7 @@ public class JugadorCPU implements Runnable {
 		}
 	}
 		System.out.print(nombreJugador+" murio \n");
+		control.muereHilo();
 
  }
 }
