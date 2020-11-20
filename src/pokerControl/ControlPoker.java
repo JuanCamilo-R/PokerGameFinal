@@ -25,6 +25,7 @@ import pokerVista.VistaPoker;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ControlPoker.
+ * Clase que controla todo el juego y pone los hilos de forma asincrona
  */
 public class ControlPoker {
 	
@@ -114,6 +115,7 @@ public class ControlPoker {
 	 * Instantiates a new control poker.
 	 */
 	public ControlPoker() {
+		//Constructor
 		nombres = new ArrayList<String>();
 		random = new Random();
 		jugadoresCPU = new ArrayList<JugadorCPU>();
@@ -136,70 +138,60 @@ public class ControlPoker {
 	 * Iniciar juego.
 	 */
 	private void iniciarJuego() {
+		//Creamos la baraja de cada juagdor
 		baraja = new Baraja();
 		for(int i = 0; i < 5 ;i++) {
 			manoJugadores.add(seleccionarCartas());
 		}
-		
-		
+		//Creo los objetos de tipo JugadorCPU
 		definirJugadoresCPU();
+		//Me dice si el juagdor es un hilo es el usuario
 		darTipo();
+		//Le da los nombres a cada juagdor
 		agregarNombres();
+		//Le da el dinero inicial a cada juagdor
 		darDinero();
-		
-		
+	
 	}
 	
 	/**
 	 * Agregar nombres.
 	 */
-	private void agregarNombres() {
-			
-			
+	private void agregarNombres() {	
 			nombres.add(jugador1.getNombre());
 			nombres.add(jugador2.getNombre());
 			nombres.add("ElBicho");
 			nombres.add(jugador4.getNombre());
 			nombres.add(jugador5.getNombre());
-	
-		
 	}
 	
 	/**
 	 * Dar tipo.
 	 */
 	private void darTipo() {
-		
 			tipoJugador.add(false);
 			tipoJugador.add(false);
 			tipoJugador.add(true);
 			tipoJugador.add(false);
 			tipoJugador.add(false);
-		
-		
+
 	}
 	
 	/**
 	 * Dar dinero.
 	 */
 	private void darDinero() {
-		
-
-
-		
 			dinero.add(jugador1.getDineroInicial());
 			dinero.add(jugador2.getDineroInicial());
 			dinero.add(15000);
 			dinero.add(jugador5.getDineroInicial());
 			dinero.add(jugador4.getDineroInicial());
-	
-		
 	}
-	
 	
 	
 	/**
 	 * Seleccionar cartas.
+	 * Saco cartas de la baraja para  darle 5 cartas a cada jugador y retorno esas cartas
 	 *
 	 * @return the array list
 	 */
@@ -219,6 +211,7 @@ public class ControlPoker {
 	 * Reiniciar juego.
 	 */
 	public void reiniciarJuego() {
+		//Inicializo los atributos iniciales y vuelvo a crear los hilos
 		PanelJugador.apuestaMinima=100;
 		tipoRonda = true;
 		controlador = 0;
@@ -246,25 +239,29 @@ public class ControlPoker {
 	
 	/**
 	 * Definir jugadores CPU.
+	 * Creos los objetos de tipoJugadorCPU
 	 */
 	public void definirJugadoresCPU() {
-		/*JugadorCPU */jugador1 = new JugadorCPU(1500, "Samuel", 1, this);
-		/*JugadorCPU */jugador2 = new JugadorCPU(1500, "David", 2, this);
-		/*JugadorCPU */jugador4 = new JugadorCPU(1500, "Valentina", 3, this);
-		/*JugadorCPU */jugador5 = new JugadorCPU(1500, "Santiago", 4, this);
+		jugador1 = new JugadorCPU(1500, "Samuel", 1, this);
+		jugador2 = new JugadorCPU(1500, "David", 2, this);
+		jugador4 = new JugadorCPU(1500, "Valentina", 3, this);
+		jugador5 = new JugadorCPU(1500, "Santiago", 4, this);
 	}
 	
 	/**
 	 * Iniciar jugadores CPU.
+	 * Le damos los turnos a cada jugador y creamos los hilos
 	 */
 	public void iniciarJugadoresCPU() {
 		
 		int aux = random.nextInt(5)+1;
+		//Son los asteriscos que se ponen en el JTextArea para dar un historial del juego
 		asteriscosAbiertos=true;
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("Orden de turnos:");
-
-		switch(5) {
+		
+		//Dar los turnos cada jugador
+		switch(aux) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
@@ -327,12 +324,13 @@ public class ControlPoker {
 				mesaJuego.mensaje(jugador4.getNombre());
 		}
 
-		
+		 //Agregamos los hilos a una List
 		  jugadoresCPU.add(jugador1);
 		  jugadoresCPU.add(jugador2);
 		  jugadoresCPU.add(jugador4);
 		  jugadoresCPU.add(jugador5);
 		
+		  //Damos cartas a los hilos
 		for(int i = 0; i < 4 ;i++) {
 			jugadoresCPU.get(i).recibirCartasIniciales(manoJugadores.get(i));
 			if(i>=2) {
@@ -348,13 +346,12 @@ public class ControlPoker {
 		  ejecutorSubprocesos.execute(jugador5);
 		  
 		  ejecutorSubprocesos.shutdown();
-		  
-		  
+
 	}
 	
 	/**
 	 * Gets the turno.
-	 *
+	 * Saber el turno actual
 	 * @return the turno
 	 */
 	public int getTurno() {
@@ -375,7 +372,6 @@ public class ControlPoker {
 				setControlador();	
 			}
 
-			
 			if(controlador == 3) {
 				System.out.println("Entro a controlador = 3");
 				System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
@@ -391,6 +387,7 @@ public class ControlPoker {
 	
 	/**
 	 * Sets the controlador.
+	 * Se aumenta despues de pasar una ronda de apuesta o descarte
 	 */
 	public void setControlador() {
 		controlador++;
@@ -398,7 +395,7 @@ public class ControlPoker {
 	
 	/**
 	 * Gets the controlador.
-	 *
+	 * Para obtener el controlador
 	 * @return the controlador
 	 */
 	public int getControlador() {
@@ -408,6 +405,7 @@ public class ControlPoker {
 	
 	/**
 	 * Activar ronda apuestas.
+	 * Cambiamos el tipo de ronda e inicializamos el turno
 	 */
 	public void activarRondaApuestas() {
 		turnoActual = 1;
@@ -438,17 +436,13 @@ public class ControlPoker {
 	 */
 	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
 		bloqueo.lock();
-
-		
-		
-		
 		try
-		{
+		{  
+			//Asteriscos que se ven en el JTextArea
 			if(!asteriscosAbiertos) {
 				mesaJuego.espaciar();
 				asteriscosAbiertos=true;
 			}
-			
 			if(tipoRonda) { //Ronda de apuesta
 				/*
 				 * getSiguienteTurno: boolean que decide si ya puede tirar el siguiente jugador despues
@@ -462,7 +456,6 @@ public class ControlPoker {
 					esperarTurnoApuesta.await();
 				}
 				
-				
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
 					for(int i=0;i<jugadoresCPU.size();i++) {
 						if(jugadoresCPU.get(i).getNombre()==nombreJugador) {
@@ -471,29 +464,22 @@ public class ControlPoker {
 						}
 					}
 					if(!interrumpiendo)
-					verificarApuesta(nombreJugador);
-					
-					
+					verificarApuesta(nombreJugador);	
 				}
 				else if(nombreJugador.equals("ElBicho") && !interrumpiendo) {
 					//Actualiza la apuesta del Bicho
 					vista.actualizarAreaEstado(panelUsuario.getApuestaUsuario(), nombreJugador, " apuesta: ");
 				}
 
-				
-				if(turnoJugador <= 5) {
-					
+				if(turnoJugador <= 5) {	
 					turnoActual++;
-					
-				}
-				
+				}	
 				esperarTurnoApuesta.signalAll();
 			}else {
 				while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
 					if(interrumpiendo) {
 						break;
 					}
-					
 					esperarTurnoDescarte.await();
 				}
 				
@@ -527,8 +513,7 @@ public class ControlPoker {
 				if(turnoActual==6) {
 					turnoActual=1;
 				}
-			}
-			
+			}	
 			if(turnoActual == 6 && !interrumpiendo) {
 				if(tipoRonda) {
 					//Verifica las apuestas de los jugadores antes del Bicho.
@@ -544,7 +529,7 @@ public class ControlPoker {
 	
 	/**
 	 * Descartar.
-	 *
+	 * El descarte de los hilos
 	 * @param dato the dato
 	 * @param nombreJugador the nombre jugador
 	 * @param turnoJugador the turno jugador
@@ -565,9 +550,6 @@ public class ControlPoker {
 				else {
 					mesaJuego.mensaje(nombreJugador+" descartó "+jugadoresCPU.get(i).getCantidadADescartar()+" carta");
 				}
-				
-				
-				
 			}
 		}
 	}
@@ -647,7 +629,7 @@ public class ControlPoker {
 	}
 	
 	/**
-	 * Asignar cartas.
+	 * Asignar cartas a los hilos
 	 *
 	 * @param cartas the cartas
 	 * @param i the i
@@ -688,8 +670,7 @@ public class ControlPoker {
 						}else {
 							vista.actualizarAreaEstado(apuestaUsuario, nombreJugador, " apuesta: ");
 							vista.actualizarVistaApuesta(apuestaUsuario, nombreJugador, String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-						}
-						
+						}	
 			
 					}else {
 						vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
@@ -725,8 +706,6 @@ public class ControlPoker {
 			
 				}else {
 					vista.actualizarVistaApuesta(0, jugadoresCPU.get(i).getNombre(), String.valueOf(jugadoresCPU.get(i).getDineroInicial()));
-					
-				
 				}
 			}
 		}
@@ -809,20 +788,14 @@ public class ControlPoker {
 	 * @param nuevasCartas the nuevas cartas
 	 */
 	public void agregarCarta(List<Carta> nuevasCartas) {
-		
-		
 		for(int i = 0; i < nuevasCartas.size(); i++) {
 			manoJugadores.get(2).add(nuevasCartas.get(i));
 		}
-		
 		panelUsuario.recibirCartasHumano(manoJugadores.get(2));
 	}
 	
-	
-
-	
 	/**
-	 * Dar cartas humanos.
+	 * Dar cartas humanos. (al usuario)
 	 *
 	 * @param contadorCartas the contador cartas
 	 */
@@ -831,7 +804,6 @@ public class ControlPoker {
 		for(int i=0;i<contadorCartas;i++) {
 			cartasNuevasHumano.add(baraja.getCarta());
 		}
-		
 		agregarCarta(cartasNuevasHumano);
 	}
 	
@@ -1262,8 +1234,6 @@ public class ControlPoker {
 			System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
 		}
 		return parejaJugadasManos;
-		
-		
 	}
 	
 	/**
