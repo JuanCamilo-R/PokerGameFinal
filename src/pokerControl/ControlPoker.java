@@ -273,28 +273,31 @@ public class ControlPoker {
 		return turnoActual;
 	}
 	public void activarRondaDescarte() {
-		turnoActual = 1;
-		if(controlador <= 3) {
-			setControlador();	
-		}
 		
-		//System.out.println("CONTROLADOR EN DESCARTE: "+controlador);
-		if(controlador == 3) {
-			System.out.println("Entro a controlador = 3");
-			System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
-			/*
+		if(!interrumpiendo) {
+			turnoActual = 1;
+			if(controlador <= 3) {
+				setControlador();	
+			}
+
+			//System.out.println("CONTROLADOR EN DESCARTE: "+controlador);
+			if(controlador == 3) {
+				System.out.println("Entro a controlador = 3");
+				System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
+				/*
 			List<Carta> manoJugadorSamuel;
 			System.out.println("");
 			manoJugadorSamuel = ordenarPorNumero(manoJugadores.get(0));
 			for(int i = 0; i < manoJugadorSamuel.size(); i++) {
 				System.out.print(manoJugadorSamuel.get(i).getValorNumerico()+ "  ");
 			}
-			*/
-		}
-		tipoRonda = false;
-		for(int i=0;i<jugadoresCPU.size();i++) {
-			System.out.println(jugadoresCPU.get(i).getNombre()+ " ha sido despertado para la ronda de descarte");
-			jugadoresCPU.get(i).iniciarRondaDescarte();
+				 */
+			}
+			tipoRonda = false;
+			for(int i=0;i<jugadoresCPU.size();i++) {
+				System.out.println(jugadoresCPU.get(i).getNombre()+ " ha sido despertado para la ronda de descarte");
+				jugadoresCPU.get(i).iniciarRondaDescarte();
+			}
 		}
 	}
 	public void setControlador() {
@@ -305,14 +308,16 @@ public class ControlPoker {
 	}
 	public void activarRondaApuestas() {
 		turnoActual = 1;
-		tipoRonda = true;
-		if(controlador <= 3) {
-			setControlador();
-		}
-		
-		//System.out.println("CONTROLADOR EN APUESTAS: "+controlador);
-		for(int i = 0; i < jugadoresCPU.size(); i++) {
-			jugadoresCPU.get(i).iniciarRondaApuesta();
+		if(!interrumpiendo) {
+			tipoRonda = true;
+			if(controlador <= 3) {
+				setControlador();
+			}
+
+			//System.out.println("CONTROLADOR EN APUESTAS: "+controlador);
+			for(int i = 0; i < jugadoresCPU.size(); i++) {
+				jugadoresCPU.get(i).iniciarRondaApuesta();
+			}
 		}
 	}
 	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
@@ -331,11 +336,12 @@ public class ControlPoker {
 			if(tipoRonda) { //Ronda de apuesta
 				while(turnoJugador != turnoActual && !panelUsuario.getSiguienteTurno()) {
 					if(interrumpiendo) {
-						System.out.println("Chau se cuidan");
+						System.out.println(nombreJugador+" dice: Chau se cuidan");
 						break;
 					}
 					System.out.println(nombreJugador+" intento a ronda apuesta entrar pero se duerme");
 					esperarTurnoApuesta.await();
+					System.out.println(nombreJugador+" despertó");
 				}
 				System.out.println(nombreJugador+" es el encargado de despertar a los hilos en la ronda de apuestas");
 				if(turnoJugador <= 5 && setApuestaJugador(nombreJugador,dato)) {
@@ -368,6 +374,7 @@ public class ControlPoker {
 					}
 					System.out.println(nombreJugador+" intento a ronda descarte entrar pero se duerme");
 					esperarTurnoDescarte.await();
+					System.out.println(nombreJugador+" despertó");
 				}
 				System.out.println(nombreJugador+" es el encargado de despertar a los hilos en la ronda de descarte");
 				if(turnoJugador <= 5) {
@@ -393,6 +400,14 @@ public class ControlPoker {
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}finally {
+			if(interrumpiendo) {
+				System.out.println("Te habla "+nombreJugador);
+				System.out.println("Aún quedan "+hilosCorriendo+ " hilos por terminar");
+				System.out.println("Turno actual: "+turnoActual+"; turno usuario: "+panelUsuario.getTurno());
+				if(turnoActual==6) {
+					turnoActual=1;
+				}
+			}
 			//panelUsuario.setSiguienteTurno(false);
 			if(turnoActual == 6 && !interrumpiendo) {
 				if(tipoRonda) {
@@ -452,6 +467,7 @@ public class ControlPoker {
 	
 	public void interrumpirHilos() {
 		interrumpiendo=true;
+		controlador=3;
 		System.out.println("HE INTERRUMPIDO A TODOS LOS HILOS");
 		//turnos(0,"",0,0);
 		jugador1.interrumpir();
@@ -459,12 +475,13 @@ public class ControlPoker {
 		jugador4.interrumpir();
 		jugador5.interrumpir();
 		while(hilosCorriendo>0) {
-			System.out.println("Aún quedan "+hilosCorriendo+ " hilos por terminar");
-			System.out.println("Turno actual: "+turnoActual+"; turno usuario: "+panelUsuario.getTurno());
 			if(turnoActual==panelUsuario.getTurno()) {
 				panelUsuario.setSiguienteTurno(true);
 				turnoActual++;
 				turnos(100, "ElBicho", 0, 100);
+			}
+			if(hilosCorriendo==0) {
+				break;
 			}
 		}
 		System.out.println("Todos los hilos terminados, reiniciando el juego...");
@@ -1028,5 +1045,6 @@ public class ControlPoker {
 	}
 	public synchronized void muereHilo() {
 		hilosCorriendo--;
+		System.out.println("Hilos actuales: "+hilosCorriendo);
 	}
 }

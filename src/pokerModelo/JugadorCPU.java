@@ -17,9 +17,10 @@ public class JugadorCPU implements Runnable {
 	private List<Carta> cartas = new ArrayList<Carta>();
 	private int jugada;
 	private int vecesApuesta = 0;
-	private boolean interrumpido = false;
+	private boolean interrumpido;
 	private int paso = 1;
 	private int contador;
+	private boolean corriendo=false;
 	
 	public JugadorCPU( int dineroInicial, String nombreJugador,int cantidadADescartar, ControlPoker control) {
 		control.naceHilo();
@@ -28,6 +29,7 @@ public class JugadorCPU implements Runnable {
 		this.cantidadADescartar = cantidadADescartar;
 		random = new Random();
 		this.control = control;
+		interrumpido=false;
 		apostar(100);
 	}
 	
@@ -97,6 +99,20 @@ public class JugadorCPU implements Runnable {
 	public void interrumpir() {
 		System.out.println(nombreJugador+ " he sido interrumpido");
 		interrumpido = true;
+		System.out.println("el interrumpido de "+nombreJugador+" quedó en "+interrumpido);
+		if(!corriendo) {
+			System.out.println(nombreJugador+" está disponible");
+		}
+		else {
+			System.out.println(nombreJugador+" aún no está disponible");
+		}
+		if(control.getControlador() <= 2 && !this.interrumpido)
+		{
+			System.out.println(nombreJugador+ " sí debería continuar");
+		}
+		else {
+			System.out.println(nombreJugador+ " no debería continuar");
+		}
 	}
 	
 	public boolean getInterrumpido() {
@@ -118,31 +134,40 @@ public class JugadorCPU implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(control.getControlador() <= 2 && !this.interrumpido) {
-			System.out.println(nombreJugador+" dice: Mátame puta");
+		while(control.getControlador() <= 2 && !interrumpido) {
+			//System.out.println(nombreJugador+" sigue vivo");
 			switch(paso) {
 				case 1:
+					System.out.println(nombreJugador+" se ocupa");
 					//Apuesta
 					
 				control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());	
 				paso = 0;
 				if(turno == 5 ) {
 					
-					//System.out.println("Activo ronda de descarte \n");
+					System.out.println("Activo ronda de descarte \n");
 					control.activarRondaDescarte();
 				}
+				System.out.println(nombreJugador+" se desocupa");
 				break;
 				case 2:
+					System.out.println(nombreJugador+" se ocupa");
+					corriendo=true;
 					//Descarte	
 					control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
 					paso = 0;
 					//System.out.println(nombreJugador+" TURNO: "+turno);
 					if(turno == 5) {
-						//System.out.println(nombreJugador+" activo ronda de apuesta again");
+						System.out.println(nombreJugador+" activo ronda de apuesta again");
 						control.activarRondaApuestas();
 					}
+					corriendo=false;
+					System.out.println(nombreJugador+" se desocupa");
 					break;
 		}
+			if(interrumpido) {
+				break;
+			}
 	}
 		System.out.print(nombreJugador+" murio \n");
 		control.muereHilo();
