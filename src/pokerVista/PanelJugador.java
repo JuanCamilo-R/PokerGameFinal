@@ -331,9 +331,6 @@ public class PanelJugador extends JPanel {
 			public void run() {
 				// TODO Auto-generated method stub
 				if( nombre.getText() == nombreJugador) {
-					if(nombreJugador == "ElBicho") {
-					//	System.out.println(nombreJugador+" entra a refrescar labels");
-					}
 					//System.out.println("Entro a refrescarLabels");
 					numeroDineroInicial.setText(dineroInicial);
 					numeroDineroApostado.setText(String.valueOf(apuesta));
@@ -354,8 +351,6 @@ public class PanelJugador extends JPanel {
 			public void run() {
 				// TODO Auto-generated method stub
 				if( nombre.getText() == nombreJugador) {
-					if(nombreJugador == "ElBicho") {
-					}
 					//System.out.print("Entre a panel"+nombreJugador+"  ");
 
 					panelMano.removeAll();
@@ -430,24 +425,25 @@ public class PanelJugador extends JPanel {
 			if(event.getSource() == confirmarApuesta) {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
-					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
+					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado. La apuesta minima es de "+apuestaMinima);
 					numeroDineroApostado.setText("0");
 				}
 				//Si puedo apostar
 				else {
 					if(control.getTipoRonda()) { //Ronda apuesta
 						//System.out.println("Dinero apuesta usuario: "+getApuestaUsuario());
+						control.añadirAlTotal(getApuestaUsuario());
 						if(getApuestaUsuario()>apuestaMinima) {
 							apuestaMinima=getApuestaUsuario();
 						}
-						refrescarLabels(getApuestaUsuario(), "ElBicho", String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
+						refrescarLabels(getApuestaUsuario(), nombre.getText(), String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 						siguienteTurno = true;
 						//System.out.println("Turno usuario: "+turno);
 						//System.out.println("TURNO ACTUAL EN APUESTA ESCUCHAS: "+control.getTurno());
 						control.setTurnoActual();
 						
 						//System.out.println(nombre+" TURNO DEL HILO QUE ENTRA: "+getTurno());
-						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
+						control.turnos(100, nombre.getText(), 0, Integer.parseInt(getDineroInicial()));
 						saberSiAposto =false;
 						//System.out.println(siguienteTurno);
 						confirmarApuesta.setEnabled(false);
@@ -520,7 +516,7 @@ public class PanelJugador extends JPanel {
 				//System.out.println("TURNO ACTUAL EN DESCARTE ESCUCHAS: "+control.getTurno());
 				control.setTurnoActual();
 				//System.out.println(nombre.getText()+" TURNO DEL HILO QUE ENTRA: "+getTurno());
-				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
+				control.turnos(100,nombre.getText(), 0, Integer.parseInt(getDineroInicial())); //Descarten después de mí
 				
 				confirmarDescarte.setEnabled(false);
 				confirmarDescarte.removeMouseListener(escucha);

@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import pokerControl.ControlPoker;
@@ -30,7 +31,7 @@ import pokerModelo.Carta;
 public class MesaJuego extends JPanel {
 	private PanelJugador panelJugador1,panelJugador2,panelJugador3,panelJugador4,panelJugador5;
 	private ImageIcon imagen;
-	private JLabel logo, tipoRonda,espacio;
+	private JLabel logo, tipoRonda,espacio, totalApostado;
 	private JButton salir,estadoJuego,instrucciones, cederTurno;
 	private JTextArea areaEstado;
 	private GridBagConstraints constraints;
@@ -85,6 +86,9 @@ public class MesaJuego extends JPanel {
 			logo = new JLabel();
 			imagen = new ImageIcon(getClass().getResource("/resources/logo1.png"));
 			logo.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(180,180, Image.SCALE_DEFAULT)));
+			logo.setText("Total Apostado: "+control.getTotalApostado());
+			logo.setVerticalTextPosition(SwingConstants.BOTTOM);
+			logo.setHorizontalTextPosition(SwingConstants.CENTER);
 			constraints.gridx =1;
 			constraints.gridy =0;
 			constraints.gridwidth =1;
@@ -97,8 +101,6 @@ public class MesaJuego extends JPanel {
 			panelBotones2 = new JPanel();
 			panelBotones2.setLayout(new GridLayout(3,1));
 			panelBotones2.setBackground(Color.GREEN);
-			
-			
 			
 			salir = new JButton("Salirse");
 			salir.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -172,6 +174,11 @@ public class MesaJuego extends JPanel {
 			//panelJugador3.refrescarLabels(apuestaJugador, nombreJugador);
 			panelJugador4.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 			panelJugador5.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					logo.setText("Total Apostado: "+control.getTotalApostado());
+				}
+			});
 		}
 		
 		public void actualizarMesaCartas(String nombreJugador,List<Carta> cartasNuevas) {
