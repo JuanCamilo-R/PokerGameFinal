@@ -9,12 +9,30 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Carta.
+ */
 public class Carta extends JLabel {
-	 private String valor;
-	 private String palo;
-	 private BufferedImage imagen;
-	 private int valorNumerico;
+	 
+ 	/** The valor. */
+ 	private String valor;
+	 
+ 	/** The palo. */
+ 	private String palo;
+	 
+ 	/** The imagen. */
+ 	private BufferedImage imagen;
+	 
+ 	/** The valor numerico. */
+ 	private int valorNumerico;
 
+	/**
+	 * Instantiates a new carta.
+	 *
+	 * @param valor the valor
+	 * @param palo the palo
+	 */
 	public Carta(String valor, String palo) {
 		 this.valor = valor;
 		 this.palo = palo;
@@ -28,44 +46,96 @@ public class Carta extends JLabel {
 		   } 
 	 }
 	
-	 public int getValorNumerico() {
+	 /**
+ 	 * Gets the valor numerico.
+ 	 *
+ 	 * @return the valor numerico
+ 	 */
+ 	public int getValorNumerico() {
 		 return valorNumerico;
 	 }
 
-	 public String getValor() {
+	 /**
+ 	 * Gets the valor.
+ 	 *
+ 	 * @return the valor
+ 	 */
+ 	public String getValor() {
 		 return valor;
 	 }
 
+	/**
+	 * Sets the valor.
+	 *
+	 * @param valor the new valor
+	 */
 	public void setValor(String valor) {
 		 this.valor = valor;
 	 }
 
-	 public String getPalo() {
+	 /**
+ 	 * Gets the palo.
+ 	 *
+ 	 * @return the palo
+ 	 */
+ 	public String getPalo() {
 		 return palo;
 	 }
 
-	 public void setPalo(String palo) {
+	 /**
+ 	 * Sets the palo.
+ 	 *
+ 	 * @param palo the new palo
+ 	 */
+ 	public void setPalo(String palo) {
 		 this.palo = palo;
 	 }
 
-	 public String toString() {
+	 /**
+ 	 * To string.
+ 	 *
+ 	 * @return the string
+ 	 */
+ 	public String toString() {
 		 return valor+palo;
 	 }
 
-	 private Image scaledImage(Image img, int w, int h) {
+	 /**
+ 	 * Scaled image.
+ 	 *	Funcion que escala las imagenes de las cartas
+ 	 * @param img the img
+ 	 * @param w the w
+ 	 * @param h the h
+ 	 * @return the image
+ 	 */
+ 	private Image scaledImage(Image img, int w, int h) {
 		 BufferedImage resizedImage = new BufferedImage( w , h , BufferedImage.TYPE_INT_RGB);
+		 //Se crea grafica 2d para renderizar y escalar la imagen.
 		 Graphics2D g2 = resizedImage.createGraphics();
+		 //Se renderiza y se dibuja.
 		 g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		 g2.drawImage(img, 0, 0, w, h, null);
+		 //Libero los recursos nativos a la grafica
 		 g2.dispose();
 		 return resizedImage;
 	 }
-	 public void setImagen(BufferedImage imagen) {
+	 
+ 	/**
+ 	 * Sets the imagen.
+ 	 *
+ 	 * @param imagen the new imagen
+ 	 */
+ 	public void setImagen(BufferedImage imagen) {
 		 this.imagen= (BufferedImage) scaledImage(imagen,100,50);
 		 setIcon(new ImageIcon(scaledImage(imagen,80,110)));
 	 }
 	 
-	 public BufferedImage getImagen() {
+	 /**
+ 	 * Gets the imagen.
+ 	 *
+ 	 * @return the imagen
+ 	 */
+ 	public BufferedImage getImagen() {
 		return imagen;
 	}
 }
