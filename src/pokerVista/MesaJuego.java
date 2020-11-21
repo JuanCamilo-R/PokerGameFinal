@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import pokerControl.ControlPoker;
@@ -47,7 +48,7 @@ public class MesaJuego extends JPanel {
 	/** The JLabel
 	 *  Label que se usa para poner el logo
 	 * */
-	private JLabel logo;
+	private JLabel logo,tipoRonda,espacio, totalApostado;
 	
 	/** The JButton
 	 *  cederTurno es para volver a iniciar el juego
@@ -57,6 +58,7 @@ public class MesaJuego extends JPanel {
 	/** The area estado.
 	 * Historial del juego
 	 *  */
+
 	private JTextArea areaEstado;
 	
 	/** The constraints. */
@@ -140,6 +142,9 @@ public class MesaJuego extends JPanel {
 			logo = new JLabel();
 			imagen = new ImageIcon(getClass().getResource("/resources/logo1.png"));
 			logo.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(180,180, Image.SCALE_DEFAULT)));
+			logo.setText("Total Apostado: "+control.getTotalApostado());
+			logo.setVerticalTextPosition(SwingConstants.BOTTOM);
+			logo.setHorizontalTextPosition(SwingConstants.CENTER);
 			constraints.gridx =1;
 			constraints.gridy =0;
 			constraints.gridwidth =1;
@@ -230,6 +235,11 @@ public class MesaJuego extends JPanel {
 			panelJugador2.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 			panelJugador4.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
 			panelJugador5.refrescarLabels(apuestaJugador, nombreJugador, dineroInicial);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					logo.setText("Total Apostado: "+control.getTotalApostado());
+				}
+			});
 		}
 		
 		/**

@@ -110,10 +110,14 @@ public class ControlPoker {
 	
 	/** The interrumpiendo. */
 	private boolean interrumpiendo=false;
+
+	private int totalApostado=100;
+
 	
 	/**
 	 * Instantiates a new control poker.
 	 */
+
 	public ControlPoker() {
 		//Constructor
 		nombres = new ArrayList<String>();
@@ -138,7 +142,11 @@ public class ControlPoker {
 	 * Iniciar juego.
 	 */
 	private void iniciarJuego() {
+
+		totalApostado=100;
+
 		//Creamos la baraja de cada juagdor
+
 		baraja = new Baraja();
 		for(int i = 0; i < 5 ;i++) {
 			manoJugadores.add(seleccionarCartas());
@@ -255,12 +263,18 @@ public class ControlPoker {
 	public void iniciarJugadoresCPU() {
 		
 		int aux = random.nextInt(5)+1;
+
+
+
+
 		//Son los asteriscos que se ponen en el JTextArea para dar un historial del juego
+		mesaJuego.espaciar();
+		mesaJuego.mensaje("---ORDEN DE TURNOS---");
 		asteriscosAbiertos=true;
 		mesaJuego.espaciar();
-		mesaJuego.mensaje("Orden de turnos:");
 		
 		//Dar los turnos cada jugador
+
 		switch(aux) {
 			case 1:
 				jugador1.setTurno(1);
@@ -373,8 +387,15 @@ public class ControlPoker {
 			}
 
 			if(controlador == 3) {
+				mesaJuego.mensaje("---RESULTADOS---");
+				mesaJuego.espaciar();
+				asteriscosAbiertos=true;
 				System.out.println("Entro a controlador = 3");
 				System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
+
+				mesaJuego.espaciar();
+				asteriscosAbiertos=false;
+				
 			}
 			
 			tipoRonda = false; //Tipo ronda descarte.
@@ -440,6 +461,12 @@ public class ControlPoker {
 		{  
 			//Asteriscos que se ven en el JTextArea
 			if(!asteriscosAbiertos) {
+				if(tipoRonda) {
+					mesaJuego.mensaje("---RONDA DE APUESTA---");
+				}
+				else {
+					mesaJuego.mensaje("---RONDA DE DESCARTE---");
+				}
 				mesaJuego.espaciar();
 				asteriscosAbiertos=true;
 			}
@@ -466,8 +493,11 @@ public class ControlPoker {
 					if(!interrumpiendo)
 					verificarApuesta(nombreJugador);	
 				}
-				else if(nombreJugador.equals("ElBicho") && !interrumpiendo) {
-					//Actualiza la apuesta del Bicho
+
+				else if(nombreJugador.equals(nombres.get(2)) && !interrumpiendo) {
+
+					//Actualiza la apuesta del Usuario
+
 					vista.actualizarAreaEstado(panelUsuario.getApuestaUsuario(), nombreJugador, " apuesta: ");
 				}
 
@@ -493,8 +523,9 @@ public class ControlPoker {
 					 
 					 turnoActual++;
 				}
-				
-				if(nombreJugador.equals("ElBicho") && !interrumpiendo) {
+
+				if(nombreJugador.equals(nombres.get(2)) && !interrumpiendo) {
+
 					if(panelUsuario.getContadorCartasPedidas()!=1) {
 						mesaJuego.mensaje(nombreJugador+" descarto "+panelUsuario.getContadorCartasPedidas()+" cartas");
 					}
@@ -572,7 +603,7 @@ public class ControlPoker {
 				//Despierto a los hilos.
 				panelUsuario.setSiguienteTurno(true);
 				turnoActual++;
-				turnos(100, "ElBicho", 0, 100);
+				turnos(100, nombres.get(2), 0, 100);
 			}
 			if(hilosCorriendo==0) {
 				break;
@@ -1087,26 +1118,36 @@ public class ControlPoker {
 	 * @return the int
 	 */
 	//Recibe una mano de jugador
-	public int determinarJugada(List<Carta> manoJugador) {
+	public int determinarJugada(List<Carta> manoJugador, String nombreJugador) {
 		if(escaleraRealColor(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene una Escalera Real de Color");
 			return 10;
 		} else if(escaleraColor(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene una Escalera de Color");
 			return 9;
 		} else if(poker(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene un Poker");
 			return 8;
 		}else if(full(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene un Full House");
 			return 7;
 		} else if(verificarColor(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene un Color");
 			return 6;
 		}else if(escalera(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene una Escalera");
 			return 5;
 		} else if(trio(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene un Trio");
 			return 4;
 		} else if(doblePareja(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene una Doble Pareja");
 			return 3;
 		} else if(pareja(manoJugador)) {
+			mesaJuego.mensaje(nombreJugador+" tiene una Pareja");
 			return 2;
 		}else {
+			mesaJuego.mensaje(nombreJugador+" tiene una Carta Alta");
 			return 1;
 		}
 	}
@@ -1144,6 +1185,9 @@ public class ControlPoker {
 					}
 				}
 			}
+
+			mesaJuego.mensaje("El ganador es "+getNombreGanador(valor)+", quien se lleva en total "+totalApostado+" fichas.");
+
 			return getNombreGanador(valor);
 			
 		}else {
@@ -1158,6 +1202,7 @@ public class ControlPoker {
 					aux = comparacion;
 				}
 			}
+			mesaJuego.mensaje("El ganador es "+getNombreGanador(buscarCarta(aux))+", quien se lleva en total "+totalApostado+" fichas.");
 			return getNombreGanador(buscarCarta(aux));
 		}
 	}
@@ -1201,7 +1246,7 @@ public class ControlPoker {
 			case 1:
 				return "David";
 			case 2:
-				return "ElBicho";
+				return nombres.get(2);
 			case 3:
 				return "Valentina";
 			case 4:
@@ -1224,7 +1269,7 @@ public class ControlPoker {
 		
 		for(int i = 0; i < 5; i++) {
 			manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(i));
-			parejaJugadasManos.add(new Pair<Integer, List<Carta>>(determinarJugada(manoJugadores.get(i)), manoJugadaOrdenada));
+			parejaJugadasManos.add(new Pair<Integer, List<Carta>>(determinarJugada(manoJugadores.get(i),nombres.get(i)), manoJugadaOrdenada));
 			
 		}
 		//Se ordena las parejas por key. (menor a mayor)
@@ -1305,4 +1350,17 @@ public class ControlPoker {
 		hilosCorriendo--;
 		System.out.println("Hilos actuales: "+hilosCorriendo);
 	}
+	
+	public synchronized void añadirAlTotal(int apuesta) {
+		totalApostado+=apuesta;
+	}
+	
+	public synchronized void tomarDelTotal(int apuesta) {
+		totalApostado-=apuesta;
+	}
+
+	public int getTotalApostado() {
+		return totalApostado;
+	}
+	
 }
