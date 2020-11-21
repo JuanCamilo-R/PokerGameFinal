@@ -15,12 +15,31 @@ import javax.swing.JPanel;
 import com.sun.prism.paint.Color;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Instrucciones.
+ */
 public class Instrucciones extends JFrame {
+	
+	/** The escucha. */
 	private Escucha escucha;
+	
+	/** The aceptar. */
 	private JButton aceptar;
+	
+	/** The informacion. */
 	private JPanel informacion;
+	
+	/** The texto septimo. */
 	private JLabel textoQuinto,descarte,apuesta,textoInicial,textoSegundo ,textoTercero,textoCuarta,textoSexto,textoSeptimo;
+	
+	/** The imagen. */
 	private ImageIcon imagen;
+	
+	/**
+	 * Instantiates a new instrucciones.
+	 * Se esconden el JFrame inicial
+	 */
 	public Instrucciones() {
 		this.setVisible(true);
 		this.setTitle("Instrucciones");
@@ -34,6 +53,9 @@ public class Instrucciones extends JFrame {
 	
 	}
 	
+	/**
+	 * Inits the GUI.
+	 */
 	public void initGUI() {
 		this.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints contraints = new GridBagConstraints();
@@ -141,8 +163,16 @@ public class Instrucciones extends JFrame {
 		add(aceptar,contraints);
 	}
 	
-	
+	/**
+	 * The Class Escucha.
+	 */
 	public class Escucha extends MouseAdapter {
+		
+		/**
+		 * Mouse clicked.
+		 *
+		 * @param event the event
+		 */
 		public void mouseClicked(MouseEvent event) {
 			if(event.getSource() == aceptar) {
 				setVisible(false);

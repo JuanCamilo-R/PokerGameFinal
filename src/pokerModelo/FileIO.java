@@ -6,7 +6,19 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileIO.
+ */
 public class FileIO {
+	
+	/**
+	 * Read image file.
+	 *
+	 * @param requestor the requestor
+	 * @param fileName the file name
+	 * @return the buffered image
+	 */
 	public static BufferedImage readImageFile(Object requestor, String fileName) {
 		BufferedImage image = null;
 		try {
