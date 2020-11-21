@@ -275,7 +275,7 @@ public class ControlPoker {
 		
 		//Dar los turnos cada jugador
 
-		switch(3) {
+		switch(aux) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
@@ -301,7 +301,6 @@ public class ControlPoker {
 				mesaJuego.mensaje(jugador1.getNombre());
 				break;
 			case 3:
-				System.out.print("Inicias");
 				panelUsuario.setTurno(1);
 				mesaJuego.mensaje(nombres.get(2));
 				jugador4.setTurno(2);
@@ -390,8 +389,7 @@ public class ControlPoker {
 				mesaJuego.mensaje("---RESULTADOS---");
 				mesaJuego.espaciar();
 				asteriscosAbiertos=true;
-				System.out.println("Entro a controlador = 3");
-				System.out.println("El ganador es : "+determinarGanador(determinarParejas()));
+				determinarGanador(determinarParejas());
 
 				mesaJuego.espaciar();
 				asteriscosAbiertos=false;
@@ -591,7 +589,6 @@ public class ControlPoker {
 	public void interrumpirHilos() {
 		interrumpiendo=true;
 		controlador=3;
-		System.out.println("HE INTERRUMPIDO A TODOS LOS HILOS");
 		
 		jugador1.interrumpir();
 		jugador2.interrumpir();
@@ -1158,18 +1155,13 @@ public class ControlPoker {
 	 * @param parejaJugadasManos the pareja jugadas manos
 	 * @return the string
 	 */
-	public String determinarGanador(List<Pair<Integer, List<Carta>>> parejaJugadasManos) {
+	public void determinarGanador(List<Pair<Integer, List<Carta>>> parejaJugadasManos) {
 		int contador = 1;
 		int valor = 0;
 		//No hay parejas
 		if(!checkRepeatPlay(parejaJugadasManos)) {
 			List<Carta> manoGanadora = parejaJugadasManos.get(4).getValue();
-			System.out.println("NO HAY EMPATE");
-			System.out.println("Mano Ganadora: ");
 			
-			for(int i = 0; i < manoGanadora.size(); i++) {
-				System.out.println(manoGanadora.get(i));
-			}
 			
 			for(int i = 0; i < manoJugadores.size(); i++) {
 				for(int j = 0; j < manoJugadores.get(i).size(); j++) {
@@ -1187,8 +1179,6 @@ public class ControlPoker {
 			}
 
 			mesaJuego.mensaje("El ganador es "+getNombreGanador(valor)+", quien se lleva en total "+totalApostado+" fichas.");
-
-			return getNombreGanador(valor);
 			
 		}else {
 			int aux;
@@ -1203,7 +1193,6 @@ public class ControlPoker {
 				}
 			}
 			mesaJuego.mensaje("El ganador es "+getNombreGanador(buscarCarta(aux))+", quien se lleva en total "+totalApostado+" fichas.");
-			return getNombreGanador(buscarCarta(aux));
 		}
 	}
 	
@@ -1274,10 +1263,6 @@ public class ControlPoker {
 		}
 		//Se ordena las parejas por key. (menor a mayor)
 		parejaJugadasManos = ordenarParejas(parejaJugadasManos);
-		for(int i = 0; i < parejaJugadasManos.size(); i++) {
-			System.out.println("Key: "+parejaJugadasManos.get(i).getKey());
-			System.out.println("Value: "+parejaJugadasManos.get(i).getValue());
-		}
 		return parejaJugadasManos;
 	}
 	
@@ -1303,10 +1288,6 @@ public class ControlPoker {
 			}
 		}
 		
-		for(int i = 0; i < manosIguales.size(); i++) {
-			System.out.println("MANOS IGUALES");
-			System.out.println(manosIguales.get(i));
-		}
 		//Si hay jugadas iguales (las mas altas) retorna verdadero.
 		if(jugadas.get(4) == jugadas.get(3)) {
 			return true;
@@ -1348,7 +1329,6 @@ public class ControlPoker {
 	 */
 	public synchronized void muereHilo() {
 		hilosCorriendo--;
-		System.out.println("Hilos actuales: "+hilosCorriendo);
 	}
 	
 	public synchronized void añadirAlTotal(int apuesta) {
