@@ -466,7 +466,9 @@ public class PanelJugador extends JPanel {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+
 				if( nombre.getText() == nombreJugador) {		
+
 					numeroDineroInicial.setText(dineroInicial);
 					numeroDineroApostado.setText(String.valueOf(apuesta));
 					nosotros.revalidate();	
@@ -489,7 +491,9 @@ public class PanelJugador extends JPanel {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+
 				if( nombre.getText() == nombreJugador) {		
+
 					panelMano.removeAll();
 					
 					if(cartasNuevas!=null) {
@@ -609,23 +613,28 @@ public class PanelJugador extends JPanel {
 				
 				//Verificamos que el usuario haya apostado el dinero minimo requerido, sino debe aumentar o igualar la apuesta
 				if(dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
-					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado");
+					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado. La apuesta minima es de "+apuestaMinima);
 					numeroDineroApostado.setText("0");
 				}
 				//Si puedo apostar
 				else {
 					if(control.getTipoRonda()) { //Ronda apuesta
-						
-						if(getApuestaUsuario()>apuestaMinima) {//Actualizamos la apueta minima
+
+						control.añadirAlTotal(getApuestaUsuario());
+						if(getApuestaUsuario()>apuestaMinima) {//Actualizamos la apuesta minima
 							apuestaMinima=getApuestaUsuario();
 						}
-						
+						refrescarLabels(getApuestaUsuario(), nombre.getText(), String.valueOf(Integer.parseInt(getDineroInicial())-getApuestaUsuario()));
 						//Le doy paso el siguiente jugador
+
 						siguienteTurno = true;
 						//Aumentamos el turno
 						control.setTurnoActual();
+
+						
 						//Despertamos a los hilos llamando a turnos que es la funcion que sincroniza los hilos
-						control.turnos(100, "ElBicho", 0, Integer.parseInt(getDineroInicial()));
+						control.turnos(100, nombre.getText(), 0, Integer.parseInt(getDineroInicial()));
+
 						saberSiAposto =false;
 						//Descativamos la escucha si la apuesta es valida
 						confirmarApuesta.setEnabled(false);
@@ -700,8 +709,10 @@ public class PanelJugador extends JPanel {
 				setSiguienteTurno(true);
 				//aumento el turno
 				control.setTurnoActual();
+
 				//Despertar los hilos despues de mi para que apuesten
-				control.turnos(100,"ElBicho", 0, Integer.parseInt(getDineroInicial())); 
+				control.turnos(100,nombre.getText(), 0, Integer.parseInt(getDineroInicial())); 
+
 				
 				//Quito escucha e inavilito el boton despues de confirmar el descarte
 				confirmarDescarte.setEnabled(false);

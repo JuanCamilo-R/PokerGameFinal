@@ -179,6 +179,7 @@ public class JugadorCPU implements Runnable {
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad;
 			dineroInicial -=cantidad;
+			control.añadirAlTotal(cantidad);
 			return true;
 		}
 		return false;
@@ -191,6 +192,7 @@ public class JugadorCPU implements Runnable {
 	 */
 	public void devolverApuesta(int cantidadDevuelta) {
 		dineroInicial += cantidadDevuelta;
+		control.tomarDelTotal(cantidadDevuelta);
 	}
 
 	/**
