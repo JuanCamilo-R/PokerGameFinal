@@ -275,7 +275,7 @@ public class ControlPoker {
 		
 		//Dar los turnos cada jugador
 
-		switch(aux) {
+		switch(3) {
 			case 1:
 				jugador1.setTurno(1);
 				mesaJuego.mensaje(jugador1.getNombre());
