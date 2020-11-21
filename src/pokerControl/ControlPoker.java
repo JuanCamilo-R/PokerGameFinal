@@ -266,7 +266,7 @@ public class ControlPoker {
 
 
 
-
+		mesaJuego.mensaje("Antes de empezar, todos apuestan 100");
 		//Son los asteriscos que se ponen en el JTextArea para dar un historial del juego
 		mesaJuego.espaciar();
 		mesaJuego.mensaje("---ORDEN DE TURNOS---");
