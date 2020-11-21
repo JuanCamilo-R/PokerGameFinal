@@ -1,1 +1,213 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><umlet_diagram></umlet_diagram>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>90</y>
+      <w>240</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>ControlPoker
+--
+Baraja baraja
+List&lt;List&lt;Carta&gt;&gt; manoJugadores
+Vista vista
+JugadorCPU jugador1, jugador2,...
+Condition esperarTurnoApuesta
+Condition esperarTurnoDescarte
+Boolean tipoRonda
+List&lt;List&lt;Cartas&gt;&gt; manosIguales
+--
+iniciarJuego()
+reiniciarJuego()
+activarRondaDescarte()
+activarRondaApuesta()
+turnos()
+descartar()
+asignarCartas()
+main()
+jugadasPoker()
+determinarGanador()
+checkRepeatPlay()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>650</x>
+      <y>40</y>
+      <w>180</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Baraja
+--
+static final CARTA_HEIGH
+static final CARTA_WIDTH
+static final PALOS
+static final VALORES
+--
+asignarImagenes()
+getCarta()
+mazoSize()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>580</y>
+      <w>200</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Carta
+--
+BufferedImage imagen
+int valorNumerico
+String palo
+String valor
+--
+getPalo()
+setPalo()
+getValor()
+scaledImage(Image, int, int)
+setImagen()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>100</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>420</y>
+      <w>60</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>40.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>210</y>
+      <w>180</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>VistaPoker
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>220</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>10.0;60.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>290</y>
+      <w>150</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>PanelJugador
+--
+JButton botones
+boolean isHuman
+boolean saberSiAposto
+JLabel 
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>220</y>
+      <w>160</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>140.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>550</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>JugadorCPU
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>350</y>
+      <w>150</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>10.0;200.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>600</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>MesaJuego
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>370</y>
+      <w>220</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+</panel_attributes>
+    <additional_attributes>200.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
