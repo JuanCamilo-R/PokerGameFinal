@@ -141,6 +141,7 @@ public class Instrucciones extends JFrame {
 		add(aceptar,contraints);
 	}
 	
+	
 	public class Escucha extends MouseAdapter {
 		public void mouseClicked(MouseEvent event) {
 			if(event.getSource() == aceptar) {
