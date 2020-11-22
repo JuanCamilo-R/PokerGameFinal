@@ -197,8 +197,8 @@ public class ControlPoker {
 			dinero.add(jugador1.getDineroInicial());
 			dinero.add(jugador2.getDineroInicial());
 			dinero.add(15000);
-			dinero.add(jugador5.getDineroInicial());
 			dinero.add(jugador4.getDineroInicial());
+			dinero.add(jugador5.getDineroInicial());
 	}
 	
 	
