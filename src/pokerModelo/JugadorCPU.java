@@ -53,7 +53,8 @@ public class JugadorCPU implements Runnable {
 	
 	/** The contador. */
 	private int contador;
-
+	
+	private boolean sigueJugando;
 	/**
 	 * Instantiates a new jugador CPU.
 	 *
@@ -70,6 +71,7 @@ public class JugadorCPU implements Runnable {
 		random = new Random();
 		this.control = control;
 		interrumpido=false;
+		sigueJugando = true;
 		apostar(100);
 	}
 
@@ -144,7 +146,10 @@ public class JugadorCPU implements Runnable {
 	public List<Carta>  getCartas (){
 		return cartas;
 	}
-
+	
+	public boolean getSigueJugando() {
+		return sigueJugando;
+	}
 	/**
 	 * Sets the turno.
 	 *
@@ -179,15 +184,21 @@ public class JugadorCPU implements Runnable {
 	 * @return true, if successful
 	 */
 	public boolean apostar(int cantidad) {
-		if(dineroInicial>= cantidad) {
+		if(dineroInicial>= cantidad && sigueJugando) {
 			vecesApuesta++;
 			apuestaActual = cantidad;
 			dineroApuesta=cantidad;
 			dineroInicial -=cantidad;
 			control.añadirAlTotal(cantidad);
 			return true;
+		}else {
+			apuestaActual = 0;
+			dineroInicial = 0;
+			dineroApuesta = 0;
+			sigueJugando = false;
+			return false;
 		}
-		return false;
+		
 	}
 
 	/**
@@ -228,7 +239,11 @@ public class JugadorCPU implements Runnable {
 	 * Reiniciar apuesta.
 	 */
 	public void reiniciarApuesta() {
-		apuestaActual=100;
+		if(sigueJugando) {
+			apuestaActual=100;
+		}else {
+			apuestaActual = 0;
+		}
 	}
 
 	/**
@@ -254,7 +269,7 @@ public class JugadorCPU implements Runnable {
 			switch(paso) {
 			//Apuesta
 			case 1:
-				control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial());	
+				control.turnos(turno, nombreJugador, apuestaActual,getDineroInicial(), sigueJugando);	
 				/*
 				 * se cambia el paso para que no vuelva a entrar al switch y solo
 				 * quede en el while hasta que sea su turno en la proxima ronda.
@@ -267,7 +282,7 @@ public class JugadorCPU implements Runnable {
 				break;
 				//Descarte
 			case 2:				
-				control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial());	
+				control.turnos(turno, nombreJugador, cantidadADescartar, getDineroInicial(), sigueJugando);	
 				paso = 0;
 				if(turno == 5) {
 					control.activarRondaApuestas();

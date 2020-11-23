@@ -638,7 +638,7 @@ public class PanelJugador extends JPanel {
 
 						
 						//Despertamos a los hilos llamando a turnos que es la funcion que sincroniza los hilos
-						control.turnos(100, nombre.getText(), 0, Integer.parseInt(getDineroInicial()));
+						control.turnos(100, nombre.getText(), 0, Integer.parseInt(getDineroInicial()), false);
 
 						saberSiAposto =false;
 						//Descativamos la escucha si la apuesta es valida
@@ -716,7 +716,7 @@ public class PanelJugador extends JPanel {
 				control.setTurnoActual();
 
 				//Despertar los hilos despues de mi para que apuesten
-				control.turnos(100,nombre.getText(), 0, Integer.parseInt(getDineroInicial())); 
+				control.turnos(100,nombre.getText(), 0, Integer.parseInt(getDineroInicial()), false); 
 
 				
 				//Quito escucha e inavilito el boton despues de confirmar el descarte

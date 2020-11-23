@@ -196,7 +196,7 @@ public class ControlPoker {
 	private void darDinero() {
 			dinero.add(jugador1.getDineroInicial());
 			dinero.add(jugador2.getDineroInicial());
-			dinero.add(15000);
+			dinero.add(900);
 			dinero.add(jugador4.getDineroInicial());
 			dinero.add(jugador5.getDineroInicial());
 	}
@@ -256,9 +256,9 @@ public class ControlPoker {
 	 */
 	public void definirJugadoresCPU() {
 		jugador1 = new JugadorCPU(1500, "Samuel", 1, this);
-		jugador2 = new JugadorCPU(1500, "David", 2, this);
-		jugador4 = new JugadorCPU(1500, "Valentina", 3, this);
-		jugador5 = new JugadorCPU(1500, "Santiago", 4, this);
+		jugador2 = new JugadorCPU(1000, "David", 2, this);
+		jugador4 = new JugadorCPU(1300, "Valentina", 3, this);
+		jugador5 = new JugadorCPU(1400, "Santiago", 4, this);
 	}
 	
 	/**
@@ -458,7 +458,7 @@ public class ControlPoker {
 	 * Funcion sincronizada accedida por los hilos y el jugador humano. "ElBicho" 
 	 * 
 	 */
-	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial) {
+	public void turnos(int turnoJugador, String nombreJugador, int dato, int dineroInicial, boolean sigueJugando) {
 		bloqueo.lock();
 		try
 		{  
@@ -520,7 +520,7 @@ public class ControlPoker {
 					
 					 posicionDescarte = turnoActual - 1;
 					 //Si el juego no ha sido interrumpido se le permite al jugador descartar.
-					 if(!interrumpiendo) {
+					 if(!interrumpiendo && sigueJugando) {
 					 descartar(dato, nombreJugador,turnoJugador);
 					 }
 					 
@@ -605,7 +605,7 @@ public class ControlPoker {
 				//Despierto a los hilos.
 				panelUsuario.setSiguienteTurno(true);
 				turnoActual++;
-				turnos(100, nombres.get(2), 0, 100);
+				turnos(100, nombres.get(2), 0, 100, false);
 			}
 			if(hilosCorriendo==0) {
 				break;
@@ -1166,8 +1166,6 @@ public class ControlPoker {
 		//No hay parejas
 		if(!checkRepeatPlay(parejaJugadasManos)) {
 			List<Carta> manoGanadora = parejaJugadasManos.get(4).getValue();
-			
-			
 			for(int i = 0; i < manoJugadores.size(); i++) {
 				for(int j = 0; j < manoJugadores.get(i).size(); j++) {
 					if(manoJugadores.get(i).get(j).getValor() == manoGanadora.get(j).getValor() &&
@@ -1262,6 +1260,7 @@ public class ControlPoker {
 		List<Carta> manoJugadaOrdenada = new ArrayList<Carta>();
 		
 		for(int i = 0; i < 5; i++) {
+			
 			manoJugadaOrdenada = ordenarPorNumero(manoJugadores.get(i));
 			parejaJugadasManos.add(new Pair<Integer, List<Carta>>(determinarJugada(manoJugadores.get(i),nombres.get(i)), manoJugadaOrdenada));
 			
