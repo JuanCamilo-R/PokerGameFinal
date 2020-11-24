@@ -617,7 +617,7 @@ public class PanelJugador extends JPanel {
 				dineroApostado = Integer.parseInt(numeroDineroApostado.getText());
 				
 				//Verificamos que el usuario haya apostado el dinero minimo requerido, sino debe aumentar o igualar la apuesta
-				if(dineroInicial < dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima) {
+				if((dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima )&& control.getControlador()<2) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado. La apuesta minima es de "+apuestaMinima);
 					numeroDineroApostado.setText("0");
 				}
