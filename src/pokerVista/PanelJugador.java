@@ -620,6 +620,9 @@ public class PanelJugador extends JPanel {
 				if((dineroInicial <= dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima )&& control.getControlador()<2) {
 					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado. La apuesta minima es de "+apuestaMinima);
 					numeroDineroApostado.setText("0");
+				}else if(dineroInicial < dineroApostado || Integer.parseInt(numeroDineroApostado.getText())<apuestaMinima){
+					JOptionPane.showMessageDialog(null, "No puedes apostar todo esto o no has apostado. La apuesta minima es de "+apuestaMinima);
+					numeroDineroApostado.setText("0");
 				}
 				//Si puedo apostar
 				else {
